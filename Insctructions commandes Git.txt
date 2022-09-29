@@ -1,0 +1,3 @@
+1ere chose à faire est : git pull
+
+Si vous ajouté tout ce que vous avez : git add *
