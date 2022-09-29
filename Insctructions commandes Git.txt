@@ -1,3 +1,11 @@
-1ere chose à faire est : git pull
+1ere chose à faire est :	git pull
 
-Si vous ajouté tout ce que vous avez : git add *
+Si vous ajouté un changement : 	git add * 					(* signifie que vous ajouté tout ce que vous avez modifié)
+		 		git commit -m "raison de la modif"
+		 		git push
+
+Si vous supprimé : 		git rm monFichier.txt
+				git commit -m "raison de la suppresion"
+				git push
+
+Si vous êtes à jour :		git status
