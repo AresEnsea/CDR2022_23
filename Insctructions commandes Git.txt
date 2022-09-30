@@ -9,3 +9,7 @@ Si vous supprimé : 		git rm monFichier.txt
 				git push
 
 Si vous êtes à jour :		git status
+
+Guides des commandes :		https://www.hostinger.fr/tutoriels/commandes-git#Git_config
+
+Si vous voulez travailler à plusieurs sur un même fichier utilisez les "branch"
