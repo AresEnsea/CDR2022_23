@@ -5,7 +5,7 @@
 #define pasDistance 25
 #define rayonCapteurs 4.8
 
-
+/*
 double * positionRelative(int number, int pseudoDistance, float angleDeg){
 	float pas = pasDistance;				//Pas entre 2 incréments de distance mesuree
 	float distance = pas*pseudoDistance;	//Distance reelle de l'obstacle
@@ -29,8 +29,8 @@ double * positionRelative(int number, int pseudoDistance, float angleDeg){
 	OP[1] = (rayon + distance)*sin(angle + angleCapt);
 
 	//Creation de gamma
-	gamma[0]=cos(angle + angleCapt + pi/2);
-	gamma[1]=sin(angle + angleCapt + pi/2);
+	gamma[0] = cos(angle + angleCapt + pi/2);
+	gamma[1] = sin(angle + angleCapt + pi/2);
 
 	//Calcul des points maximaux
 	OA = OP - gamma*distance*tan(deltaAngle);
@@ -40,4 +40,4 @@ double * positionRelative(int number, int pseudoDistance, float angleDeg){
 	sortie++; *sortie = OB;
 
 	return sortie;
-}
+}*/

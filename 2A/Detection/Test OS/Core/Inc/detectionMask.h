@@ -1,4 +1,4 @@
-double * positionRelative(int number, int pseudoDistance, float angleDeg);
+//double * positionRelative(int number, int pseudoDistance, float angleDeg);
 
 
 typedef struct{
