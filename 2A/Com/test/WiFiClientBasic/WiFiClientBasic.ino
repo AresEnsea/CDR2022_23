@@ -58,8 +58,11 @@ void loop()
     //uncomment this line to send an arbitrary string to the server
     //client.print("Send this data to the server");
     //uncomment this line to send a basic document request to the server
-    client.print("GET /index.html HTTP/1.1\n\n");
-
+    char msg[20] = "hello";
+    client.print(msg);
+    delay(5000);
+    const char msg2[20] = "!DISCONNECT";
+    client.print(msg2);
   int maxloops = 0;
 
   //wait for the server's reply to become available
