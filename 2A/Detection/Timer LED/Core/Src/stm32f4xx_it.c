@@ -204,11 +204,11 @@ void SysTick_Handler(void)
 void TIM5_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM5_IRQn 0 */
-
+	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   /* USER CODE END TIM5_IRQn 0 */
   HAL_TIM_IRQHandler(&htim5);
   /* USER CODE BEGIN TIM5_IRQn 1 */
-  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+
   /* USER CODE END TIM5_IRQn 1 */
 }
 

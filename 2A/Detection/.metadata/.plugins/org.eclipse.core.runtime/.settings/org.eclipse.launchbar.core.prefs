@@ -1,9 +1,10 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:adc-f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:lidar_f303k8 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:codeurs-f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:hc-sr04_f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:lidar_f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:robot-f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Test OS Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Timer LED Debug
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:adc-f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:lidar_f303k8 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:codeurs-f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:hc-sr04_f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:lidar_f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:robot-f446re Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Timer LED Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Test OS Debug
 eclipse.preferences.version=1
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Test\ OS\ Debug/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Test\ OS\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Timer\ LED\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:adc-f446re\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:adc-f446re\ Debug/activeLaunchTarget=null\:---
