@@ -1,0 +1,7 @@
+# Ignore metadata
+
+.metadata
+
+# Ignore Debug
+
+Debug
