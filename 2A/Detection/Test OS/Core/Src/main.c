@@ -40,7 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
- TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim5;
 
 UART_HandleTypeDef huart1;
 
