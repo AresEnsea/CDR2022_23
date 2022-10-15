@@ -5,6 +5,11 @@
 .launch
 [Rr]elease
 [Dd]ebug
+*.o
+*.ko
+*.obj
+*.elf
+
 
 # For PCBs designed using KiCad: https://www.kicad.org/
 # Format documentation: https://kicad.org/help/file-formats/
