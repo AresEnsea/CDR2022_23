@@ -14,8 +14,8 @@ void setup()
     delay(10);
 
     // We start by connecting to a WiFi network
-    WiFiMulti.addAP("Ares", "AR30AS08//1998");
-
+    //WiFiMulti.addAP("Ares", "AR30AS08//1998");
+    WiFiMulti.addAP("Livebox-59f0", "CA2D973D94C2CC543A627AF93F");
     Serial.println();
     Serial.println();
     Serial.print("Waiting for WiFi... ");
@@ -39,7 +39,7 @@ void loop()
 //    const uint16_t port = 80;
 //    const char * host = "192.168.1.1"; // ip or dns
     const uint16_t port = 25565;
-    const char * host = "192.168.1.100"; // ip or dns
+    const char * host = "192.168.1.12"; // ip or dns
 
     Serial.print("Connecting to ");
     Serial.println(host);
