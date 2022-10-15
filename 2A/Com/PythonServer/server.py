@@ -6,7 +6,8 @@ import threading
 
 HEADER = 64
 PORT = 25565
-HOST = "192.168.1.100"
+#HOST = "192.168.1.100"
+HOST = "192.168.1.12"
 SERVER = socket.gethostbyname(HOST)
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
