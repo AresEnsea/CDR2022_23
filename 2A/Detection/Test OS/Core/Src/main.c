@@ -19,6 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -85,13 +87,26 @@ void StartTask02(void *argument);
 
 
 void send_deftask(float x){
-	uint8_t data[] = "Hello \t";
-	uint8_t value = (char)x;
+	uint8_t value[12];
+	gcvt(x, 8, value);
+	value[8] = ' ';
+	value[9] = '\r';
+	value[10] = '\n';
+	value[11]= '\0';
 
-	HAL_UART_Transmit(&huart2, value, sizeof(data), 500);
+	//int size = snprintf((char*)value, 20, "%d\r\n",(int)(x*1000));
+	HAL_UART_Transmit(&huart2, value, 8+3, 500);
 }
 
+void print_point(float * OP){
+	float x = OP[0];
+	float y = OP[1];
 
+	uint8_t data[]= " - ";
+	send_deftask(x);
+	HAL_UART_Transmit(&huart2, data, sizeof(data), 500);
+	send_deftask(y);
+}
 
 
 
@@ -396,12 +411,27 @@ void StartDefaultTask(void *argument)
 void StartTask02(void *argument)
 {
   /* USER CODE BEGIN StartTask02 */
+	static float i = 2;
   /* Infinite loop */
   for(;;)
   {
 	//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-	  send_deftask(12);
+	  float * sortie;
+	  sortie = positionRelative((int)i,3,0);
+	  //sortie[0] = 12.4;
+	  float OA[2]; float OB[2];
+	  OA[0] = sortie[0]; OA[1] = sortie[1];
+	  OB[0] = sortie[2]; OB[1] = sortie[3];
+	  print_point(OA);
+	  print_point(OB);
+
+	  uint8_t data[] = "###### \r\n";
+	  HAL_UART_Transmit(&huart2, data, sizeof(data), 500);
+	  send_deftask(i);
+
+	  i+=1;
     osDelay(500);
+
   }
   /* USER CODE END StartTask02 */
 }

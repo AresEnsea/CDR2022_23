@@ -1,38 +1,43 @@
-13:55:54 **** Incremental Build of configuration Debug for project Test OS ****
+17:31:45 **** Incremental Build of configuration Debug for project Test OS ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'send_deftask':
-../Core/Src/main.c:91:29: warning: passing argument 2 of 'HAL_UART_Transmit' makes pointer from integer without a cast [-Wint-conversion]
-   91 |  HAL_UART_Transmit(&huart2, value, sizeof(data), 500);
-      |                             ^~~~~
-      |                             |
-      |                             uint8_t {aka unsigned char}
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'uint8_t' {aka 'unsigned char'}
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:91:2: warning: implicit declaration of function 'gcvt' [-Wimplicit-function-declaration]
+   91 |  gcvt(x, 8, value);
+      |  ^~~~
 ../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:133:7: warning: unused variable 'true' [-Wunused-variable]
-  133 |   int true;
+../Core/Src/main.c:148:7: warning: unused variable 'true' [-Wunused-variable]
+  148 |   int true;
       |       ^~~~
 ../Core/Src/main.c: In function 'StartDefaultTask':
-../Core/Src/main.c:377:8: warning: unused variable 'angle' [-Wunused-variable]
-  377 |  float angle = 90;
+../Core/Src/main.c:392:8: warning: unused variable 'angle' [-Wunused-variable]
+  392 |  float angle = 90;
       |        ^~~~~
-../Core/Src/main.c:376:6: warning: unused variable 'dist' [-Wunused-variable]
-  376 |  int dist = 4;
+../Core/Src/main.c:391:6: warning: unused variable 'dist' [-Wunused-variable]
+  391 |  int dist = 4;
       |      ^~~~
-arm-none-eabi-gcc -o "Test OS.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\Test OS\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test OS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+../Core/Src/main.c: In function 'StartTask02':
+../Core/Src/main.c:420:13: warning: implicit declaration of function 'positionRelative' [-Wimplicit-function-declaration]
+  420 |    sortie = positionRelative((int)i,3,0);
+      |             ^~~~~~~~~~~~~~~~
+../Core/Src/main.c:420:11: warning: assignment to 'float *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  420 |    sortie = positionRelative((int)i,3,0);
+      |           ^
+arm-none-eabi-gcc -o "Test OS.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\Test OS\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Test OS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: Test OS.elf
  
 arm-none-eabi-size   Test\ OS.elf 
 arm-none-eabi-objdump -h -S  Test\ OS.elf  > "Test OS.list"
    text	   data	    bss	    dec	    hex	filename
-  25180	    124	  20828	  46132	   b434	Test OS.elf
+  46412	    492	  20852	  67756	  108ac	Test OS.elf
 Finished building: default.size.stdout
  
 Finished building: Test OS.list
+ 
+17:31:54 **** Incremental Build of configuration Debug for project Test OS ****
+make -j12 all 
+arm-none-eabi-size   Test\ OS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  46412	    492	  20852	  67756	  108ac	Test OS.elf
+Finished building: default.size.stdout
  
