@@ -25,15 +25,11 @@ void setup()
     Serial.println("\nWiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
-
-    delay(500);
 }
 
 
 void loop()
 {
-//    const uint16_t port = 80;
-//    const char * host = "192.168.1.1"; // ip or dns
     const uint16_t port = 25565;
     const char * host = "192.168.1.12"; // ip or dns
 
@@ -54,23 +50,21 @@ void loop()
     //uncomment this line to send an arbitrary string to the server
     //client.print("Send this data to the server");
     //uncomment this line to send a basic document request to the server
-    char msg[20] = "hello";
+    char msg[20] = "ahello";
     client.print(msg);
     delay(5000);
-    const char msg2[20] = "!DISCONNECT";
-    client.println(msg2);
   int maxloops = 0;
 
   //wait for the server's reply to become available
   while (!client.available() && maxloops < 1000)
   {
     maxloops++;
-    delay(1); //delay 1 msec
+    delay(1000); //delay 1 msec
   }
   if (client.available() > 0)
   {
     //read back one line from the server
-    int line = client.readInt();
+    String line = client.readStringUntil('\r');
     Serial.println(line);
   }
   else

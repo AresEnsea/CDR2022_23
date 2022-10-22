@@ -25,10 +25,13 @@ def handle_client(conn, addr):
         #msg_lentgh = int(msg_lentgh)
         msg_lentgh = 20
         msg = conn.recv(msg_lentgh).decode(FORMAT)
+        ##############################################################
+        if(msg[0][0]=='a'):
+            conn.sendto(msg.encode(),("192.168.1.18",25565))
+        ##############################################################
         if msg == DISCONNECT_MESSAGE :
             connected = False
         print(f"{addr} {msg}")
-        conn.sendto(bytes(5),addr)
     conn.close()
 
 def start():
