@@ -6,10 +6,15 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
+#define RX 16
+#define TX 17
+
 WiFiMulti WiFiMulti;
 
 void setup()
 {
+    SerialSTM.begin(115200, SERIAL_8N1, protocol, RX, TX);
+    SerialSTM.setTimeout(100);
     Serial.begin(115200);
     // We start by connecting to a WiFi network
     //WiFiMulti.addAP("Ares", "AR30AS08//1998");
