@@ -11,22 +11,18 @@ WiFiMulti WiFiMulti;
 void setup()
 {
     Serial.begin(115200);
-    delay(10);
-
     // We start by connecting to a WiFi network
     //WiFiMulti.addAP("Ares", "AR30AS08//1998");
     WiFiMulti.addAP("Livebox-59f0", "CA2D973D94C2CC543A627AF93F");
-    Serial.println();
-    Serial.println();
-    Serial.print("Waiting for WiFi... ");
+
+    Serial.print("\nWaiting for WiFi...");
 
     while(WiFiMulti.run() != WL_CONNECTED) {
         Serial.print(".");
         delay(500);
     }
 
-    Serial.println("");
-    Serial.println("WiFi connected");
+    Serial.println("\nWiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
 
@@ -62,7 +58,7 @@ void loop()
     client.print(msg);
     delay(5000);
     const char msg2[20] = "!DISCONNECT";
-    client.print(msg2);
+    client.println(msg2);
   int maxloops = 0;
 
   //wait for the server's reply to become available
@@ -74,7 +70,7 @@ void loop()
   if (client.available() > 0)
   {
     //read back one line from the server
-    String line = client.readStringUntil('\r');
+    int line = client.readInt();
     Serial.println(line);
   }
   else
