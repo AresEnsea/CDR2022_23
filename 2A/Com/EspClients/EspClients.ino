@@ -6,38 +6,35 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
+#define RX 16
+#define TX 17
+
 WiFiMulti WiFiMulti;
 
 void setup()
 {
+    SerialSTM.begin(115200, SERIAL_8N1, protocol, RX, TX);
+    SerialSTM.setTimeout(100);
     Serial.begin(115200);
-    delay(10);
-
     // We start by connecting to a WiFi network
     //WiFiMulti.addAP("Ares", "AR30AS08//1998");
     WiFiMulti.addAP("Livebox-59f0", "CA2D973D94C2CC543A627AF93F");
-    Serial.println();
-    Serial.println();
-    Serial.print("Waiting for WiFi... ");
+
+    Serial.print("\nWaiting for WiFi...");
 
     while(WiFiMulti.run() != WL_CONNECTED) {
         Serial.print(".");
         delay(500);
     }
 
-    Serial.println("");
-    Serial.println("WiFi connected");
+    Serial.println("\nWiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
-
-    delay(500);
 }
 
 
 void loop()
 {
-//    const uint16_t port = 80;
-//    const char * host = "192.168.1.1"; // ip or dns
     const uint16_t port = 25565;
     const char * host = "192.168.1.12"; // ip or dns
 
@@ -58,18 +55,16 @@ void loop()
     //uncomment this line to send an arbitrary string to the server
     //client.print("Send this data to the server");
     //uncomment this line to send a basic document request to the server
-    char msg[20] = "hello";
+    char msg[20] = "ahello";
     client.print(msg);
     delay(5000);
-    const char msg2[20] = "!DISCONNECT";
-    client.print(msg2);
   int maxloops = 0;
 
   //wait for the server's reply to become available
   while (!client.available() && maxloops < 1000)
   {
     maxloops++;
-    delay(1); //delay 1 msec
+    delay(1000); //delay 1 msec
   }
   if (client.available() > 0)
   {
