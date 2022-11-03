@@ -1,0 +1,6 @@
+../Core/Src/detectionMask.c:11:9:positionRelative	88	static
+../Core/Src/detectionMask.c:57:7:calculSegment	72	static
+../Core/Src/detectionMask.c:168:5:inTheTable	16	static
+../Core/Src/detectionMask.c:178:7:module	24	static
+../Core/Src/detectionMask.c:183:5:between	24	static
+../Core/Src/detectionMask.c:191:6:charListWriting	24	static
