@@ -19,8 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,7 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
- TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim5;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
@@ -61,7 +59,16 @@ const osThreadAttr_t myTask02_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for checkUserButton */
+osThreadId_t checkUserButtonHandle;
+const osThreadAttr_t checkUserButton_attributes = {
+  .name = "checkUserButton",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* USER CODE BEGIN PV */
+
+int buttonCount = 0;
 
 /* USER CODE END PV */
 
@@ -73,6 +80,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
 void StartTask02(void *argument);
+void button(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -146,6 +154,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   int true;
+  tests();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -173,6 +182,9 @@ int main(void)
 
   /* creation of myTask02 */
   myTask02Handle = osThreadNew(StartTask02, NULL, &myTask02_attributes);
+
+  /* creation of checkUserButton */
+  checkUserButtonHandle = osThreadNew(button, NULL, &checkUserButton_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -359,10 +371,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA5 */
   GPIO_InitStruct.Pin = GPIO_PIN_5;
@@ -412,12 +431,15 @@ void StartTask02(void *argument)
 {
   /* USER CODE BEGIN StartTask02 */
 	static float i = 2;
+
+
   /* Infinite loop */
   for(;;)
   {
-	//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+
 	  float * sortie;
-	  sortie = positionRelative((int)i,3,0);
+	  float ag = (float)buttonCount;
+	  sortie = positionRelative((int)i,3,&ag);
 	  //sortie[0] = 12.4;
 	  float OA[2]; float OB[2];
 	  OA[0] = sortie[0]; OA[1] = sortie[1];
@@ -427,13 +449,37 @@ void StartTask02(void *argument)
 
 	  uint8_t data[] = "###### \r\n";
 	  HAL_UART_Transmit(&huart2, data, sizeof(data), 500);
-	  send_deftask(i);
+	  send_deftask(buttonCount);
 
 	  i+=1;
     osDelay(500);
 
   }
   /* USER CODE END StartTask02 */
+}
+
+/* USER CODE BEGIN Header_button */
+/**
+* @brief Function implementing the checkUserButton thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_button */
+void button(void *argument)
+{
+  /* USER CODE BEGIN button */
+  /* Infinite loop */
+  for(;;)
+  {
+/*
+	  if(GPIO_PIN_SET == HAL_GPIO_ReadPin(GPIOC, 13)){
+		  buttonCount++;
+	  }*/
+	  buttonCount = 1- (int)HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+	  send_deftask(buttonCount);
+    osDelay(500);
+  }
+  /* USER CODE END button */
 }
 
 /**
