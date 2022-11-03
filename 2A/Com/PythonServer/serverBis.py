@@ -12,35 +12,31 @@ SERVER = socket.gethostbyname(HOST)
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
+content=b"apizza"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
 def handle_client(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
-
     connected = True
     while connected:
-        #msg_lentgh = conn.recv(HEADER).decode(FORMAT)
-        #msg_lentgh = int(msg_lentgh)
-        
-        content = conn.recv(1024)
-        print(content)
-        if len(content) ==0:
+        content = conn.recv(20)
+        if len(content) == 0:
            break
-        if str(content,FORMAT) == '\r\n':
-            continue
         else:
             print(str(content,FORMAT))
-            conn.sendto(content,("192.168.1.102",PORT))
+        if content == DISCONNECT_MESSAGE :
+            connected = False
     conn.close()
 
 def start():
-    server.listen()
+    server.listen(5)
     while True:
         conn, addr = server.accept()
         thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
+        conn.sendall(content)
         #print(f"[ACTIVATE CONNECTION] {threading.active_count() -1}")
 
 print("[STARTING] server is starting...")

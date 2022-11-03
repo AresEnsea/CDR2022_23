@@ -92,9 +92,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  char msg[32];
-  sprintf(msg, "a\r\n");
-
+  char msg[20];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,6 +100,10 @@ int main(void)
   while (1)
   {
 	  HAL_Delay(1000);
+	  sprintf(msg, "a\r\n");
+	  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1);
+	  HAL_Delay(1000);
+	  sprintf(msg, "aBezos\r\n");
 	  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1);
     /* USER CODE END WHILE */
 
