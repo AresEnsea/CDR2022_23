@@ -99,10 +99,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_Delay(1000);
-	  sprintf(msg, "a\r\n");
-	  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1);
-	  HAL_Delay(1000);
+	  HAL_Delay(10);
 	  sprintf(msg, "aBezos\r\n");
 	  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1);
     /* USER CODE END WHILE */

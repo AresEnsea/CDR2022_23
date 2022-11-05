@@ -53,11 +53,9 @@ void loop() {
     delay(1);  //delay 1 msec
   }
   if (client.available()) {            // Returns the number of bytes available for reading
-    int incomingByte = client.read();  // Read the next byte recieved from the server the client is connected to
-    Serial.print("From client: \"");
-    while (client.available())
-      Serial.print((char)client.read());
-    Serial.println("\"");
+    String line = client.readStringUntil('\r');
+    Serial.print("from client : ");
+    Serial.println(line);
   } else {
     Serial.println("client.available() timed out ");
   }

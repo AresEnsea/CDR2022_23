@@ -1,3 +1,4 @@
+#check serverTiers
 from ctypes.wintypes import CHAR
 from encodings import utf_8
 import socket
@@ -21,34 +22,19 @@ server.bind(ADDR)
 ADDRphob = ("192.168.1.22",35565)
 ADDRdeim = ("192.168.1.125",45565)
 
-def handle_espPhob(conn, addr):
+def handle_cient(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
     connected = True
     while connected:
         content = conn.recv(11)
-        if str(content,FORMAT)!="!DISCONNECT":
+        if content!=0:
             queue.put(content)
+        else:
+            connected = False
         if len(content) == 0:
            break
         else:
             print(str(content,FORMAT))
-        if content == DISCONNECT_MESSAGE :
-            connected = False
-    conn.close()
-
-def handle_espDeim(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
-    connected = True
-    while connected:
-        content = conn.recv(11)
-        if str(content,FORMAT)!="!DISCONNECT":
-            queue.put(content)
-        if len(content) == 0:
-           break
-        else:
-            print(str(content,FORMAT))
-        if content == DISCONNECT_MESSAGE :
-            connected = False
     conn.close()
 
 def start():
@@ -56,10 +42,10 @@ def start():
     while True:
         conn, addr = server.accept()
         if (addr[0] == ADDRphob[0]) :
-            thread = threading.Thread(target=handle_espPhob, args=(conn, ADDRphob))
+            thread = threading.Thread(target=handle_cient, args=(conn, ADDRphob))
             thread.start()
         elif (addr[0] == ADDRdeim[0]) :
-            thread = threading.Thread(target=handle_espDeim, args=(conn, ADDRdeim))
+            thread = threading.Thread(target=handle_cient, args=(conn, ADDRdeim))
             thread.start()
         clac=queue.get()
         if len(clac) != 0:
