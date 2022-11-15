@@ -77,6 +77,8 @@ const osThreadAttr_t serialdetection_attributes = {
 
 int buttonCount = 0;
 
+uint8_t mesure[2];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,8 +112,8 @@ void send_deftask(float x){
 	value[10] = '\n';
 	value[11]= '\0';
 
-	//int size = snprintf((char*)value, 20, "%d\r\n",(int)(x*1000));
-	//HAL_UART_Transmit(&huart2, value, 8+3, 500);
+	int size = snprintf((char*)value, 20, "%d\r\n",(int)(x*1000));
+	HAL_UART_Transmit(&huart2, value, 8+3, 500);
 }
 
 void print_point(float * OP){
@@ -448,9 +450,11 @@ void StartTask02(void *argument)
   for(;;)
   {
 
+	  int capteurNumber = mesure[0]>>4;
+	  int distanceMesuree = mesure[0]&0xF;
 	  float * sortie;
 	  float ag = (float)buttonCount;
-	  sortie = positionRelative((int)i,3,&ag);
+	  sortie = positionRelative(capteurNumber, distanceMesuree, &ag);
 	  //sortie[0] = 12.4;
 	  float OA[2]; float OB[2];
 	  OA[0] = sortie[0]; OA[1] = sortie[1];
@@ -460,7 +464,7 @@ void StartTask02(void *argument)
 
 	  uint8_t data[] = "###### \r\n";
 	  HAL_UART_Transmit(&huart2, data, sizeof(data), 500);
-	  send_deftask(buttonCount);
+	  //send_deftask(buttonCount);
 
 	  i+=1;
     osDelay(500);
@@ -520,6 +524,8 @@ void StartSerialDetection(void *argument)
 		HAL_UART_Transmit(&huart2, &"\n\r", 2, 100);
 
 		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+
+		mesure[0] = data[0]; mesure[1] = data[1];
 	}
     osDelay(100);
   }
