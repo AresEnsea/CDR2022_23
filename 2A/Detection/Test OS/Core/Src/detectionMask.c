@@ -1,11 +1,11 @@
 #include "detectionMask.h"
 #include <math.h>
 
-#define pi 3.14
+#define pi 3.1416
 #define pasAngulaire (1/16.)*2*pi
-#define pasDistance 25
+#define pasDistance 64/(10.*4.)
 #define rayonCapteurs 4.8
-#define deltaAngle (10/360.)*2*pi
+#define deltaAngle (13/360.)*2*pi
 
 
 float * positionRelative(int number, int pseudoDistance, float * angleDeg){

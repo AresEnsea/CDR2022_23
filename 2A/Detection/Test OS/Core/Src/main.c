@@ -66,9 +66,18 @@ const osThreadAttr_t checkUserButton_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for serialdetection */
+osThreadId_t serialdetectionHandle;
+const osThreadAttr_t serialdetection_attributes = {
+  .name = "serialdetection",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* USER CODE BEGIN PV */
 
 int buttonCount = 0;
+
+uint8_t mesure[2];
 
 /* USER CODE END PV */
 
@@ -81,6 +90,7 @@ static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
 void StartTask02(void *argument);
 void button(void *argument);
+void StartSerialDetection(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -102,7 +112,7 @@ void send_deftask(float x){
 	value[10] = '\n';
 	value[11]= '\0';
 
-	//int size = snprintf((char*)value, 20, "%d\r\n",(int)(x*1000));
+	int size = snprintf((char*)value, 20, "%d\r\n",(int)(x*1000));
 	HAL_UART_Transmit(&huart2, value, 8+3, 500);
 }
 
@@ -185,6 +195,9 @@ int main(void)
 
   /* creation of checkUserButton */
   checkUserButtonHandle = osThreadNew(button, NULL, &checkUserButton_attributes);
+
+  /* creation of serialdetection */
+  serialdetectionHandle = osThreadNew(StartSerialDetection, NULL, &serialdetection_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -414,7 +427,7 @@ void StartDefaultTask(void *argument)
   {
 	  n+= 10;
 	  //double * distance = positionRelative(n, dist, angle);
-	  if(n > 100) HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	  if(n > 100) //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 	  osDelay(500);
   }
   /* USER CODE END 5 */
@@ -437,9 +450,11 @@ void StartTask02(void *argument)
   for(;;)
   {
 
+	  int capteurNumber = mesure[0]>>4;
+	  int distanceMesuree = mesure[0]&0xF;
 	  float * sortie;
 	  float ag = (float)buttonCount;
-	  sortie = positionRelative((int)i,3,&ag);
+	  sortie = positionRelative(capteurNumber, distanceMesuree, &ag);
 	  //sortie[0] = 12.4;
 	  float OA[2]; float OB[2];
 	  OA[0] = sortie[0]; OA[1] = sortie[1];
@@ -449,7 +464,7 @@ void StartTask02(void *argument)
 
 	  uint8_t data[] = "###### \r\n";
 	  HAL_UART_Transmit(&huart2, data, sizeof(data), 500);
-	  send_deftask(buttonCount);
+	  //send_deftask(buttonCount);
 
 	  i+=1;
     osDelay(500);
@@ -480,6 +495,41 @@ void button(void *argument)
     osDelay(500);
   }
   /* USER CODE END button */
+}
+
+/* USER CODE BEGIN Header_StartSerialDetection */
+/**
+* @brief Function implementing the serialdetection thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartSerialDetection */
+void StartSerialDetection(void *argument)
+{
+  /* USER CODE BEGIN StartSerialDetection */
+	uint8_t data[2];
+	uint8_t chiffres[16] ={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+  /* Infinite loop */
+  for(;;)
+  {
+	data[0] = 0;
+	HAL_UART_Receive(&huart1, data, 1, 500);
+	if(data[0] != 0){
+		int i = data[0]>>4;
+		int j = data[0]&0xF;
+		HAL_UART_Transmit(&huart2, &" Capteur : ", 11, 100);
+		HAL_UART_Transmit(&huart2, &chiffres[i], 1, 100);
+		HAL_UART_Transmit(&huart2, &", mesure : ", 11, 100);
+		HAL_UART_Transmit(&huart2, &chiffres[j], 1, 100);
+		HAL_UART_Transmit(&huart2, &"\n\r", 2, 100);
+
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+
+		mesure[0] = data[0]; mesure[1] = data[1];
+	}
+    osDelay(100);
+  }
+  /* USER CODE END StartSerialDetection */
 }
 
 /**

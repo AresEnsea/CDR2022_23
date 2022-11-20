@@ -95,7 +95,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-  //char msg[20];
+  char msg[20];
   ST7735_Init();
   ST7735_FillScreen(ST7735_BLACK);
   ST7735_DrawString(1, 0, "CPU =", ST7735_GREEN);
@@ -105,9 +105,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //HAL_Delay(500);
-	  //sprintf(msg, "aBezos\r\n");
-	  //HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1);
+	for(int i=0;i<10;i++){
+		HAL_Delay(2000);
+		int size = snprintf(msg, 20, "a%d\r\n",i);
+		HAL_UART_Transmit(&huart1, (uint8_t*)msg, size, 1);
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
