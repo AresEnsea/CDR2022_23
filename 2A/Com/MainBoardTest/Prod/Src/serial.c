@@ -8,8 +8,10 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 		HAL_UART_Transmit(&huart4, ptr, len, HAL_MAX_DELAY);
 	else if (uartPort == 5)
 		HAL_UART_Transmit(&huart5, ptr, len, HAL_MAX_DELAY);
-	else if (uartPort == 1)
-		HAL_UART_Transmit(&huart1, ptr, len, HAL_MAX_DELAY);
+	else if (uartPort == 1){
+		//sprintf(msg, "d%d\r\n",*ptr);
+		//HAL_UART_Transmit(&huart1, (uint8_t*)msg, len, HAL_MAX_DELAY);
+	}
 	else if (uartPort == 6) {
 		uint8_t action = *ptr;
 		if (robot.team == PURPLE) {

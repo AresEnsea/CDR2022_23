@@ -44,7 +44,7 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+char msg[32];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,7 +92,6 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  char msg[20];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,7 +100,7 @@ int main(void)
   {
 	 for(int i=0;i<10;i++){
 	  	  HAL_Delay(2000);
-	  	  int size = snprintf(msg, 20, "b%d\r\n",i);
+	  	  int size = snprintf(msg, 20, "a%d\r\n",i);
 	  	  HAL_UART_Transmit(&huart1, (uint8_t*)msg, size, 1);
 	 }
     /* USER CODE END WHILE */

@@ -58,7 +58,7 @@ extern Robot robot;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+char msg[32];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -239,8 +239,7 @@ int main(void)
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
               && !robot.waitingForOnMoveAction
 			  && !robot.waitingForOnSiteAction) {
-		  uint8_t action = strategy->onMoveActions[curveIndex][onMoveActionIndex];
-		  serial_send(&action, 1, 6);
+		  //uint8_t action = strategy->onMoveActions[curveIndex][onMoveActionIndex];
 		  robot.waitingForOnMoveAction = true;
 	  }
 
@@ -290,7 +289,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   }
-
+  int size = snprintf(msg, 32, "hello\r\n");
+  HAL_UART_Transmit(&huart1, (uint8_t*)msg, size, 1);
   propulsion_disableMotors();
   printf("Finished.\r\n");
 
