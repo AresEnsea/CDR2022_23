@@ -58,7 +58,7 @@ extern Robot robot;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-char msg[32];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -127,6 +127,7 @@ int main(void)
   HAL_TIM_Base_Start(&htim1);
   HAL_TIM_Base_Start(&htim3);
   HAL_TIM_Base_Start_IT(&htim5);
+  HAL_TIM_Base_Start_IT(&htim4);
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing propulsion system...");
@@ -239,7 +240,6 @@ int main(void)
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
               && !robot.waitingForOnMoveAction
 			  && !robot.waitingForOnSiteAction) {
-		  //uint8_t action = strategy->onMoveActions[curveIndex][onMoveActionIndex];
 		  robot.waitingForOnMoveAction = true;
 	  }
 
@@ -289,8 +289,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   }
-  int size = snprintf(msg, 32, "hello\r\n");
-  HAL_UART_Transmit(&huart1, (uint8_t*)msg, size, 1);
   propulsion_disableMotors();
   printf("Finished.\r\n");
 
