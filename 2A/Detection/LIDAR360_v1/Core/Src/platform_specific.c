@@ -14,39 +14,7 @@ int UartComm_RXIndex;			/* Index of decrypted RX buffer */
 int UART_Active;				/* Flag to see if UART is active */
 int UART_Ready;					/* Flag to see if a new command is available */
 
-void I2C_Init(void)
-{
-	    GPIO_InitTypeDef GPIO_InitStruct;
 
-	    _I2cFailRecover();
-
-	    /* Peripheral clock enable */
-	    __GPIOB_CLK_ENABLE();
-	    __I2C1_CLK_ENABLE();
-
-	    /**I2C1 GPIO Configuration\n
-	     PB8     ------> I2C1_SCL\n
-	     PB9     ------> I2C1_SDA
-	     */
-	    GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
-	    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-	    GPIO_InitStruct.Pull = GPIO_NOPULL;
-	    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-	    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
-	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-	    I2C_HANDLE.Instance = I2C1;
-	    I2C_HANDLE.Init.ClockSpeed = 400000;
-	    I2C_HANDLE.Init.DutyCycle = I2C_DUTYCYCLE_2;
-	    I2C_HANDLE.Init.OwnAddress1 = 0;
-	    I2C_HANDLE.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	    I2C_HANDLE.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
-	    I2C_HANDLE.Init.OwnAddress2 = 0;
-	    I2C_HANDLE.Init.GeneralCallMode = I2C_GENERALCALL_DISABLED;
-	    I2C_HANDLE.Init.NoStretchMode = I2C_NOSTRETCH_DISABLED;
-	    HAL_I2C_Init(&I2C_HANDLE);
-
-}
 
 void _I2cFailRecover(void){
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -59,23 +27,23 @@ void _I2cFailRecover(void){
 
     // Enable I/O
     __GPIOB_CLK_ENABLE();
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9 ;
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
+    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7 ;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     //TODO we could do this faster by not using HAL delay 1ms for clk timing
     do{
         for( i=0; i<10; i++){
-            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
             HAL_Delay(1);
-            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
             HAL_Delay(1);
         }
-    }while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == 0 && nRetry++<7);
+    }while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0 && nRetry++<7);
 
-    if( HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == 0 ){
+    if( HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0 ){
         __GPIOA_CLK_ENABLE();
         //We are still in bad i2c state warm user by blinking led but stay here
         GPIO_InitStruct.Pin = GPIO_PIN_5 ;

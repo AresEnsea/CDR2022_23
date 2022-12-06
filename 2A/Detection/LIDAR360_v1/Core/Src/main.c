@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "platform.h"
+#include "platform_specific.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_nucleo.h"
 #include "platform_specific.h"
@@ -41,7 +41,8 @@
 #define Pi 										3.1415
 #define VHV_TIMER 								200
 #define ROI_CONFIG__USER_ROI_CENTRE_SPAD		0x007F
-#define NumOfTOFSensors							9
+//#define NumOfTOFSensors							9
+#define NumOfTOFSensors							16
 #define TotalWidthOfSPADS						16
 #define WidthOfSPADsPerZone						4
 #define NumOfSPADsShiftPerZone					1
@@ -80,7 +81,8 @@ UART_HandleTypeDef huart2;
  float    LidarAngle[117];
  uint16_t LidarDistance[117];
  uint32_t TimeStamp[117];
- uint16_t Devs[9] = {0x62, 0x64, 0x66, 0x68, 0x6A, 0x6C, 0x6E, 0x70, 0x72};
+ //uint16_t Devs[9] = {0x62, 0x64, 0x66, 0x68, 0x6A, 0x6C, 0x6E, 0x70, 0x72};
+ uint16_t Devs[16] = {0x62, 0x64, 0x66, 0x68, 0x6A, 0x6C, 0x6E, 0x70, 0x72, 0x74, 0x76, 0x78, 0x7A, 0x7C, 0x7E, 0x80};
  uint16_t Distance;
  uint16_t SignalRate;
  uint16_t SpadNb;
@@ -89,7 +91,8 @@ UART_HandleTypeDef huart2;
  uint16_t AmbientPerSpad;
  uint8_t RangeStatus;
  uint16_t RangeCounter = 0;
- //#define Calibrate
+ #define Calibrate
+ /*
  #ifdef Calibrate
  int16_t  OffsetCal[NumOfTOFSensors*NumOfZonesPerSensor] = {
  		0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -113,8 +116,38 @@ UART_HandleTypeDef huart2;
   -50, -41, -37, -39, -23, -11, -21, -18, -20, -18, -23, -34, -48,
   -50, -41, -29, -28, -20, -16, -10, -16, -22, -25, -22, -45, -41,
   -43, -40, -25, -27, -16, -21, -14,  -9, -28, -39, -40, -46, -55
- };
-
+ };*/
+#ifdef Calibrate
+int16_t  OffsetCal[NumOfTOFSensors*NumOfZonesPerSensor] = {
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0
+		};
+#else
+int16_t  OffsetCal[NumOfTOFSensors * NumOfZonesPerSensor] = {
+ -40, -44, -29, -24, -21, -18, -14, -15, -14, -13, -17, -22, -32,
+ -28, -17, -21, -24, -11, -12, -12,  -9, -11, -26, -25, -36, -38,
+ -36, -46, -26, -24, -20, -16, -17, -14, -11, -18, -17, -26, -37,
+ -43, -31, -21, -25, -20,  -8, -12, -12, -13, -20, -27, -26, -38,
+ -51, -41, -36, -24, -22, -21, -19, -16, -17, -22, -32, -41, -52,
+ -44, -38, -26, -26, -29, -17,  -8, -11, -20, -20, -28, -34, -40,
+ -50, -41, -37, -39, -23, -11, -21, -18, -20, -18, -23, -34, -48,
+ -50, -41, -29, -28, -20, -16, -10, -16, -22, -25, -22, -45, -41,
+ -43, -40, -25, -27, -16, -21, -14,  -9, -28, -39, -40, -46, -55
+};
 
  #endif
  uint16_t   zone_center[]={247,239,231,223,215,207,199,191,183,175,167,159,151, 247, 239, 231, 223, 215};
@@ -271,9 +304,13 @@ void TurnOnSensor(uint8_t SensorNum)
 			// GPIO PB2
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET);
 			break;
-		case 14:
+		/*case 14:
 			// GPIO PB3
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
+			break;*/
+		case 14:
+			// GPIO PB8
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
 			break;
 		case 15:
 			// GPIO PB4
@@ -283,13 +320,21 @@ void TurnOnSensor(uint8_t SensorNum)
 			// GPIO PB5
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
 			break;
-		case 17:
+		/*case 17:
 			// GPIO PB6
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 			break;
 		case 18:
 			// GPIO PB7
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
+			break;*/
+		case 17:
+			// GPIO PB9
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+			break;
+		case 18:
+			// GPIO PB10
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
 			break;
 	}
 }
@@ -311,11 +356,14 @@ void ResetAllSensors(void)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); I2C
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET); I2C
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
 }
 
 /* USER CODE END 0 */
@@ -366,6 +414,84 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	error = 0;
+	TimeStart = HAL_GetTick();
+	Timeout = 0;
+	for(Zone = 0; Zone < NumOfZonesPerSensor; Zone++)
+	{
+		for (Sensor=0; Sensor < NumOfTOFSensors ; Sensor++)
+		{
+			WriteRegister8(Devs[Sensor], ROI_CONFIG__USER_ROI_CENTRE_SPAD, zone_center[Zone+1] - 0);
+		}
+		i=i+1;
+		for (Sensor=0; Sensor < NumOfTOFSensors ; Sensor++)
+		{
+			error = VL53L1X_CheckForDataReady(Devs[Sensor], &Sensorcheck);
+			while ((Sensorcheck == 0) && (Timeout == 0))
+			{
+				HAL_Delay(1);
+				CurrentTime = HAL_GetTick();
+				if (CurrentTime > (TimeStart + (NumOfZonesPerSensor + 1) * TimingBudget * 2))
+				{
+					Timeout = 1;
+					Sensor = NumOfTOFSensors;
+					Zone = NumOfZonesPerSensor;
+				}
+				else
+				{
+					error += VL53L1X_CheckForDataReady(Devs[Sensor], &Sensorcheck);
+				}
+			}
+			if (Timeout == 0)
+			{
+				WriteRegister8(Devs[Sensor], ROI_CONFIG__USER_ROI_CENTRE_SPAD, zone_center[Zone+1] - 0);
+				TimeStamp[Sensor*13+ Zone] = HAL_GetTick();
+				VL53L1X_ClearInterrupt(Devs[Sensor]);
+
+				error += VL53L1X_GetDistance(Devs[Sensor], &Distance);
+				error += VL53L1X_GetRangeStatus(Devs[Sensor], &RangeStatus);
+				if ((RangeStatus== 0) || (RangeStatus == 7))
+				{
+					if (Distance > 60000)
+					{
+						Distance = 0;
+						PlotPolarData(Sensor, Zone, 13, 0);
+					}
+					else
+					{
+						Distance = Distance + OffsetCal[Sensor*13 + Zone];
+						if (Distance > 60000)
+						{
+							Distance = 0;
+						}
+						PlotPolarData(Sensor, Zone, 13, Distance);
+					}
+				}
+				else
+				{
+					PlotPolarData(Sensor, Zone, 13, 4000);
+				}
+			}
+		}
+	}
+	if (Timeout == 1)
+	{
+		ResetAndInitializeAllSensors();
+		Timeout = 0;
+		UART_Print("Reset Performed\n");
+	}
+	else
+	{
+		HAL_Delay(TimingBudget);
+		TimeEnd = HAL_GetTick();;
+		TotalTime = (TimeEnd - TimeStart);
+		snprintf(BigBuff, sizeof(BigBuff), "Time: %ld\n", TotalTime);
+		UART_Print(BigBuff);
+	}
+	if (error !=0)
+	{
+		UART_Print("Some Errors seen\n");
+	}
   }
   /* USER CODE END 3 */
 }
@@ -387,11 +513,12 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 16;
   RCC_OscInitStruct.PLL.PLLN = 336;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 4;
@@ -499,7 +626,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9
+                          |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4
+                          |GPIO_PIN_5|GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -507,12 +643,38 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PC2 PC3 PC4 PC5
+                           PC6 PC7 PC8 PC9
+                           PC10 PC11 PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9
+                          |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB0 PB1 PB2 PB4
+                           PB5 PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4
+                          |GPIO_PIN_5|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
