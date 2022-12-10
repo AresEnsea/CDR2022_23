@@ -1,0 +1,36 @@
+pour dhcpcd
+	sudo nano /etc/dhcpcd.conf
+
+	interface wlan0
+        static ip_address=10.20.1.1/24
+        nohook wpa_supplicant
+
+pour routed
+	sudo nano /etc/sysctl.d/routed-ap.conf
+
+	et.ipv4.ip_forward=1
+
+pour dns masq
+	sudo nano /etc/dnsmasq.conf
+	
+	RPiHotspot config - No Intenet
+	interface=wlan0
+	domain-needed
+	bogus-priv
+	dhcp-range=10.20.1.2,10.20.1.100,255.255.255.0,365d
+pour hostapd
+	sudo nano /etc/hostapd/hostapd.conf
+
+	country_code=FR
+	interface=wlan0
+	ssid=porchetta
+	hw_mode=b
+	channel=3
+	macaddr_acl=0
+	auth_algs=1
+	ignore_broadcast_ssid=0
+	wpa=2
+	wpa_passphrase=guillaume
+	wpa_key_mgmt=WPA-PSK
+	wpa_pairwise=TKIP
+	rsn_pairwise=CCMP
