@@ -1,71 +1,75 @@
+#check serverTiers
 from ctypes.wintypes import CHAR
 from encodings import utf_8
 import socket
 import threading
-from queue import Queue
+from queue import LifoQueue
+import logging
 
+#Creating and Configuring Logger
+
+Log_Format = "%(levelname)s %(asctime)s - %(message)s"
+
+logging.basicConfig(filename = "logfile.log",
+                    filemode = "w",
+                    format = Log_Format, 
+                    level = logging.INFO)
+
+logger = logging.getLogger()
 
 PORT = 25565
-#HOST = "192.168.1.100"
-HOST = "192.168.1.12"
+HOST = "10.20.1.1"
+#HOST = "192.168.1.12"
 SERVER = socket.gethostbyname(HOST)
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 
-queue = Queue()
+queue = LifoQueue()
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
-ADDRphob = ("192.168.1.22",35565)
-ADDRdeim = ("192.168.1.125",45565)
+#ADDRphob = ("192.168.1.22",35565)
+#ADDRdeim = ("192.168.1.125",45565)
 
-def handle_espPhob(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
+ADDRphob = ("10.20.1.44",35565)
+ADDRdeim = ("10.20.1.13",45565)
+
+def handle_client(conn, addr):
     connected = True
     while connected:
-        content = conn.recv(11)
-        if str(content,FORMAT)!="!DISCONNECT":
+        content = conn.recv(32)
+        msg=str(content,FORMAT)
+        if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
             queue.put(content)
-        if len(content) == 0:
-           break
-        else:
-            print(str(content,FORMAT))
-        if content == DISCONNECT_MESSAGE :
-            connected = False
-    conn.close()
+            print(f"recieved from {addr} : {msg}")
+        if not queue.empty():
+            clac=queue.get()
+            if (clac.decode(FORMAT)[0]=='a') and (addr[0] == ADDRdeim[0]):
+                conn.send(clac)
+                msg=str(clac,FORMAT)
+                print(f"                                                                            emited to {addr} : {msg}")
+            elif (clac.decode(FORMAT)[0]=='b') and (addr[0] == ADDRphob[0]):
+                conn.send(clac)
+                msg=str(clac,FORMAT)
+                print(f"                                                                            emited to {addr} : {msg}")
+            elif (clac.decode(FORMAT)[0]=='d') and (addr[0] == ADDRphob[0]):
+                #conn.send(clac)
+                msg=str(clac,FORMAT)
+                logger.info(msg)
+                print(f"                                                                            debug to {addr} : {msg}")
+            else:
+                queue.put(clac)
+        connected = False
 
-def handle_espDeim(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
-    connected = True
-    while connected:
-        content = conn.recv(11)
-        if str(content,FORMAT)!="!DISCONNECT":
-            queue.put(content)
-        if len(content) == 0:
-           break
-        else:
-            print(str(content,FORMAT))
-        if content == DISCONNECT_MESSAGE :
-            connected = False
-    conn.close()
 
 def start():
     server.listen(5)
     while True:
         conn, addr = server.accept()
-        if (addr[0] == ADDRphob[0]) :
-            thread = threading.Thread(target=handle_espPhob, args=(conn, ADDRphob))
-            thread.start()
-        elif (addr[0] == ADDRdeim[0]) :
-            thread = threading.Thread(target=handle_espDeim, args=(conn, ADDRdeim))
-            thread.start()
-        clac=queue.get()
-        if len(clac) != 0:
-            if clac.decode(FORMAT)[0]=='a':
-                conn.sendto(clac,ADDRdeim)
-        queue.empty()
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread.start()
 
 print("[STARTING] server is starting...")
 start()
