@@ -44,6 +44,8 @@ def handle_client(conn, addr):
         if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
             queue.put(content)
             print(f"recieved from {addr} : {msg}")
+        else:
+            connected = False
         if not queue.empty():
             clac=queue.get()
             if (clac.decode(FORMAT)[0]=='a') and (addr[0] == ADDRdeim[0]):
@@ -61,8 +63,8 @@ def handle_client(conn, addr):
                 print(f"                                                                            debug to {addr} : {msg}")
             else:
                 queue.put(clac)
-        connected = False
-
+        else:
+            connected = False
 
 def start():
     server.listen(5)
