@@ -40,10 +40,13 @@ def handle_client(conn, addr):
     connected = True
     while connected:
         content = conn.recv(32)
-        msg=str(content,FORMAT)
-        if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
-            queue.put(content)
-            print(f"recieved from {addr} : {msg}")
+        if str(content,FORMAT)!="":
+            msg=str(content,FORMAT)
+            if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
+                queue.put(content)
+                print(f"recieved from {addr} : {msg}")
+        else:
+            connected = False
         if not queue.empty():
             clac=queue.get()
             if (clac.decode(FORMAT)[0]=='a') and (addr[0] == ADDRdeim[0]):
@@ -54,14 +57,15 @@ def handle_client(conn, addr):
                 conn.send(clac)
                 msg=str(clac,FORMAT)
                 print(f"                                                                            emited to {addr} : {msg}")
-            elif (clac.decode(FORMAT)[0]=='d') and (addr[0] == ADDRphob[0]):
+            elif (clac.decode(FORMAT)[0]=='d'):
                 #conn.send(clac)
                 msg=str(clac,FORMAT)
                 logger.info(msg)
                 print(f"                                                                            debug to {addr} : {msg}")
             else:
                 queue.put(clac)
-        connected = False
+        else:
+            connected = False
 
 
 def start():

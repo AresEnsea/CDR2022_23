@@ -41,9 +41,10 @@ def handle_rcv(conn, addr):
     while connected:
         content = conn.recv(32)
         if str(content,FORMAT)!="":
-            queue.put(content)
             msg=str(content,FORMAT)
-            print(f"recieved from {addr} : {msg}")
+            if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
+                queue.put(content)
+                print(f"recieved from {addr} : {msg}")
         else:
             connected = False
 
