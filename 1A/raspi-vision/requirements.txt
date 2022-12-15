@@ -1,0 +1,5 @@
+numpy
+moderngl
+pyrr
+opencv-contrib-python
+picamera
