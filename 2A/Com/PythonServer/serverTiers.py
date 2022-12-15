@@ -67,7 +67,6 @@ def handle_client(conn, addr):
         else:
             connected = False
 
-
 def start():
     server.listen(5)
     while True:
