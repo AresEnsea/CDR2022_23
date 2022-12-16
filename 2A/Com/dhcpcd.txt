@@ -34,3 +34,7 @@ pour hostapd
 	wpa_key_mgmt=WPA-PSK
 	wpa_pairwise=TKIP
 	rsn_pairwise=CCMP
+
+char msg[5];
+  int size = snprintf(msg, 5, "ag\r\n");
+  HAL_UART_Transmit(&huart1, (uint8_t*)msg, size, HAL_MAX_DELAY);
