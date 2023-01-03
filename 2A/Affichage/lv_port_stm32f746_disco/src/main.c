@@ -1,3 +1,10 @@
+ /*
+     * Pour score : lv_obj_clear_flag
+     * permet de rendre l'objet non défilable
+     *
+     * Pour score : lv_obj_set_scrollbar_mode
+     * permet de retirer les scrollbar
+     */
 
 #include "stm32f7xx.h"
 #include "lvgl/lvgl.h"
@@ -12,6 +19,7 @@ static lv_style_t style;
 static const lv_font_t * font_large;
 
 static void SystemClock_Config(void);
+
 
 int main(void)
 {
@@ -44,24 +52,39 @@ int main(void)
 
     lv_obj_t * panel1 = lv_obj_create(lv_scr_act());
     lv_obj_set_height(panel1, LV_SIZE_CONTENT);
-    lv_obj_align(panel1, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_size(panel1, 250, 150);
+    lv_obj_align(panel1, LV_ALIGN_DEFAULT, 0, 0);
+    lv_obj_set_size(panel1, 480, 272);
 
-    LV_IMG_DECLARE(n0);
+    LV_IMG_DECLARE(n2);
+    LV_IMG_DECLARE(n7);
+    LV_IMG_DECLARE(n9);
+
     lv_obj_t * chiffre0 = lv_img_create(panel1);
-    lv_img_set_src(chiffre0, &n0);
+    lv_img_set_src(chiffre0, &n7);
 
-    lv_obj_t * text = lv_label_create(panel1);
-    lv_obj_add_style(text, &style, 0);
-    lv_label_set_text(text, "Score : ");
+    /*lv_obj_t * chiffre0 = lv_img_create(panel1);
+    lv_img_set_src(chiffre0, &n7);
+
+    lv_obj_t * chiffre1 = lv_img_create(panel1);
+    lv_img_set_src(chiffre1, &n7);
+
+    lv_obj_t * chiffre2 = lv_img_create(panel1);
+    lv_img_set_src(chiffre2, &n2);
 
 
-    static lv_coord_t grid_col_dsc[] = {100, 100, LV_GRID_TEMPLATE_LAST};
-    static lv_coord_t grid_row_dsc[] = {100,LV_GRID_TEMPLATE_LAST};
+
+
+    static lv_coord_t grid_col_dsc[] = {150, 150, 150, LV_GRID_TEMPLATE_LAST};
+    static lv_coord_t grid_row_dsc[] = {260, LV_GRID_TEMPLATE_LAST};
     lv_obj_set_grid_dsc_array(panel1, grid_col_dsc, grid_row_dsc);
 
-    lv_obj_set_grid_cell(chiffre0, LV_GRID_ALIGN_CENTER, 1, 1, LV_GRID_ALIGN_CENTER, 1, 1);
-    lv_obj_set_grid_cell(text, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_obj_set_grid_cell(chiffre0, LV_GRID_ALIGN_START, 0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_obj_set_grid_cell(chiffre1, LV_GRID_ALIGN_START, 1, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_obj_set_grid_cell(chiffre2, LV_GRID_ALIGN_START, 2, 1, LV_GRID_ALIGN_CENTER, 0, 1);*/
+
+    /*lv_obj_t * text = lv_label_create(panel1);
+    lv_obj_add_style(text, &style, 0);
+    lv_label_set_text(text, "Score : ");*/
 
     /*LV_IMG_DECLARE(n0);
     lv_obj_t *img1 = lv_img_create(lv_scr_act());
