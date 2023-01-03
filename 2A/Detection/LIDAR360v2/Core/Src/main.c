@@ -50,6 +50,8 @@
 #define NumOfZonesPerSensor						(((TotalWidthOfSPADS - WidthOfSPADsPerZone) / NumOfSPADsShiftPerZone) + 1)
 #define StartingZoneAngle						(WidthOfSPADsPerZone / 2 * SingleSPADFOV)
 #define ZoneFOVChangePerStep					(SingleSPADFOV * NumOfSPADsShiftPerZone)
+
+#define ITM_Port32(n) (*((volatile unsigned long *)(0xE0000000+4*n)))
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -77,9 +79,9 @@ UART_HandleTypeDef huart2;
  /* ----- VL53L1X variables ----- */
 
  uint16_t Dev_init = 0x52;		/* I2C address of device 1 */
- float    LidarAngle[117];
- uint16_t LidarDistance[117];
- uint32_t TimeStamp[117];
+ float    LidarAngle[NumOfZonesPerSensor*NumOfTOFSensors];
+ uint16_t LidarDistance[NumOfZonesPerSensor*NumOfTOFSensors];
+ uint32_t TimeStamp[NumOfZonesPerSensor*NumOfTOFSensors];
  //uint16_t Devs[9] = {0x62, 0x64, 0x66, 0x68, 0x6A, 0x6C, 0x6E, 0x70, 0x72};
  uint16_t Devs[16] = {0x62, 0x64, 0x66, 0x68, 0x6A, 0x6C, 0x6E, 0x70, 0x72, 0x74, 0x76, 0x78, 0x7A, 0x7C, 0x7E, 0x80};
  uint16_t Distance;
@@ -151,11 +153,16 @@ int16_t  OffsetCal[NumOfTOFSensors * NumOfZonesPerSensor] = {
  #endif
  uint16_t   zone_center[]={247,239,231,223,215,207,199,191,183,175,167,159,151, 247, 239, 231, 223, 215};
  // Timing Budget Options:  15, 20, 33, 50, 100, 200, 500
- uint16_t TimingBudget = 15;
+ uint16_t TimingBudget = 200;
 
  uint16_t current_zone=0;
  char BigBuff[4000];
  char VL53L1X_BUFFER[60];	/* Create a buffer to get data */
+ char SmallBuff[17];
+ char FloatBuff[40];
+
+ uint16_t ActiveCaptors = 0xFFFF;
+ uint16_t FailedBoot = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -169,6 +176,7 @@ void TurnOnSensor(uint8_t SensorNum);
 void ResetAllSensors(void);
 void ResetAndInitializeAllSensors(void);
 void SystemClock_Config(void);
+void SendAllMesurements(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -176,21 +184,25 @@ void SystemClock_Config(void);
 uint8_t dataRead;
 void ResetAndInitializeAllSensors(void)
 {
-	uint8_t i, Sensor, error = 0;
+	uint8_t i,counter, Sensor, error = 0;
 	uint8_t Bootstate = 0;
 	int16_t Offset;
 	ResetAllSensors();
 	HAL_Delay(10);
 	for (i = 0; i < NumOfTOFSensors; i++)
 	{
+		FailedBoot = i;
 		TurnOnSensor(i);
-		HAL_Delay(5);
+		HAL_Delay(50);
 		error += VL53L1X_BootState(Dev_init, &Bootstate);
-		while (Bootstate != 0x03)
+		while (Bootstate != 0x03 && counter < 10)
 		{
-			HAL_Delay(5);
+			ITM_Port32(31) = Bootstate;
+			HAL_Delay(50);
 			error += VL53L1X_BootState(Dev_init, &Bootstate);
+			counter++;
 		}
+		counter = 0;
 		VL53L1X_SensorInit(Dev_init);	/* Initialize sensor  */
 		VL53L1X_SetI2CAddress(Dev_init, Devs[i]);	/* Change i2c address Left is now 0x62 and Dev1 */
 		dataRead = ReadRegister8(Devs[i], 0x10f);
@@ -210,12 +222,14 @@ void ResetAndInitializeAllSensors(void)
 	}
 	for (Sensor = 0; Sensor < NumOfTOFSensors; Sensor++)
 	{
-		VL53L1X_StartRanging(Devs[Sensor]);
+		if((ActiveCaptors>>Sensor)&1){
+			VL53L1X_StartRanging(Devs[Sensor]);
+		}
 		HAL_Delay(1);
 	}
-	if (error !=0)
+	if (ActiveCaptors != 0xFFFF)
 	{
-		UART_Print("Some Errors seen\n");
+		UART_Print("Not all captors were initialized\r\n");
 	}
 
 }
@@ -307,18 +321,22 @@ void TurnOnSensor(uint8_t SensorNum)
 			// GPIO PB3
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
 			break;*/
-		case 14:
+		/*case 14:
 			// GPIO PB8
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+			break;*/
+		case 14:
+			// GPIO PB10
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
 			break;
 		case 15:
 			// GPIO PB4
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
 			break;
-		case 16:
+		/*case 16:
 			// GPIO PB5
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
-			break;
+			break;*/
 		/*case 17:
 			// GPIO PB6
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
@@ -327,14 +345,11 @@ void TurnOnSensor(uint8_t SensorNum)
 			// GPIO PB7
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 			break;*/
-		case 17:
+		/*case 17:
 			// GPIO PB9
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
-			break;
-		case 18:
-			// GPIO PB10
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-			break;
+			break;*/
+
 	}
 }
 
@@ -357,12 +372,23 @@ void ResetAllSensors(void)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET);
 	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
 	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET); I2C
 	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET); I2C
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
+}
+
+void SendAllMesurements(void){
+	for(uint8_t x=0; x <NumOfZonesPerSensor*NumOfTOFSensors; x++){
+		snprintf(FloatBuff, sizeof(FloatBuff), "%f", LidarAngle[x]);
+		snprintf(SmallBuff, sizeof(SmallBuff), " ; %d", LidarDistance[x]);
+		snprintf(BigBuff, sizeof(BigBuff), " ; %ld\n\r", TimeStamp[x]);
+		UART_Print(FloatBuff);
+		UART_Print(SmallBuff);
+		UART_Print(BigBuff);
+	}
 }
 
 /* USER CODE END 0 */
@@ -403,7 +429,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-
+  ResetAndInitializeAllSensors();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -420,27 +446,31 @@ int main(void)
 	{
 		for (Sensor=0; Sensor < NumOfTOFSensors ; Sensor++)
 		{
-			WriteRegister8(Devs[Sensor], ROI_CONFIG__USER_ROI_CENTRE_SPAD, zone_center[Zone+1] - 0);
+			if((ActiveCaptors>>Sensor)&1)
+				WriteRegister8(Devs[Sensor], ROI_CONFIG__USER_ROI_CENTRE_SPAD, zone_center[Zone+1] - 0);
 		}
 		i=i+1;
 		for (Sensor=0; Sensor < NumOfTOFSensors ; Sensor++)
 		{
-			error = VL53L1X_CheckForDataReady(Devs[Sensor], &Sensorcheck);
-			while ((Sensorcheck == 0) && (Timeout == 0))
-			{
-				HAL_Delay(1);
-				CurrentTime = HAL_GetTick();
-				if (CurrentTime > (TimeStart + (NumOfZonesPerSensor + 1) * TimingBudget * 2))
+			if((ActiveCaptors>>Sensor)&1){
+				error = VL53L1X_CheckForDataReady(Devs[Sensor], &Sensorcheck);
+				while ((Sensorcheck == 0) && (Timeout == 0))
 				{
-					Timeout = 1;
-					Sensor = NumOfTOFSensors;
-					Zone = NumOfZonesPerSensor;
+					HAL_Delay(1);
+					CurrentTime = HAL_GetTick();
+					if (CurrentTime > (TimeStart + (NumOfZonesPerSensor + 1) * TimingBudget * 2))
+					{
+						Timeout = 1;
+						Sensor = NumOfTOFSensors;
+						Zone = NumOfZonesPerSensor;
+					}
+					else
+					{
+						error += VL53L1X_CheckForDataReady(Devs[Sensor], &Sensorcheck);
+					}
 				}
-				else
-				{
-					error += VL53L1X_CheckForDataReady(Devs[Sensor], &Sensorcheck);
-				}
-			}
+
+
 			if (Timeout == 0)
 			{
 				WriteRegister8(Devs[Sensor], ROI_CONFIG__USER_ROI_CENTRE_SPAD, zone_center[Zone+1] - 0);
@@ -471,6 +501,7 @@ int main(void)
 					PlotPolarData(Sensor, Zone, 13, 4000);
 				}
 			}
+			}
 		}
 	}
 	if (Timeout == 1)
@@ -486,6 +517,7 @@ int main(void)
 		TotalTime = (TimeEnd - TimeStart);
 		snprintf(BigBuff, sizeof(BigBuff), "Time: %ld\n", TotalTime);
 		UART_Print(BigBuff);
+		SendAllMesurements();
 	}
 	if (error !=0)
 	{
@@ -571,7 +603,8 @@ static void MX_I2C1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C1_Init 2 */
-
+  HAL_I2C_MspInit(&hi2c1);
+	I2C_Init();
   /* USER CODE END I2C1_Init 2 */
 
 }
@@ -604,7 +637,7 @@ static void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
+  UART_Init();
   /* USER CODE END USART2_Init 2 */
 
 }
@@ -634,7 +667,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10
-                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_8|GPIO_PIN_9, GPIO_PIN_RESET);
+                          |GPIO_PIN_4, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -661,9 +694,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB0 PB1 PB2 PB10
-                           PB4 PB5 PB8 PB9 */
+                           PB4 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10
-                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_8|GPIO_PIN_9;
+                          |GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

@@ -11,6 +11,10 @@ I2C_HandleTypeDef I2C_HANDLE;	/* Handle for VL53L1X I2C COM */
 UART_HandleTypeDef SERIAL_UART;	/* Handle for Serial UART COM */
 DMA_HandleTypeDef DMA_HANDLE;	/* Handle for Serial DMA */
 
+extern hi2c1;
+extern ActiveCaptors;
+extern FailedBoot;
+
 char Uart_RXBuffer[80];		/* Buffer for continuous RX */
 char UartComm_RXBuffer[80];	/* Buffer for decrypted command from RX	*/
 size_t Uart_RxIndex;			/* Index of continuous RX buffer */
@@ -19,8 +23,48 @@ int UART_Active;				/* Flag to see if UART is active */
 int UART_Ready;					/* Flag to see if a new command is available */
 
 
-void _I2cFailRecover(void){
-    GPIO_InitTypeDef GPIO_InitStruct;
+void I2C_Init(void)
+{
+
+	    //_I2cFailRecover();
+
+	    /* Peripheral clock enable */
+	    //__I2C1_CLK_ENABLE();
+	    /*
+	    hi2c1.Instance = I2C1;
+	      hi2c1.Init.ClockSpeed = 400000;
+	      hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+	      hi2c1.Init.OwnAddress1 = 0;
+	      hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	      hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+	      hi2c1.Init.OwnAddress2 = 0;
+	      hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	      hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+*/
+	    I2C_HANDLE.Instance = I2C1;
+	    I2C_HANDLE.Init.ClockSpeed = 400000;
+	    I2C_HANDLE.Init.DutyCycle = I2C_DUTYCYCLE_2;
+	    I2C_HANDLE.Init.OwnAddress1 = 0;
+	    I2C_HANDLE.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	    I2C_HANDLE.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
+	    I2C_HANDLE.Init.OwnAddress2 = 0;
+	    I2C_HANDLE.Init.GeneralCallMode = I2C_GENERALCALL_DISABLED;
+	    I2C_HANDLE.Init.NoStretchMode = I2C_NOSTRETCH_DISABLED;
+	    HAL_I2C_Init(&I2C_HANDLE);
+
+}
+
+
+
+void _I2cFailRecover(){
+
+	uint16_t cap = ~(1<<FailedBoot);
+	ActiveCaptors = ActiveCaptors & cap;
+
+
+	// Code de reactivation de l'I2C en cas de changement d'etat non prevu de l'exemple d'ST
+	//mais qui finit systematiquement en while(1)
+    /*GPIO_InitTypeDef GPIO_InitStruct;
     int i, nRetry=0;
 
 
@@ -30,23 +74,24 @@ void _I2cFailRecover(void){
 
     // Enable I/O
     __GPIOB_CLK_ENABLE();
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
-    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7 ;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9 ;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     //TODO we could do this faster by not using HAL delay 1ms for clk timing
     do{
         for( i=0; i<10; i++){
-            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
             HAL_Delay(1);
-            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
             HAL_Delay(1);
         }
-    }while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0 && nRetry++<7);
+        nRetry++;
+    }while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == 0 && nRetry++<7);
 
-    if( HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 0 ){
+    if( HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == 0 ){
         __GPIOA_CLK_ENABLE();
         //We are still in bad i2c state warm user by blinking led but stay here
         GPIO_InitStruct.Pin = GPIO_PIN_5 ;
@@ -63,7 +108,7 @@ void _I2cFailRecover(void){
             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
             HAL_Delay(33*20);
         }while(1);
-    }
+    }*/
 }
 
 
@@ -89,7 +134,7 @@ void UART_Init(void)
 	HAL_NVIC_SetPriority(USART2_IRQn, 0, 1);
 	HAL_NVIC_EnableIRQ(USART2_IRQn);
 	SERIAL_UART.Instance = USART2;
-	SERIAL_UART.Init.BaudRate = 460800;
+	SERIAL_UART.Init.BaudRate = 115200;
 	SERIAL_UART.Init.WordLength = UART_WORDLENGTH_8B;
 	SERIAL_UART.Init.StopBits = UART_STOPBITS_1;
 	SERIAL_UART.Init.Parity = UART_PARITY_NONE;
@@ -129,14 +174,14 @@ __weak void USART2_IRQHandler(void)
 	HAL_UART_IRQHandler(&SERIAL_UART);	/* Handles USART global interrupt */
 }
 
-/* DMA to get RX data */
+/* DMA to get RX data *//*
 void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 
 	__USART2_CLK_ENABLE();
-	GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;/* PIN2 --> USART2_TX */
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;	/* PIN3 --> USART2_RX */
+	GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;// PIN2 --> USART2_TX
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;	// PIN3 --> USART2_RX
 	GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -150,7 +195,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 	__HAL_LINKDMA(huart, hdmatx, DMA_HANDLE);
 	HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(USART2_IRQn);
-}
+}*/
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {				/* RX Callback to get command from UART */

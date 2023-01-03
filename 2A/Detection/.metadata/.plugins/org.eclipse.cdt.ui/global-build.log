@@ -1,203 +1,85 @@
-17:04:53 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+15:26:12 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
 make -j12 all 
-arm-none-eabi-gcc "../Drivers/UltraLiteDriver/Src/VL53L1X_api.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/UltraLiteDriver/Src/VL53L1X_api.d" -MT"Drivers/UltraLiteDriver/Src/VL53L1X_api.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/UltraLiteDriver/Src/VL53L1X_api.o"
-arm-none-eabi-gcc "../Drivers/UltraLiteDriver/Src/VL53L1X_calibration.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/UltraLiteDriver/Src/VL53L1X_calibration.d" -MT"Drivers/UltraLiteDriver/Src/VL53L1X_calibration.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/UltraLiteDriver/Src/VL53L1X_calibration.o"
-arm-none-eabi-gcc "../Drivers/UltraLiteDriver/Src/platform.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/UltraLiteDriver/Src/platform.d" -MT"Drivers/UltraLiteDriver/Src/platform.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/UltraLiteDriver/Src/platform.o"
-arm-none-eabi-gcc "../Drivers/UltraLiteDriver/Src/platform_specific.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/UltraLiteDriver/Src/platform_specific.d" -MT"Drivers/UltraLiteDriver/Src/platform_specific.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/UltraLiteDriver/Src/platform_specific.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Drivers/UltraLiteDriver/Src/platform.c:66:8: warning: type defaults to 'int' in declaration of 'I2C_HANDLE' [-Wimplicit-int]
-   66 | extern I2C_HANDLE; /* Handle for VL53L1X I2C COM */
-      |        ^~~~~~~~~~
-../Drivers/UltraLiteDriver/Src/platform.c:67:8: warning: type defaults to 'int' in declaration of 'SERIAL_UART' [-Wimplicit-int]
-   67 | extern SERIAL_UART; /* Handle for Serial UART COM */
-      |        ^~~~~~~~~~~
-../Drivers/UltraLiteDriver/Src/platform.c:68:8: warning: type defaults to 'int' in declaration of 'DMA_HANDLE' [-Wimplicit-int]
-   68 | extern DMA_HANDLE; /* Handle for Serial DMA */
-      |        ^~~~~~~~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'ReadRegister32':
-../Drivers/UltraLiteDriver/Src/platform.c:81:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-   81 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, dev, data_write, 2, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c:82:35: warning: passing argument 1 of 'HAL_I2C_Master_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
-   82 |  Status += HAL_I2C_Master_Receive(&I2C_HANDLE, dev, data_read, 4, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:567:61: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  567 | HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                          ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'ReadRegister16':
-../Drivers/UltraLiteDriver/Src/platform.c:98:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-   98 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, dev, data_write, 2, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c:99:35: warning: passing argument 1 of 'HAL_I2C_Master_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
-   99 |  Status += HAL_I2C_Master_Receive(&I2C_HANDLE, dev, data_read, 2, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:567:61: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  567 | HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                          ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'ReadRegister8':
-../Drivers/UltraLiteDriver/Src/platform.c:115:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  115 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, dev, data_write, 2, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c:116:35: warning: passing argument 1 of 'HAL_I2C_Master_Receive' from incompatible pointer type [-Wincompatible-pointer-types]
-  116 |  Status += HAL_I2C_Master_Receive(&I2C_HANDLE, dev, data_read, 1, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:567:61: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  567 | HAL_StatusTypeDef HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                          ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'WriteRegister8':
-../Drivers/UltraLiteDriver/Src/platform.c:132:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  132 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, dev, data_write, 3, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'WriteRegister16':
-../Drivers/UltraLiteDriver/Src/platform.c:148:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  148 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, dev, data_write, 4, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'WriteRegister32':
-../Drivers/UltraLiteDriver/Src/platform.c:166:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  166 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, dev, data_write, 6, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'VL53L1_WrByte':
-../Drivers/UltraLiteDriver/Src/platform.c:193:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  193 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, Dev, data_write, 3, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'VL53L1_WrWord':
-../Drivers/UltraLiteDriver/Src/platform.c:210:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  210 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, Dev, data_write, 4, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
-../Drivers/UltraLiteDriver/Src/platform.c: In function 'VL53L1_WrDWord':
-../Drivers/UltraLiteDriver/Src/platform.c:229:35: warning: passing argument 1 of 'HAL_I2C_Master_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  229 |  Status = HAL_I2C_Master_Transmit(&I2C_HANDLE, Dev, data_write, 6, 100);
-      |                                   ^~~~~~~~~~~
-      |                                   |
-      |                                   int *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:359,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
-                 from C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc/platform.h:6,
-                 from ../Drivers/UltraLiteDriver/Src/platform.c:63:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h:566:62: note: expected 'I2C_HandleTypeDef *' but argument is of type 'int *'
-  566 | HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                           ~~~~~~~~~~~~~~~~~~~^~~~
 ../Core/Src/main.c: In function 'ResetAndInitializeAllSensors':
-../Core/Src/main.c:199:2: warning: implicit declaration of function 'UART_Print' [-Wimplicit-function-declaration]
-  199 |  UART_Print("All Chips booted\n");
+../Core/Src/main.c:211:2: warning: implicit declaration of function 'UART_Print' [-Wimplicit-function-declaration]
+  211 |  UART_Print("All Chips booted\n");
       |  ^~~~~~~~~~
-arm-none-eabi-gcc -o "LIDAR360v2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR360v2\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR360v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+../Core/Src/main.c: In function 'MX_I2C1_Init':
+../Core/Src/main.c:607:2: warning: implicit declaration of function 'I2C_Init' [-Wimplicit-function-declaration]
+  607 |  I2C_Init();
+      |  ^~~~~~~~
+../Core/Src/main.c: In function 'MX_USART2_UART_Init':
+../Core/Src/main.c:640:3: warning: implicit declaration of function 'UART_Init'; did you mean 'HAL_Init'? [-Wimplicit-function-declaration]
+  640 |   UART_Init();
+      |   ^~~~~~~~~
+      |   HAL_Init
+arm-none-eabi-gcc -o "LIDAR360v2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR360v2\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR360v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: LIDAR360v2.elf
  
 arm-none-eabi-size   LIDAR360v2.elf 
 arm-none-eabi-objdump -h -S  LIDAR360v2.elf  > "LIDAR360v2.list"
    text	   data	    bss	    dec	    hex	filename
-  32532	    196	   7592	  40320	   9d80	LIDAR360v2.elf
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
 Finished building: default.size.stdout
  
 Finished building: LIDAR360v2.list
  
-17:06:26 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+15:26:20 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
 make -j12 all 
 arm-none-eabi-size   LIDAR360v2.elf 
    text	   data	    bss	    dec	    hex	filename
-  32532	    196	   7592	  40320	   9d80	LIDAR360v2.elf
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
 Finished building: default.size.stdout
+ 
+15:26:46 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+make -j12 all 
+arm-none-eabi-size   LIDAR360v2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+Finished building: default.size.stdout
+ 
+15:28:28 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+make -j12 all 
+arm-none-eabi-size   LIDAR360v2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+Finished building: default.size.stdout
+ 
+15:53:59 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+make -j12 all 
+arm-none-eabi-size   LIDAR360v2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+Finished building: default.size.stdout
+ 
+16:10:51 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+make -j12 all 
+arm-none-eabi-size   LIDAR360v2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+Finished building: default.size.stdout
+ 
+16:34:23 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+make -j12 all 
+arm-none-eabi-gcc "../Drivers/UltraLiteDriver/Src/platform_specific.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/UltraLiteDriver/Src/platform_specific.d" -MT"Drivers/UltraLiteDriver/Src/platform_specific.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/UltraLiteDriver/Src/platform_specific.o"
+../Drivers/UltraLiteDriver/Src/platform_specific.c:14:8: warning: type defaults to 'int' in declaration of 'hi2c1' [-Wimplicit-int]
+   14 | extern hi2c1;
+      |        ^~~~~
+../Drivers/UltraLiteDriver/Src/platform_specific.c:15:8: warning: type defaults to 'int' in declaration of 'ActiveCaptors' [-Wimplicit-int]
+   15 | extern ActiveCaptors;
+      |        ^~~~~~~~~~~~~
+../Drivers/UltraLiteDriver/Src/platform_specific.c:16:8: warning: type defaults to 'int' in declaration of 'FailedBoot' [-Wimplicit-int]
+   16 | extern FailedBoot;
+      |        ^~~~~~~~~~
+arm-none-eabi-gcc -o "LIDAR360v2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR360v2\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR360v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LIDAR360v2.elf
+ 
+arm-none-eabi-size   LIDAR360v2.elf 
+arm-none-eabi-objdump -h -S  LIDAR360v2.elf  > "LIDAR360v2.list"
+   text	   data	    bss	    dec	    hex	filename
+  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+Finished building: default.size.stdout
+ 
+Finished building: LIDAR360v2.list
  

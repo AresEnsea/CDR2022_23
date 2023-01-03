@@ -45,6 +45,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 void Peek(uint16_t dev, uint16_t Register);
 void Peek16(uint16_t dev, uint16_t Register);
-void _I2cFailRecover(void);
+void _I2cFailRecover();
 
 #endif
