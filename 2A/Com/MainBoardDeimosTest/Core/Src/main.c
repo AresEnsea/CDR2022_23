@@ -223,8 +223,9 @@ int main(void)
   }*/
 
   while (onSiteActionIndex < strategy->onSiteActionsLengths[0]) {
-	  uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
-	  serial_send(&action, 1, 6);
+	  /*uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
+	  serial_send(&action, 1, 6);*/
+	  HAL_UART_Transmit(&huart6, strategy->onSiteActions[0], 4, 1);
 	  robot.waitingForOnSiteAction = true;
 
 	  printf("Waiting for 0xFF...\r\n");
@@ -235,8 +236,8 @@ int main(void)
   }
 
   printf("About to move...\r\n");
-  while(wifiData[1]!='g'){
-  }
+  //while(wifiData[1]!='g'){
+  //}
   while (1) {
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
               && !robot.waitingForOnMoveAction
