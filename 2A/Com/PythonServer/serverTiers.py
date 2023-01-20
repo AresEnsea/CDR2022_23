@@ -36,10 +36,10 @@ server.bind(ADDR)
 ADDRphob = ("10.20.1.44",35565)
 ADDRdeim = ("10.20.1.13",45565)
 
-def handle_client(conn, addr):
+def handle_rcv(conn, addr):
     connected = True
     while connected:
-        content = conn.recv(32)
+        content = conn.recv(4)
         if str(content,FORMAT)!="":
             msg=str(content,FORMAT)
             if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
@@ -47,32 +47,40 @@ def handle_client(conn, addr):
                 print(f"recieved from {addr} : {msg}")
         else:
             connected = False
+
+def handle_send(conn, addr):
+    connected = True
+    while connected:
         if not queue.empty():
             clac=queue.get()
             if (clac.decode(FORMAT)[0]=='a') and (addr[0] == ADDRdeim[0]):
-                conn.send(clac)
+                clacstr=str(clac,FORMAT)
+                clacstr.replace('a','')
+                conn.send(clacstr.encode())
                 msg=str(clac,FORMAT)
                 print(f"                                                                            emited to {addr} : {msg}")
             elif (clac.decode(FORMAT)[0]=='b') and (addr[0] == ADDRphob[0]):
                 conn.send(clac)
                 msg=str(clac,FORMAT)
                 print(f"                                                                            emited to {addr} : {msg}")
-            elif (clac.decode(FORMAT)[0]=='d'):
+            elif (clac.decode(FORMAT)[0]=='d') and (addr[0] == ADDRphob[0]):
                 #conn.send(clac)
                 msg=str(clac,FORMAT)
                 logger.info(msg)
                 print(f"                                                                            debug to {addr} : {msg}")
             else:
                 queue.put(clac)
-        else:
-            connected = False
+        connected = False
+
 
 def start():
     server.listen(5)
     while True:
         conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
+        thread1 = threading.Thread(target=handle_rcv, args=(conn, addr))
+        thread2 = threading.Thread(target=handle_send, args=(conn, addr))
+        thread1.start()
+        thread2.start()
 
 print("[STARTING] server is starting...")
 start()

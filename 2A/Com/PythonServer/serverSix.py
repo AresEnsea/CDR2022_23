@@ -39,7 +39,7 @@ ADDRdeim = ("10.20.1.13",45565)
 def handle_rcv(conn, addr):
     connected = True
     while connected:
-        content = conn.recv(32)
+        content = conn.recv(20)
         if str(content,FORMAT)!="":
             msg=str(content,FORMAT)
             if msg[0]=='a' or msg[0]=='b' or msg[0]=='d':
@@ -61,7 +61,7 @@ def handle_send(conn, addr):
                 conn.send(clac)
                 msg=str(clac,FORMAT)
                 print(f"                                                                            emited to {addr} : {msg}")
-            elif (clac.decode(FORMAT)[0]=='d') and (addr[0] == ADDRphob[0]):
+            elif (clac.decode(FORMAT)[0]=='d'):
                 #conn.send(clac)
                 msg=str(clac,FORMAT)
                 logger.info(msg)
