@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "7seg")(type "KiCad")(uri "${KIPRJMOD}/7seg.pretty")(options "")(descr ""))
+)

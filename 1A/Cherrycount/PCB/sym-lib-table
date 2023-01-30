@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "Display_Character")(type "Legacy")(uri "/home/mowibox/Documents/ARES/PCB/lib_mod/Display_Character/Display_Character.lib")(options "")(descr ""))
+)
