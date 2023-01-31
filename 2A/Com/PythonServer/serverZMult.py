@@ -27,15 +27,15 @@ def broadcast(message):
     for address in addrs:
         index = addrs.index(address)
         client=clients[index]
-        if(message[0]==b'0x61') and (address[0] == ADDRdeim):        #if((message[0]>>6)==b'0x0') and (address[0] == ADDRdeim):
+        decoded=message.decode('utf-8')
+        if(decoded[0]=='a') and (address[0] == ADDRdeim):        #if((message[0]>>6)==b'0x0') and (address[0] == ADDRdeim):
             client.send(message)
-            logger.info(f"{message.decode('utf-8')} sended to {address}")
+            logger.info(f"{decoded} sended to {address}")
             break
-        elif(message[0]==b'0x62') and (address[0] == ADDRphob):        #if((message[0]>>6)==b'0x0') and (address[0] == ADDRdeim):
+        elif(decoded[0]=='b') and (address[0] == ADDRphob):        #if((message[0]>>6)==b'0x0') and (address[0] == ADDRdeim):
             client.send(message)
-            logger.info(f"{message.decode('utf-8')} sended to {address}")
+            logger.info(f"{decoded} sended to {address}")
             break
-        logger.info(f"{message.decode('utf-8')} not sended")
 
 # Function to handle clients'connections
 
@@ -51,7 +51,6 @@ def handle_client(client):
             break
 # Main function to receive the clients connection
 
-
 def receive():
     while True:
         print('Server is running and listening ...')
@@ -59,8 +58,8 @@ def receive():
         print(f'{str(address)} : : connected')
         clients.append(client)
         addrs.append(address)
-        thread = threading.Thread(target=handle_client, args=(client))
-        thread.start()
+        thread = threading.Thread(target=handle_client, args=(client,))
+        thread.start()  
 
 
 if __name__ == "__main__":
