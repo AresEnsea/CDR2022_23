@@ -58,7 +58,7 @@ extern Robot robot;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t pData[1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -146,7 +146,7 @@ int main(void)
 
   robot.waitingForOnSiteAction = false;
   robot.waitingForOnMoveAction = false;
-  robot.team = YELLOW;
+  robot.team = GREEN;
   float t = 0;
 
   HAL_Delay(200);
@@ -162,20 +162,58 @@ int main(void)
   printf(" Done.\r\n");
 
   bool waitingForMatchStart = true;
-
   printf("Waiting for start...\r\n");
-
-  bool teamButtonVal = false;
-
   while (waitingForMatchStart) {
 	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
 
-	  if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
+	  HAL_UART_Receive_IT(&huart6, pData, 1);
+	  switch(pData[0])
+	      	{
+	      	case '0':
+	      		robot.team = GREEN;
+	      		break;
+	      	case '1':
+	      		robot.team = BLUE;
+	      		switchTeam(strategy);
+	            break;
+	        case '2':
+	        	robot.team = GREEN;
+	        	break;
+	        case '3':
+	        	robot.team = BLUE;
+	        	switchTeam(strategy);
+	        	break;
+	        case '4':
+	        	robot.team = GREEN;
+	        	break;
+	        case '5':
+	        	robot.team = BLUE;
+	        	switchTeam(strategy);
+	            break;
+	        case '6':
+	        	robot.team = GREEN;
+	            break;
+	        case '7':
+	        	robot.team = BLUE;
+	        	switchTeam(strategy);
+	            break;
+	        case '8':
+	        	robot.team = GREEN;
+	        	break;
+	        case '9':
+	        	robot.team = BLUE;
+	        	switchTeam(strategy);
+	        	break;
+	        default:
+	        	robot.team = GREEN;
+	            break;
+	      	}
+	  /*if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
 		  switchTeam(strategy);
 	  }
 
-	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == PURPLE);
-	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);
+	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == BLUE);
+	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);*/
 
 	  HAL_Delay(50);
 	  //printf("%d\r\n", teamButtonVal);

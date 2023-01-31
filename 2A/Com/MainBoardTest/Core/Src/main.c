@@ -174,6 +174,49 @@ int main(void)
 		  switchTeam(strategy);
 	  }
 
+	  HAL_UART_Receive_IT(&huart6, pData, 1);
+	  	  switch(pData[0])
+	  	      	{
+	  	      	case '0':
+	  	      		robot.team = GREEN;
+	  	      		break;
+	  	      	case '1':
+	  	      		robot.team = BLUE;
+	  	      		switchTeam(strategy);
+	  	            break;
+	  	        case '2':
+	  	        	robot.team = GREEN;
+	  	        	break;
+	  	        case '3':
+	  	        	robot.team = BLUE;
+	  	        	switchTeam(strategy);
+	  	        	break;
+	  	        case '4':
+	  	        	robot.team = GREEN;
+	  	        	break;
+	  	        case '5':
+	  	        	robot.team = BLUE;
+	  	        	switchTeam(strategy);
+	  	            break;
+	  	        case '6':
+	  	        	robot.team = GREEN;
+	  	            break;
+	  	        case '7':
+	  	        	robot.team = BLUE;
+	  	        	switchTeam(strategy);
+	  	            break;
+	  	        case '8':
+	  	        	robot.team = GREEN;
+	  	        	break;
+	  	        case '9':
+	  	        	robot.team = BLUE;
+	  	        	switchTeam(strategy);
+	  	        	break;
+	  	        default:
+	  	        	robot.team = GREEN;
+	  	            break;
+	  	      	}
+
 	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == PURPLE);
 	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);
 

@@ -14,7 +14,7 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 	}
 	else if (uartPort == 6) {
 		uint8_t action = *ptr;
-		if (robot.team == PURPLE) {
+		if (robot.team == BLUE) {
 			if (action == 0xA1) {
 				action = 0xA2;
 			} else if (*ptr == 0xCA) {
@@ -52,4 +52,49 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 	if(huart->Instance == USART1){
 		HAL_UART_Receive_IT(&huart1, wifiData, 3);
 	}
+
+	/*if(huart->Instance==USART6)
+		{
+			switch(pData[0])
+				      	{
+				      	case 0:
+				      		robot.team = GREEN;
+				      		break;
+				      	case 1:
+				      		robot.team = BLUE;
+				      		switchTeam(strategy);
+				            break;
+				        case 2:
+				        	robot.team = GREEN;
+				        	break;
+				        case 3:
+				        	robot.team = BLUE;
+				        	switchTeam(strategy);
+				        	break;
+				        case 4:
+				        	robot.team = GREEN;
+				        	break;
+				        case 5:
+				        	robot.team = BLUE;
+				        	switchTeam(strategy);
+				            break;
+				        case 6:
+				        	robot.team = GREEN;
+				            break;
+				        case 7:
+				        	robot.team = BLUE;
+				        	switchTeam(strategy);
+				            break;
+				        case 8:
+				        	robot.team = GREEN;
+				        	break;
+				        case 9:
+				        	robot.team = BLUE;
+				        	switchTeam(strategy);
+				        	break;
+				        default:
+				        	robot.team = GREEN;
+				            break;
+				      	}
+		}*/
 }
