@@ -163,9 +163,9 @@ int main(void)
 
   bool waitingForMatchStart = true;
   printf("Waiting for start...\r\n");
-  while (waitingForMatchStart) {
+  pData[0] = 'o';
+  while ((waitingForMatchStart == true) && (pData[0] == 'o')) {
 	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
-
 	  HAL_UART_Receive_IT(&huart6, pData, 1);
 	  switch(pData[0])
 	      	{

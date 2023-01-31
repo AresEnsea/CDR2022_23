@@ -13,9 +13,9 @@ Strategy* strategy_initialize() {
     strategy->onMoveActions = (uint8_t**) malloc(sizeof(uint8_t*) * (strategy->length+1));
     strategy->onMoveActionsLengths = (int*) calloc((strategy->length+1), sizeof(int));
 
-    strategy->path[0] = bezier_new(1063.496, 1830.780, 1056.849, 1715.332, 1101.176, 1450.091, 758.168, 1471.801, 30);
+    strategy->path[0] = bezier_new(1102.072, 1857.487, 1095.424, 1742.038, 1151.621, 1417.450, 808.613, 1439.160, 30);
 
-    strategy->directions[0] = BACKWARD;
+    strategy->directions[0] = FORWARD;
 
 
 
