@@ -37,6 +37,7 @@
 #include "symetry.h"
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 extern Robot robot;
 /* USER CODE END Includes */
@@ -94,7 +95,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -235,8 +236,13 @@ int main(void)
   }
 
   printf("About to move...\r\n");
-  while(wifiData[1]!='g'){
-  }
+  //while(wifiData[1]!='g'){
+  //}
+  char buf[4];
+  int size = snprintf(buf,strlen(buf),"dg\r\n");
+  serial_send((uint8_t*)buf,size,1);
+  size = snprintf(buf,strlen(buf),"ag\r\n");
+  serial_send((uint8_t*)buf,size,1);
   while (1) {
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
               && !robot.waitingForOnMoveAction
