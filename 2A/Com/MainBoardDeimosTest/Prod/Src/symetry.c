@@ -1,7 +1,7 @@
 #include "symetry.h"
 
 void switchTeam(Strategy* strategy) {
-	robot.team = (robot.team == YELLOW)?PURPLE:YELLOW;
+	//robot.team = (robot.team == GREEN)?BLUE:GREEN;
 
 	for (int i=0; i<strategy->length; i++) {
 		Bezier* b = strategy->path[i];

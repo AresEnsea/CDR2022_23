@@ -14,10 +14,10 @@
 /** Définit les deux couleurs d'équipe. */
 typedef enum {
     /** Jaune, gacuhe. */
-    YELLOW=0,
+    GREEN=0,
 
     /** Violet, droite. */
-    PURPLE=1
+    BLUE=1
 } Team;
 
 

@@ -36,8 +36,8 @@
 #include "avoidance.h"
 #include "symetry.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-#include <string.h>
 
 extern Robot robot;
 /* USER CODE END Includes */
@@ -59,7 +59,7 @@ extern Robot robot;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t pData[1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -95,7 +95,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-   HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -147,7 +147,7 @@ int main(void)
 
   robot.waitingForOnSiteAction = false;
   robot.waitingForOnMoveAction = false;
-  robot.team = YELLOW;
+  robot.team = GREEN;
   float t = 0;
 
   HAL_Delay(200);
@@ -163,20 +163,42 @@ int main(void)
   printf(" Done.\r\n");
 
   bool waitingForMatchStart = true;
-
   printf("Waiting for start...\r\n");
-
-  bool teamButtonVal = false;
-
-  while (waitingForMatchStart) {
+  pData[0] = 'o';
+  int a = 0;
+  HAL_UART_Receive_IT(&huart6, pData, 1);
+  while ((waitingForMatchStart == true)) {
 	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
-
-	  if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
+	  if((pData[0] >= '0' && pData[0] <= '9')  && a == 0)
+	  {
+		  a = 1;
+	  	  switch(pData[0])
+	      	{
+	      	case '1':
+	      		switchTeam(strategy);
+	            break;
+	        case '3':
+	        	switchTeam(strategy);
+	        	break;
+	        case '5':
+	        	switchTeam(strategy);
+	            break;
+	        case '7':
+	        	switchTeam(strategy);
+	            break;
+	        case '9':
+	        	switchTeam(strategy);
+	        	break;
+	        default:
+	            break;
+	      	}
+	  }
+	  /*if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
 		  switchTeam(strategy);
 	  }
 
-	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == PURPLE);
-	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);
+	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == BLUE);
+	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);*/
 
 	  HAL_Delay(50);
 	  //printf("%d\r\n", teamButtonVal);
@@ -224,8 +246,9 @@ int main(void)
   }*/
 
   while (onSiteActionIndex < strategy->onSiteActionsLengths[0]) {
-	  uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
-	  serial_send(&action, 1, 6);
+	  /*uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
+	  serial_send(&action, 1, 6);*/
+	  HAL_UART_Transmit(&huart6, strategy->onSiteActions[0], 4, 1);
 	  robot.waitingForOnSiteAction = true;
 
 	  printf("Waiting for 0xFF...\r\n");
@@ -238,11 +261,6 @@ int main(void)
   printf("About to move...\r\n");
   //while(wifiData[1]!='g'){
   //}
-  char buf[4];
-  int size = snprintf(buf,strlen(buf),"dg\r\n");
-  serial_send((uint8_t*)buf,size,1);
-  size = snprintf(buf,strlen(buf),"ag\r\n");
-  serial_send((uint8_t*)buf,size,1);
   while (1) {
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
               && !robot.waitingForOnMoveAction
