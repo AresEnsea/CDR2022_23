@@ -2,6 +2,7 @@
 uint8_t lidarData;
 uint8_t armData;
 uint8_t wifiData[3];
+extern uint8_t pData[0];
 
 int serial_send(uint8_t *ptr, int len, int uartPort) {
 	if (uartPort == 4)
@@ -11,9 +12,17 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 	else if (uartPort == 1){
 		HAL_UART_Transmit(&huart1, ptr, len, HAL_MAX_DELAY);
 	}
-	/*else if (uartPort == 6) {
+	else if (uartPort == 6) {
 		uint8_t action = *ptr;
-		if (robot.team == BLUE) {
+		if(action == 0x69)
+		{
+			HAL_UART_Transmit(&huart6, "1005", 4, 1);
+		}
+		else if(action == 0x70)
+		{
+			HAL_UART_Transmit(&huart6, "1010", 4, 1);
+		}
+		/*if (robot.team == BLUE) {
 			if (action == 0xA1) {
 				action = 0xA2;
 			} else if (*ptr == 0xCA) {
@@ -21,10 +30,10 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 			} else if (*ptr == 0xCB) {
 				action = 0xCA;
 			}
-		}
-		HAL_UART_Transmit(&huart6, &action, len, HAL_MAX_DELAY);
+		}*/
+		//HAL_UART_Transmit(&huart6, &action, len, HAL_MAX_DELAY);
 		//printf("Sending %x\r\n", *ptr);
-	}*/
+	}
 	return len;
 }
 

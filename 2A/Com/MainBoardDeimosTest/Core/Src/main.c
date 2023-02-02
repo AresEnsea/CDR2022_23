@@ -139,11 +139,6 @@ int main(void)
   printf(" Done.\r\n");
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
-  printf("Initializing strategy...");
-  Strategy* strategy = strategy_initialize();
-  int curveIndex = 0;
-  int onSiteActionIndex = 0;
-  int onMoveActionIndex = 0;
 
   robot.waitingForOnSiteAction = false;
   robot.waitingForOnMoveAction = false;
@@ -154,7 +149,10 @@ int main(void)
   printf(" Done.\r\n");
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
-
+  Strategy* strategy;
+  int curveIndex = 0;
+  int onSiteActionIndex = 0;
+  int onMoveActionIndex = 0;
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing lidar...");
@@ -174,25 +172,56 @@ int main(void)
 		  a = 1;
 	  	  switch(pData[0])
 	      	{
+	  	  	case '0':
+	  	  		printf("Initializing strategy...0");
+	  	  		strategy = strategy_initialize(0);
+	       	    break;
 	      	case '1':
-	      		switchTeam(strategy);
+	      		printf("Initializing strategy...1");
+	      		strategy = strategy_initialize(1);
 	            break;
+	      	case '2':
+	      		printf("Initializing strategy...2");
+	      		strategy = strategy_initialize(2);
+	      		break;
 	        case '3':
-	        	switchTeam(strategy);
+	        	printf("Initializing strategy...3");
+	        	strategy = strategy_initialize(3);
+	        	break;
+	        case '4':
+	        	printf("Initializing strategy...4");
+	        	strategy = strategy_initialize(4);
 	        	break;
 	        case '5':
+	        	printf("Initializing strategy...5");
+	        	strategy = strategy_initialize(5);
 	        	switchTeam(strategy);
 	            break;
+	        case '6':
+	        	printf("Initializing strategy...6");
+	        	strategy = strategy_initialize(6);
+	        	switchTeam(strategy);
+	        	break;
 	        case '7':
+	        	printf("Initializing strategy...7");
+	        	strategy = strategy_initialize(7);
 	        	switchTeam(strategy);
 	            break;
+	        case '8':
+	        	printf("Initializing strategy...8");
+	        	strategy = strategy_initialize(8);
+	        	switchTeam(strategy);
+	        	break;
 	        case '9':
+	        	printf("Initializing strategy...9");
+	        	strategy = strategy_initialize(9);
 	        	switchTeam(strategy);
 	        	break;
 	        default:
 	            break;
 	      	}
 	  }
+
 	  /*if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
 		  switchTeam(strategy);
 	  }
@@ -200,7 +229,7 @@ int main(void)
 	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == BLUE);
 	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);*/
 
-	  HAL_Delay(50);
+	  //HAL_Delay(50);
 	  //printf("%d\r\n", teamButtonVal);
 	  //HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, teamButtonVal);
   }
@@ -248,7 +277,7 @@ int main(void)
   while (onSiteActionIndex < strategy->onSiteActionsLengths[0]) {
 	  /*uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
 	  serial_send(&action, 1, 6);*/
-	  HAL_UART_Transmit(&huart6, strategy->onSiteActions[0], 4, 1);
+	  //HAL_UART_Transmit(&huart6, strategy->onSiteActions[0], 4, 1);
 	  robot.waitingForOnSiteAction = true;
 
 	  printf("Waiting for 0xFF...\r\n");
@@ -300,6 +329,8 @@ int main(void)
 
 	    	  while (robot.waitingForOnSiteAction) {
 	    		  propulsion_setSpeeds(0, 0);
+	    		  HAL_Delay(2000);
+	    		  robot.waitingForOnSiteAction = false;
 	    	  }
 	    	  onSiteActionIndex++;
 	      }

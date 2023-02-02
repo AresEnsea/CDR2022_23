@@ -13,8 +13,8 @@ typedef int bool;
 
 
 /******************************* Robot Select ********************************/
-//#define ISPHOBOS
-#define ISDEIMOS
+#define ISPHOBOS
+//#define ISDEIMOS
 
 
 /**************************** Config Age of bots *****************************/
