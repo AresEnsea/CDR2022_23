@@ -149,7 +149,6 @@ int main(void)
   printf(" Done.\r\n");
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
-  Strategy* strategy;
   int curveIndex = 0;
   int onSiteActionIndex = 0;
   int onMoveActionIndex = 0;
@@ -165,61 +164,14 @@ int main(void)
   pData[0] = 'o';
   int a = 0;
   HAL_UART_Receive_IT(&huart6, pData, 1);
+  strategy_in_use = strategy_initialize(0);
+  HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
+
   while ((waitingForMatchStart == true)) {
 	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
 	  if((pData[0] >= '0' && pData[0] <= '9')  && a == 0)
 	  {
 		  a = 1;
-	  	  switch(pData[0])
-	      	{
-	  	  	case '0':
-	  	  		printf("Initializing strategy...0");
-	  	  		strategy = strategy_initialize(0);
-	       	    break;
-	      	case '1':
-	      		printf("Initializing strategy...1");
-	      		strategy = strategy_initialize(1);
-	            break;
-	      	case '2':
-	      		printf("Initializing strategy...2");
-	      		strategy = strategy_initialize(2);
-	      		break;
-	        case '3':
-	        	printf("Initializing strategy...3");
-	        	strategy = strategy_initialize(3);
-	        	break;
-	        case '4':
-	        	printf("Initializing strategy...4");
-	        	strategy = strategy_initialize(4);
-	        	break;
-	        case '5':
-	        	printf("Initializing strategy...5");
-	        	strategy = strategy_initialize(5);
-	        	switchTeam(strategy);
-	            break;
-	        case '6':
-	        	printf("Initializing strategy...6");
-	        	strategy = strategy_initialize(6);
-	        	switchTeam(strategy);
-	        	break;
-	        case '7':
-	        	printf("Initializing strategy...7");
-	        	strategy = strategy_initialize(7);
-	        	switchTeam(strategy);
-	            break;
-	        case '8':
-	        	printf("Initializing strategy...8");
-	        	strategy = strategy_initialize(8);
-	        	switchTeam(strategy);
-	        	break;
-	        case '9':
-	        	printf("Initializing strategy...9");
-	        	strategy = strategy_initialize(9);
-	        	switchTeam(strategy);
-	        	break;
-	        default:
-	            break;
-	      	}
 	  }
 
 	  /*if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
@@ -235,12 +187,14 @@ int main(void)
   }
 
   printf("Initializing odometry...");
-  Vector2 start = strategy->path[0]->p1;
-  Vector2 startTangent = strategy->path[0]->p2;
-  float startAngle = vector2_angle(vector2_diff(startTangent, start));
-  odometry_setPosition(start.x, start.y);
-  odometry_setAngle(startAngle);
   robot.measuredSpeed = 0;
+  {
+	Vector2 start = strategy_in_use->points[0].path->p1;
+	Vector2 startTangent = strategy_in_use->points[0].path->p2;
+	float startAngle = vector2_angle(vector2_diff(startTangent, start));
+	odometry_setPosition(start.x, start.y);
+	odometry_setAngle(startAngle);
+  }
   HAL_Delay(200);
   printf(" Done.\r\n");
 
@@ -251,7 +205,6 @@ int main(void)
 
   HAL_UART_Receive_IT(&huart4, &lidarData, 1);
   HAL_UART_Receive_IT(&huart6, &armData, 1);
-  HAL_UART_Receive_IT(&huart1, &wifiDataRX, 3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -274,6 +227,7 @@ int main(void)
 	  HAL_Delay(100);
   }*/
 
+#if 0
   while (onSiteActionIndex < strategy->onSiteActionsLengths[0]) {
 	  /*uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
 	  serial_send(&action, 1, 6);*/
@@ -286,59 +240,86 @@ int main(void)
 	  printf("%d\r\n", robot.waitingForOnSiteAction);
 	  onSiteActionIndex++;
   }
+#endif
 
   printf("About to move...\r\n");
   //while(wifiDataRX!='g'){
   //}
+
+  Bezier* b;
+  Direction d;
+  float initSpeed, finalSpeed;
+
   while (1) {
-	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
-              && !robot.waitingForOnMoveAction
-			  && !robot.waitingForOnSiteAction) {
-		  robot.waitingForOnMoveAction = true;
+	  if(use_new_strategy)
+	  {
+		moving_new_strategy = 1;
+		strategy_delete(strategy_in_use);
+		strategy_in_use = strategy_not_in_use;
+		strategy_not_in_use = NULL;
+		use_new_strategy = 0;
+		moving_new_strategy = 0;
+
+		t = 0.0;
+		curveIndex = 0;
+		Vector2 start = strategy_in_use->points[0].path->p1;
+		Vector2 startTangent = strategy_in_use->points[0].path->p2;
+		float startAngle = vector2_angle(vector2_diff(startTangent, start));
+		odometry_setPosition(start.x, start.y);
+		odometry_setAngle(startAngle);
 	  }
 
-	  avoidance_update(t, strategy->directions[curveIndex]);
+	  if(curveIndex < strategy_in_use->length)
+	  {
+		  strategy_get_point(strategy_in_use, curveIndex, &b, &d, &initSpeed);
+	  }
 
-	  if (avoidanceState == PATH_CLEAR && curveIndex < strategy->length) {
+	  avoidance_update(t, d);
+
+	  if ((avoidanceState == PATH_CLEAR || avoidanceState == BACKTRACKING) && curveIndex < strategy_in_use->length) {
+		  if(curveIndex + 1 == strategy_in_use->length)
+		  {
+			  finalSpeed = 0.0f;
+		  }
+		  else
+		  {
+			  strategy_get_point(strategy_in_use, curveIndex+1, NULL, NULL, &finalSpeed);
+		  }
+
 		  t = propulsion_followBezier(
-				  strategy->path[curveIndex],
-				  strategy->directions[curveIndex],
-				  strategy->speeds[curveIndex],
-				  strategy->speeds[curveIndex+1],
-				  false
+				  b,
+				  d,
+				  initSpeed,
+				  finalSpeed,
+				  avoidanceState == BACKTRACKING
 		  );
 	  } else if (avoidanceState == PATH_OBSTRUCTED) {
 		  propulsion_setSpeeds(0, 0);
-	  } else if (avoidanceState == BACKTRACKING) {
-		  t = propulsion_followBezier(
-				  strategy->path[curveIndex],
-				  strategy->directions[curveIndex],
-				  strategy->speeds[curveIndex],
-				  strategy->speeds[curveIndex+1],
-				  true
-		  );
 	  }
 
 	  if (t > 0.99 && !robot.waitingForOnMoveAction) {
 	      curveIndex = (curveIndex + 1);// % strategy->length;
 	      onSiteActionIndex = 0;
-	      while (onSiteActionIndex < strategy->onSiteActionsLengths[curveIndex]) {
-	    	  uint8_t action = strategy->onSiteActions[curveIndex][onSiteActionIndex];
-	    	  serial_send(&action, 1, 6);
-	    	  robot.waitingForOnSiteAction = true;
+	      if(curveIndex < strategy_in_use->length)
+	      {
+	    	  const StrategyPoint* point = &strategy_in_use->points[curveIndex];
+	    	  for(onSiteActionIndex = 0; onSiteActionIndex < point->actionsLength; ++onSiteActionIndex)
+	    	  {
+	    		  uint8_t action = point->actions[onSiteActionIndex];
+				  serial_send(&action, 1, 6);
+				  robot.waitingForOnSiteAction = true;
 
-	    	  while (robot.waitingForOnSiteAction) {
-	    		  propulsion_setSpeeds(0, 0);
-	    		  HAL_Delay(2000);
-	    		  robot.waitingForOnSiteAction = false;
+				  while (robot.waitingForOnSiteAction) {
+					  propulsion_setSpeeds(0, 0);
+					  HAL_Delay(2000);
+					  robot.waitingForOnSiteAction = false;
+				  }
 	    	  }
-	    	  onSiteActionIndex++;
 	      }
-	      onMoveActionIndex = 0;
 	  }
 
-	  if (curveIndex == strategy->length) {
-		  break;
+	  if (curveIndex == strategy_in_use->length) {
+		  propulsion_setSpeeds(0, 0);
 	  }
 
     /* USER CODE END WHILE */

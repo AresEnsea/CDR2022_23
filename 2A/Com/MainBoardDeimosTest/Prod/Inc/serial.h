@@ -13,5 +13,6 @@ extern uint8_t wifiDataTX;
 extern uint8_t armData;
 
 int serial_send(uint8_t *ptr, int len, int uartPort);
+void parser32(uint32_t *ptr);
 
 #endif
