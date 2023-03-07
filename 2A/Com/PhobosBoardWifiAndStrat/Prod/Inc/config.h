@@ -30,7 +30,7 @@ typedef int bool;
 
 #ifdef ISPHOBOS
 	#define WHEEL_RADIUS    38.6
-	#define ENTRAXE_MOTOR   120.5
+	#define ENTRAXE_MOTOR   165//120.5
     #define MAX_CORRECTION  40.0
 	#define MAX_MOTOR_SPEED 400
 #endif
@@ -50,7 +50,7 @@ typedef int bool;
 
 #ifdef ISPHOBOS
 	#define ODOMETRY_RADIUS  26.2255
-	#define ENTRAXE_ODOMETRY 200.165586
+	#define ENTRAXE_ODOMETRY 270.165586//20
 #endif
 #ifdef ISDEIMOS
 	#define ODOMETRY_RADIUS  26.9811
@@ -66,7 +66,7 @@ typedef int bool;
 #define LIDAR_TIMEOUT 1000
 
 /******************************** Timer names ********************************/
-#define R_ENCODER htim1
-#define L_ENCODER htim3
+#define R_ENCODER htim3//1
+#define L_ENCODER htim1//3
 #define R_MOTOR_TIMER htim8
 #define L_MOTOR_TIMER htim11
