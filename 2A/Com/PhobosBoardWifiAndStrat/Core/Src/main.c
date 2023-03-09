@@ -59,7 +59,7 @@ extern Robot robot;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t pData[1];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

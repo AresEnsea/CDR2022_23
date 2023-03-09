@@ -29,7 +29,7 @@ typedef int bool;
 #define MICROSTEPS          32
 
 #ifdef ISPHOBOS
-	#define WHEEL_RADIUS    38.6
+	#define WHEEL_RADIUS    40.7
 	#define ENTRAXE_MOTOR   165//120.5
     #define MAX_CORRECTION  40.0
 	#define MAX_MOTOR_SPEED 400
@@ -50,7 +50,7 @@ typedef int bool;
 
 #ifdef ISPHOBOS
 	#define ODOMETRY_RADIUS  26.2255
-	#define ENTRAXE_ODOMETRY 270.165586//20
+	#define ENTRAXE_ODOMETRY 276.165586//20
 #endif
 #ifdef ISDEIMOS
 	#define ODOMETRY_RADIUS  26.9811

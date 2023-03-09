@@ -4,6 +4,7 @@ uint8_t lidarData;
 uint8_t armData;
 uint8_t wifiDataRX;
 uint8_t wifiDataTX;
+uint8_t pData[1];
 
 void parser32(uint32_t *ptr){
 	uint8_t trigger=0xE0;
