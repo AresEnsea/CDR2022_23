@@ -94,8 +94,10 @@ int main(void)
 
   AX12 ax122;
   AX12_Init(&ax122, &huart1, 2, BR_250K);
+  AX12_ReProg(&ax122, 2, BR_250K);
   AX12_LED_O_N(&ax122, 1);
-  AX12_setMovingSpeed(&ax122, 100);
+  AX12_setMovingSpeed(&ax122, 10);
+  //AX12_setWheelMode(&ax122);
   AX12_setRangeAngle(&ax122, 0, 180);
 
   /* USER CODE END 2 */
@@ -106,9 +108,9 @@ int main(void)
   {
 
 	  AX12_setPosition(&ax122, 0);
-	  HAL_Delay(3000);
-	  AX12_setPosition(&ax122, 180);
-	  HAL_Delay(3000);
+	  HAL_Delay(1500);
+	  AX12_setPosition(&ax122, 90);
+	  HAL_Delay(1500);
 
 
     /* USER CODE END WHILE */
