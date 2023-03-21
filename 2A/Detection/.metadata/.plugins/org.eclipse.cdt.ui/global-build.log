@@ -1,34 +1,93 @@
-19:52:00 **** Incremental Build of configuration Debug for project TestPCBv3 ****
+21:31:50 **** Incremental Build of configuration Debug for project SerialReader ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G070xx -c -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/TestPCBv3/Core/Startup" -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/TestPCBv3/Drivers/UltraLiteDriver/Inc" -I../Drivers/STM32G0xx_HAL_Driver/Inc -I../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'ResetAndInitializeAllSensors':
-../Core/Src/main.c:211:2: warning: implicit declaration of function 'UART_Print' [-Wimplicit-function-declaration]
-  211 |  UART_Print("All Chips booted\n");
-      |  ^~~~~~~~~~
-../Core/Src/main.c: In function 'MX_I2C1_Init':
-../Core/Src/main.c:598:3: warning: implicit declaration of function 'I2C_Init' [-Wimplicit-function-declaration]
-  598 |   I2C_Init();
-      |   ^~~~~~~~
-../Core/Src/main.c: In function 'MX_USART2_UART_Init':
-../Core/Src/main.c:646:3: warning: implicit declaration of function 'UART_Init'; did you mean 'HAL_Init'? [-Wimplicit-function-declaration]
-  646 |   UART_Init();
-      |   ^~~~~~~~~
-      |   HAL_Init
-arm-none-eabi-gcc -o "TestPCBv3.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\TestPCBv3\STM32G070RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TestPCBv3.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: TestPCBv3.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_UART_REGISTER_CALLBACKS -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Core/Inc/stm32f4xx_hal_conf.h:193: warning: "USE_HAL_UART_REGISTER_CALLBACKS" redefined
+  193 | #define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
+      | 
+<command-line>: note: this is the location of the previous definition
+../Core/Src/main.c: In function 'readHeader':
+../Core/Src/main.c:105:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  105 |  HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[26]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[26]'
+  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:107:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  107 |  HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
+      |                             ^~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[16]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[16]'
+  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:109:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  109 |  HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[23]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[23]'
+  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:110:36: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  110 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+      |                                    ^~~~~~
+../Core/Src/main.c:110:36: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:22:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   21 | #include <stdio.h>
+  +++ |+#include <string.h>
+   22 | 
+../Core/Src/main.c:110:43: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+  110 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+      |                                           ^~~~~
+      |                                           |
+      |                                           uint8_t * {aka unsigned char *}
+../Core/Src/main.c:110:43: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
+../Core/Src/main.c:104:6: warning: unused variable 'size' [-Wunused-variable]
+  104 |  int size = sprintf((char*)value, "%d secondes\r\n", (int)tpsMesure);
+      |      ^~~~
+../Core/Src/main.c: In function 'readValue':
+../Core/Src/main.c:129:37: warning: incompatible implicit declaration of built-in function 'strlen'
+  129 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
+      |                                     ^~~~~~
+../Core/Src/main.c:129:37: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:129:44: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+  129 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
+      |                                            ^~~~~
+      |                                            |
+      |                                            uint8_t * {aka unsigned char *}
+../Core/Src/main.c:129:44: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
+arm-none-eabi-gcc -o "SerialReader.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\SerialReader\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialReader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SerialReader.elf
  
-arm-none-eabi-size   TestPCBv3.elf 
-arm-none-eabi-objdump -h -S  TestPCBv3.elf  > "TestPCBv3.list"
+arm-none-eabi-size   SerialReader.elf 
+arm-none-eabi-objdump -h -S  SerialReader.elf  > "SerialReader.list"
    text	   data	    bss	    dec	    hex	filename
-  52140	    560	   8608	  61308	   ef7c	TestPCBv3.elf
+  17928	    220	  21932	  40080	   9c90	SerialReader.elf
 Finished building: default.size.stdout
  
-Finished building: TestPCBv3.list
+Finished building: SerialReader.list
  
-19:52:19 **** Incremental Build of configuration Debug for project TestPCBv3 ****
+21:31:57 **** Incremental Build of configuration Debug for project SerialReader ****
 make -j12 all 
-arm-none-eabi-size   TestPCBv3.elf 
+arm-none-eabi-size   SerialReader.elf 
    text	   data	    bss	    dec	    hex	filename
-  52140	    560	   8608	  61308	   ef7c	TestPCBv3.elf
+  17928	    220	  21932	  40080	   9c90	SerialReader.elf
 Finished building: default.size.stdout
  
