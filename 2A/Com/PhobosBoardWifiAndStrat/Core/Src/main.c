@@ -288,8 +288,8 @@ int main(void)
   }
 
   printf("About to move...\r\n");
-  //while(wifiData[1]!='g'){
-  //}
+  wifiDataTX=0xC0;
+  serial_send(&wifiDataTX,1,1);
   while (1) {
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
               && !robot.waitingForOnMoveAction

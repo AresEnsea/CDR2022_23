@@ -63,6 +63,29 @@ Strategy* strategy_initialize(int num) {
 	else if(num == 2 || num == 7)
 	{
 
+#include "strategy.h"
+
+		Strategy* strategy = (Strategy*) malloc(sizeof(Strategy));
+		strategy->length = 1;
+		strategy->path = (Bezier**) malloc(sizeof(Bezier*) * strategy->length);
+
+		strategy->directions = (Direction*) malloc(sizeof(Direction) * strategy->length);
+		strategy->speeds = (float*) calloc(strategy->length+1, sizeof(float));
+
+		strategy->onSiteActions = (uint8_t**) malloc(sizeof(uint8_t*) * (strategy->length+1));
+		strategy->onSiteActionsLengths = (int*) calloc((strategy->length+1), sizeof(int));
+		strategy->onMoveActions = (uint8_t**) malloc(sizeof(uint8_t*) * (strategy->length+1));
+		strategy->onMoveActionsLengths = (int*) calloc((strategy->length+1), sizeof(int));
+
+		strategy->path[0] = bezier_new(1086.139, 1840.594, 1088.119, 1617.822, 1087.129, 1525.743, 1089.109, 1249.505, 30);
+
+		strategy->directions[0] = FORWARD;
+
+		strategy->speeds[0] = 385;
+
+
+
+		return strategy;
 	}
 	else if(num == 3 || num == 6)
 	{

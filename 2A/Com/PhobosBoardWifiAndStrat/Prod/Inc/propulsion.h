@@ -14,10 +14,10 @@
 /** Définit les sens de parcours pour le robot. */
 typedef enum {
     /** Sense de rotation trigonométrique face à l'axe du moteur. */
-    FORWARD=1,
+    FORWARD=-1,
 
     /** Sense de rotation des aiguilles d'une montre. */
-    BACKWARD=-1
+    BACKWARD=1
 } Direction;
 
 
