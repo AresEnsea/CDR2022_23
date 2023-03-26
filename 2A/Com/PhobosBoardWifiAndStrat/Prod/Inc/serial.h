@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 extern uint8_t lidarData;
+extern uint8_t USARTprintChange;
 extern uint8_t wifiDataRX;
 extern uint8_t wifiDataTX;
 extern uint8_t armData;

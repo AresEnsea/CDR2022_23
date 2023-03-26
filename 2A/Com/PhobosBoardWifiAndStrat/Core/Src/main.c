@@ -65,12 +65,22 @@ extern Robot robot;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
 
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+/*
 int _write(int file, char *ptr, int len) {
 	int DataIdx;
 
@@ -78,7 +88,7 @@ int _write(int file, char *ptr, int len) {
 		HAL_UART_Transmit(&huart2, (uint8_t *) ptr++, 1, HAL_MAX_DELAY);
 	}
 	return len;
-}
+}*
 
 /* USER CODE END 0 */
 
@@ -130,6 +140,10 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim5);
   HAL_TIM_Base_Start_IT(&htim4);
 
+  HAL_UART_Receive_IT(&huart4, &lidarData, 1);
+  HAL_UART_Receive_IT(&huart6, &armData, 1);
+  HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
+
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing propulsion system...");
   propulsion_initialize();
@@ -166,7 +180,14 @@ int main(void)
   int a = 0;
   HAL_UART_Receive_IT(&huart6, pData, 1);
   while ((waitingForMatchStart == true)) {
-	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
+	  if(wifiDataRX==0x84){
+		  waitingForMatchStart=0;
+
+		  strategy = strategy_initialize(7);
+	  }
+	  else{
+		  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
+	  }
 	  if((pData[0] >= '0' && pData[0] <= '9')  && a == 0)
 	  {
 		  a = 1;
@@ -249,9 +270,6 @@ int main(void)
   //odometry_setPosition(0, 0);
   //odometry_setAngle(0);
 
-  HAL_UART_Receive_IT(&huart4, &lidarData, 1);
-  HAL_UART_Receive_IT(&huart6, &armData, 1);
-  HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
