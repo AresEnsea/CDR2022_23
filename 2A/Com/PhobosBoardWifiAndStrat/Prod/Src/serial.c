@@ -71,7 +71,10 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 }
 
 void WifiUartActivation(uint8_t activate){//active 0 send 1 byte, 1 send 100
-
+	if(activate==1){
+		wifiDataTX=0x7F;
+	}else{wifiDataTX=0x7E;}
+	serial_send(&wifiDataTX, 1, 1);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {

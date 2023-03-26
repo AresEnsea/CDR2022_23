@@ -16,5 +16,6 @@ extern uint8_t pData[1];
 
 void parser32(uint32_t *ptr);
 int serial_send(uint8_t *ptr, int len, int uartPort);
+void WifiUartActivation(uint8_t activate);
 
 #endif
