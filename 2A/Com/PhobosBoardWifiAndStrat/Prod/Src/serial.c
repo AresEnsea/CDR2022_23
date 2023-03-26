@@ -70,7 +70,7 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 	return len;
 }
 
-void WifiUartActivation(uint8_t activate){//active 0 send 1 byte, 1 send 100
+void WifiUartTXActivation(uint8_t activate){//active 0 send 1 byte, 1 send 100
 	if(activate==1){
 		wifiDataTX=0x7F;
 	}else{wifiDataTX=0x7E;}

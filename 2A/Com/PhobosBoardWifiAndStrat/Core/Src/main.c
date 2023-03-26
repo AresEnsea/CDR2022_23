@@ -143,6 +143,7 @@ int main(void)
   HAL_UART_Receive_IT(&huart4, &lidarData, 1);
   HAL_UART_Receive_IT(&huart6, &armData, 1);
   HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
+  WifiUartTXActivation(1);
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing propulsion system...");
