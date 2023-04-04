@@ -167,7 +167,7 @@ void TurnOnSensor(uint8_t SensorNum);
 void ResetAllSensors(void);
 void ResetAndInitializeAllSensors(void);
 void SystemClock_Config(void);
-void SendAllMesurements(void);
+void SendAllMesurements(uint32_t TotalTime);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -344,8 +344,8 @@ void ResetAllSensors(void)
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);  // Capt 15
 }
 
-void SendAllMesurements(void){
-	UART_Send_Mesures(LidarDistance );
+void SendAllMesurements(uint32_t TotalTime){
+	UART_Send_Mesures(LidarDistance , TotalTime);
 
 	/*
 	for(uint16_t x=0; x <NumOfZonesPerSensor*NumOfTOFSensors; x++){
@@ -497,9 +497,9 @@ int main(void)
 			HAL_Delay(TimingBudget);
 			TimeEnd = HAL_GetTick();;
 			TotalTime = (TimeEnd - TimeStart);
-			snprintf(BigBuff, sizeof(BigBuff), "Time: %ld\n", TotalTime);
+			//snprintf(BigBuff, sizeof(BigBuff), "Time: %ld\n", TotalTime);
 			//UART_Print(BigBuff);
-			SendAllMesurements();
+			SendAllMesurements(TotalTime);
 		}
 		if (error !=0)
 		{
@@ -711,7 +711,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_7|GPIO_PIN_8
-                          |GPIO_PIN_12|GPIO_PIN_15, GPIO_PIN_RESET);
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_10|GPIO_PIN_11
@@ -733,9 +733,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PA4 PA5 PA7 PA8
-                           PA12 PA15 */
+                           PA11 PA12 PA15 */
   GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_7|GPIO_PIN_8
-                          |GPIO_PIN_12|GPIO_PIN_15;
+                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
