@@ -105,9 +105,10 @@ int main(void)
   while (1)
   {
 
-	  AX12_setPosition(&ax122, 0);
+	  AX12_setPosition(&ax122, 150);
+	  AX12_getPosition(&ax122);
 	  HAL_Delay(3000);
-	  AX12_setPosition(&ax122, 180);
+	  AX12_setPosition(&ax122, 60);
 	  HAL_Delay(3000);
 
 

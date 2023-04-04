@@ -262,6 +262,11 @@ int8_t AX12_pingModule(AX12* ax12){
 	return AX12_errorControl(data[4]);
 }
 
+uint8_t AX12_Id(AX12* ax12)
+{
+	return AX12_readTram1byte(ax12,REG_ID);
+}
+
 int8_t AX12_errorControl(uint8_t err){
 	uint8_t error = 0;
 	for(uint8_t i = 0; i < 8;i++){
