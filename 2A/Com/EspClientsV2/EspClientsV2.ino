@@ -66,7 +66,6 @@ void loop() {
           printSelect=0;
           Serial.print("out of debug\n");
         }
-        //Serial.println(WifiDataTXstring);
         client.println(WifiDataTXstring);
       }
     }
