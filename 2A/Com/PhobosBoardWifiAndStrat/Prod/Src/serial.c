@@ -2,6 +2,7 @@
 
 uint8_t lidarData;
 uint8_t armData;
+uint8_t USARTprintChange;
 uint8_t wifiDataRX;
 uint8_t wifiDataTX;
 uint8_t pData[1];
@@ -69,6 +70,13 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 	return len;
 }
 
+void WifiUartTXActivation(uint8_t activate){//active 0 send 1 byte, 1 send 100
+	if(activate==1){
+		wifiDataTX=0x7F;
+	}else{wifiDataTX=0x7E;}
+	serial_send(&wifiDataTX, 1, 1);
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 	if(huart->Instance == UART4){
 		//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
@@ -93,7 +101,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 		static int byteCount=0;
 		static uint32_t rec=0;
 		if(wifiDataRX==0xC0 && byteCount<1){
-			wifiDataTX=0x40;
+			wifiDataTX=0x10;
 			serial_send(&wifiDataTX,1,1);
 		}
 		else if(wifiDataRX==0xE0 && byteCount<1){

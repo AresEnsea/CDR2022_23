@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="I2C_InitTypeDef"/>
+		<item key="selection" value="huart-&gt;RxState"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="huart-&gt;RxState"/>
+			<item value="HAL_UART_RxCpltCallback"/>
+			<item value="stm32xxxx_hal_uart.h"/>
 			<item value="I2C_InitTypeDef"/>
 			<item value="I2C_HandleTypeDef"/>
 			<item value="speed"/>
@@ -20,9 +23,6 @@
 			<item value="UART_Init"/>
 			<item value="HAL_I2C_Init(&amp;hi2c1)"/>
 			<item value="__I2C1_CLK_ENABLE"/>
-			<item value="I2C_HANDLE"/>
-			<item value="XNUCLEO53L1_DEV_LEFT"/>
-			<item value="GPIO_PIN_9"/>
 		</list>
 		<list key="replacehistory">
 			<item value="GPIO_PIN_7"/>

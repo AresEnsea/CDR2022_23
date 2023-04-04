@@ -2,14 +2,14 @@
 
 
 int16_t getRightEncoderCount() {
-	int16_t count = (int16_t) R_ENCODER.Instance->CNT;
+	int16_t count = -1*(int16_t) R_ENCODER.Instance->CNT;//précedement 1*
 	R_ENCODER.Instance->CNT = 0;
 	return count;
 }
 
 
 int16_t getLeftEncoderCount() {
-	int16_t count = (int16_t) L_ENCODER.Instance->CNT;//-1*
+	int16_t count = -1*(int16_t) L_ENCODER.Instance->CNT;//prédement -1*
 	L_ENCODER.Instance->CNT = 0;
 	return count;
 }
