@@ -11,7 +11,9 @@
 extern UART_HandleTypeDef SERIAL_UART;
 extern uint16_t ActiveCaptors;
 
-void UART_Send_Mesures(uint16_t * mesuredDistances ){
+extern uint32_t refreshTime;
+
+void UART_Send_Mesures(uint16_t * mesuredDistances , uint32_t TotalTime){
 	uint8_t openCloseBuf[4] = {0xFF,0xFF, 0xFF};
 
 	uint8_t NcaptActifs = 0;
@@ -20,8 +22,7 @@ void UART_Send_Mesures(uint16_t * mesuredDistances ){
 	}
 
 
-	uint8_t batchStats[3] = {NcaptActifs, (uint8_t)NumOfZonesPerSensor, (uint8_t)TIM6->CNT};
-	TIM6->CNT = 0;
+	uint8_t batchStats[3] = {NcaptActifs, (uint8_t)NumOfZonesPerSensor, (uint8_t)TotalTime};
 
 	uint8_t * mesures;
 	mesures = UART_makeList(mesuredDistances);

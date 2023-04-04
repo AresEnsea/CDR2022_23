@@ -62,6 +62,10 @@ uint8_t middleTrameText[32] = "------------------------------\r\n";
 uint8_t startContent[8] = "Ncapt : ";
 uint8_t middleContent[10] = " , nROI : ";
 
+uint16_t distanceList[2000] = {0};
+uint8_t captorList[2000] = {0};
+uint8_t roiList[2000] = {0};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -101,7 +105,7 @@ void readHeader(void){
 	uint8_t ncaptActifs = buffer[trameIndex+3 ];
 	NROI = buffer[trameIndex+4 ];
 	uint8_t tpsMesure = buffer[trameIndex+5 ];
-	int size = sprintf((char*)value, "%d secondes\r\n", (int)tpsMesure);
+	int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
 	HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
 	HAL_UART_Transmit(&huart2, &chiffres[ncaptActifs], 1, 100);
 	HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
@@ -112,6 +116,7 @@ void readHeader(void){
 void readValue(void){
 	int i = trameIndex + 3+3;
 
+	uint8_t Nmesure = 0;
 	uint8_t value[30];
 	uint8_t Ncapteur; uint8_t indiceROI; uint16_t distance;
 	while(i < (bufferIndex - 3)){
@@ -128,7 +133,10 @@ void readValue(void){
 		HAL_UART_Transmit(&huart2, &chiffres[indiceROI], 1, 100);
 		HAL_UART_Transmit(&huart2, value, strlen(value), 100);		//" , Distance \t\t = %d\r\n"
 
+		captorList[Nmesure]=Ncapteur; roiList[Nmesure]=indiceROI; distanceList[Nmesure]=distance;
+
 		i += 3;
+		Nmesure++;
 	}
 }
 /**
