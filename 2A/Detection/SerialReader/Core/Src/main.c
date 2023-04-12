@@ -79,6 +79,7 @@ void readTrame(void);
 void readHeader(void);
 void readValue(void);
 void trameStatus(void);
+uint8_t setFrameIndex(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -87,24 +88,29 @@ void readTrame(void){
 	trameStatus();
 
 	if(newDataset){
-		HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
-		readHeader();
-		HAL_UART_Transmit(&huart2, middleTrameText, 32, 100);
-		readValue();
-		HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
+		if(setFrameIndex()){
+			HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
+			readHeader();
+			HAL_UART_Transmit(&huart2, middleTrameText, 32, 100);
+			readValue();
+			HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
+			loopC++;
+		}
 		newDataset = 0;
-		loopC++;
 
-		if(loopC > 4){
-			HAL_Delay(5);
+		/*Pour eviter de remplir le buffer en entier.
+		 * Situe ici pour eviter de perdre la position de fin de trame lors de l'etape de lecture des mesures*/
+		if(bufferIndex >2000){
+			bufferIndex = 0;
 		}
 	}
+
 }
 void readHeader(void){
 	uint8_t value[20];
-	uint8_t ncaptActifs = buffer[trameIndex+3 ];
-	NROI = buffer[trameIndex+4 ];
-	uint8_t tpsMesure = buffer[trameIndex+5 ];
+	uint8_t ncaptActifs = buffer[trameIndex];
+	NROI = buffer[trameIndex+1];
+	uint8_t tpsMesure = buffer[trameIndex+2];
 	int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
 	HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
 	HAL_UART_Transmit(&huart2, &chiffres[ncaptActifs], 1, 100);
@@ -114,7 +120,7 @@ void readHeader(void){
 	HAL_UART_Transmit(&huart2, value, strlen(value), 100);
 }
 void readValue(void){
-	int i = trameIndex + 3+3;
+	int i = trameIndex + 3;
 
 	uint8_t Nmesure = 0;
 	uint8_t value[30];
@@ -140,9 +146,11 @@ void readValue(void){
 	}
 }
 /**
-  * @brief Modifies the state of the incoming trame
+  * @brief Modifies the state of the incoming frame
   */
 void trameStatus(void){
+
+
 	//End of Trame
 	if(trameStarted && (bufferIndex >= 3) && DataAcquiered){
 		if((buffer[bufferIndex - 3] == TRAME_BOUND) && (buffer[bufferIndex - 2] == TRAME_BOUND) && (buffer[bufferIndex - 1] == TRAME_BOUND)){
@@ -160,6 +168,30 @@ void trameStatus(void){
 	}
 	DataAcquiered = 0;
 }
+
+/**
+  * @brief Adjust the value of the index stating the start of the frame
+  * @return the success of the adjustment, 1:success 0:failure
+  */
+uint8_t setFrameIndex(void){
+	uint16_t bound = trameIndex;
+	while(bound<20000){
+		if((buffer[bound - 3] == TRAME_BOUND)
+		&& (buffer[bound - 2] == TRAME_BOUND)
+		&& (buffer[bound - 1] == TRAME_BOUND)
+		&& (buffer[bound - 0] != TRAME_BOUND)){
+
+			trameIndex = bound;
+			return 1;
+		}
+		else{
+			bound++;
+		}
+	}
+	return 0;
+
+}
+
 /* USER CODE END 0 */
 
 /**

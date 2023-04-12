@@ -14,8 +14,12 @@ void avoidance_initialize() {
 
 
 void avoidance_update(float t, Direction dir) {
-	int distance = lidar_getDistance(dir);
-
+	int distance = lidar_getDistance(dir); uint8_t d2 = (uint8_t) distance;
+	if(distance == 0)
+		distance = 1000;
+	uint8_t buffy[30];
+	sprintf(buffy,"distance %d\r\n",distance);
+	HAL_UART_Transmit(&huart1, buffy,sizeof(buffy),HAL_MAX_DELAY);
 	if ((avoidanceState == PATH_CLEAR || avoidanceState == PATH_CROWDED) && distance < LIDAR_THRESHOLD) {
 		avoidanceState = PATH_OBSTRUCTED;
 		printf("Obstacle detected. Waiting 2s...\r\n");

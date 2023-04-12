@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -124,6 +125,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM1_Init();
   MX_TIM8_Init();
   MX_TIM11_Init();
@@ -151,7 +153,7 @@ int main(void)
   while(HAL_GPIO_ReadPin(WIFI_GPIO_Port, WIFI_Pin)==0){
   }
 
-  WifiUartTXActivation();
+  //WifiUartTXActivation();
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing propulsion system...");
@@ -272,6 +274,7 @@ int main(void)
 
   printf("Go!\r\n");
 
+  HAL_UART_Receive_DMA(&huart4, &buffer[0], 3);
   //odometry_setPosition(0, 0);
   //odometry_setAngle(0);
 

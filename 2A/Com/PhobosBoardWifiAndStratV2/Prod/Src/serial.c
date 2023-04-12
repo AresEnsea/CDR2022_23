@@ -7,6 +7,10 @@ uint8_t wifiDataRX;
 uint8_t wifiDataTX;
 uint8_t pData[1];
 
+uint8_t buffer[1<<15] = {0};
+uint16_t bufferIndex = 0;
+uint8_t DataAcquiered = 0;
+
 void parser32(uint32_t *ptr){
 	uint8_t trigger=0xE0;
 	uint8_t byte7No0= (*ptr & 0x0000007F) + 0x0000080;
@@ -86,10 +90,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 	if(huart->Instance == UART4){
 		//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 
-		int id = lidarData >> 4;
+		/*int id = lidarData >> 4;
 		uint8_t dist = (lidarData & 0xF) << 2;
 		lidar_updateDistance(id, dist);
-		HAL_UART_Receive_IT(&huart4, &lidarData, 1);
+		HAL_UART_Receive_IT(&huart4, &lidarData, 1);*/
+
+		DataAcquiered = 1;
+		bufferIndex += 3;
+		readTrame();
+		HAL_UART_Receive_DMA(&huart4, &buffer[bufferIndex], 3);
+
 	}
 
 	/*if(huart->Instance == USART6){
