@@ -149,9 +149,9 @@ int main(void)
   HAL_UART_Receive_IT(&huart4, &lidarData, 1);
   HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
   HAL_UART_Receive_IT(&huart6, pData, 1);
-
+/*
   while(HAL_GPIO_ReadPin(WIFI_GPIO_Port, WIFI_Pin)==0){
-  }
+  }*/
 
   //WifiUartTXActivation();
 
@@ -194,6 +194,7 @@ int main(void)
 	  if(wifiDataRX==0x84){
 		  waitingForMatchStart=0;
 		  strategy = strategy_initialize(0);
+		  WifiUartTXActivation();
 	  }
 	  else if((pData[0] >= '0' && pData[0] <= '9')  && a == 0)
 	  {

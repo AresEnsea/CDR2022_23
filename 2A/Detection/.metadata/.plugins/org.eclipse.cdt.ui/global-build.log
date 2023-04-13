@@ -1,31 +1,42 @@
-12:02:04 **** Incremental Build of configuration Debug for project LIDAR_Ares_v1_4 ****
+19:22:32 **** Incremental Build of configuration Debug for project PhobosBoardWifiAndStratV2 ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/trameUart.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G070xx -c -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR_Ares_v1_4/Core/Startup" -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR_Ares_v1_4/Drivers/UltraLiteDriver/Inc" -I../Drivers/STM32G0xx_HAL_Driver/Inc -I../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/trameUart.d" -MT"Core/Src/trameUart.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/trameUart.o"
-arm-none-eabi-gcc -o "LIDAR_Ares_v1_4.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR_Ares_v1_4\STM32G070RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR_Ares_v1_4.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: LIDAR_Ares_v1_4.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "PhobosBoardWifiAndStratV2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Com\PhobosBoardWifiAndStratV2\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PhobosBoardWifiAndStratV2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: PhobosBoardWifiAndStratV2.elf
  
-arm-none-eabi-size   LIDAR_Ares_v1_4.elf 
-arm-none-eabi-objdump -h -S  LIDAR_Ares_v1_4.elf  > "LIDAR_Ares_v1_4.list"
-arm-none-eabi-objcopy  -O binary  LIDAR_Ares_v1_4.elf  "LIDAR_Ares_v1_4.bin"
+arm-none-eabi-size   PhobosBoardWifiAndStratV2.elf 
+arm-none-eabi-objdump -h -S  PhobosBoardWifiAndStratV2.elf  > "PhobosBoardWifiAndStratV2.list"
    text	   data	    bss	    dec	    hex	filename
-  54264	    560	   4624	  59448	   e838	LIDAR_Ares_v1_4.elf
+  59576	    484	  36820	  96880	  17a70	PhobosBoardWifiAndStratV2.elf
 Finished building: default.size.stdout
  
-Finished building: LIDAR_Ares_v1_4.bin
+Finished building: PhobosBoardWifiAndStratV2.list
  
-Finished building: LIDAR_Ares_v1_4.list
- 
-12:02:10 **** Incremental Build of configuration Debug for project LIDAR_Ares_v1_4 ****
+19:22:42 **** Incremental Build of configuration Debug for project PhobosBoardWifiAndStratV2 ****
 make -j12 all 
-arm-none-eabi-size   LIDAR_Ares_v1_4.elf 
+arm-none-eabi-size   PhobosBoardWifiAndStratV2.elf 
    text	   data	    bss	    dec	    hex	filename
-  54264	    560	   4624	  59448	   e838	LIDAR_Ares_v1_4.elf
+  59576	    484	  36820	  96880	  17a70	PhobosBoardWifiAndStratV2.elf
 Finished building: default.size.stdout
  
-12:03:53 **** Incremental Build of configuration Debug for project LIDAR_Ares_v1_3 ****
+19:22:56 **** Incremental Build of configuration Debug for project PhobosBoardWifiAndStratV2 ****
 make -j12 all 
-arm-none-eabi-size   LIDAR_Ares_v1_3.elf 
+arm-none-eabi-size   PhobosBoardWifiAndStratV2.elf 
    text	   data	    bss	    dec	    hex	filename
-  53976	    560	   4624	  59160	   e718	LIDAR_Ares_v1_3.elf
+  59576	    484	  36820	  96880	  17a70	PhobosBoardWifiAndStratV2.elf
 Finished building: default.size.stdout
+ 
+19:34:56 **** Incremental Build of configuration Debug for project PhobosBoardWifiAndStratV2 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "PhobosBoardWifiAndStratV2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Com\PhobosBoardWifiAndStratV2\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PhobosBoardWifiAndStratV2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: PhobosBoardWifiAndStratV2.elf
+ 
+arm-none-eabi-size   PhobosBoardWifiAndStratV2.elf 
+arm-none-eabi-objdump -h -S  PhobosBoardWifiAndStratV2.elf  > "PhobosBoardWifiAndStratV2.list"
+   text	   data	    bss	    dec	    hex	filename
+  59584	    484	  36820	  96888	  17a78	PhobosBoardWifiAndStratV2.elf
+Finished building: default.size.stdout
+ 
+Finished building: PhobosBoardWifiAndStratV2.list
  

@@ -13,6 +13,8 @@ extern uint16_t ActiveCaptors;
 
 extern uint32_t refreshTime;
 
+uint8_t listOfMesures[3*NumOfTOFSensors + 1]={0};
+
 void UART_Send_Mesures(uint16_t * mesuredDistances , uint8_t Zone,  uint32_t TotalTime){
 	uint8_t openCloseBuf[4] = {0xFF,0xFF, 0xFF};
 
@@ -22,8 +24,7 @@ void UART_Send_Mesures(uint16_t * mesuredDistances , uint8_t Zone,  uint32_t Tot
 	}
 
 
-	uint8_t batchStats[3] = {NcaptActifs, (uint8_t)NumOfZonesPerSensor, (uint8_t)(TotalTime/10)};
-	//ITM_Port32(31) = TotalTime;
+
 
 
 	uint8_t * mesures;
@@ -33,7 +34,11 @@ void UART_Send_Mesures(uint16_t * mesuredDistances , uint8_t Zone,  uint32_t Tot
 	else{
 		mesures = UART_monoROIList( mesuredDistances, Zone);
 	}
-	uint16_t NbreMesures =(uint16_t) *mesures; mesures++;
+	uint16_t NbreMesures = listOfMesures[0];
+
+	uint8_t batchStats[3] = {NcaptActifs, (uint8_t)NumOfZonesPerSensor, (uint8_t)NbreMesures};
+		//ITM_Port32(31) = TotalTime;
+			//(uint16_t) *mesures; mesures++;
 	/*uint8_t A = mesures[0];
 	 A = mesures[1];
 
@@ -49,7 +54,7 @@ void UART_Send_Mesures(uint16_t * mesuredDistances , uint8_t Zone,  uint32_t Tot
 
 	// Capteur Zone i	Distance i (part1)	Distance i (part2)
 	for(int j=0;j<NbreMesures;j++){
-	HAL_UART_Transmit(&SERIAL_UART,  mesures, 3, 100);
+	HAL_UART_Transmit(&SERIAL_UART,  &listOfMesures[3*j+1], 3, 100);
 	mesures+=3;
 	HAL_Delay(5);
 	}
@@ -91,7 +96,7 @@ uint8_t * UART_makeList(uint16_t * LidarDistance){
 }
 
 uint8_t * UART_monoROIList(uint16_t * LidarDistance, uint8_t Zone){
-	uint8_t listOfMesures[3*NumOfTOFSensors + 1];
+
 	int ZonePosition;
 	int Nmesure = 0;
 
@@ -115,7 +120,7 @@ uint8_t * UART_monoROIList(uint16_t * LidarDistance, uint8_t Zone){
 	}
 	listOfMesures[0] = Nmesure;
 
-	uint8_t * exitVar =listOfMesures;
+	uint8_t * exitVar;
 
 	return exitVar;
 }

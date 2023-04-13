@@ -16,6 +16,7 @@ uint16_t distanceList[300] = {0};
 uint8_t captorList[300] = {0};
 uint8_t roiList[300] = {0};
 uint8_t maxMesure = 0;
+uint8_t mesuresSent;
 
 
 // Le lidar est sur l'UART 4
@@ -137,8 +138,8 @@ void readHeader(uint16_t trameIndex){
 			NROI = DEFAULT_ROI; // Not the right value for debug purposes
 		}
 
-		uint8_t tpsMesure = buffer[trameIndex+2];
-		/*int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
+		mesuresSent = buffer[trameIndex+2];
+		/*int size = sprintf((char*)value, "%d mesures recues\r\n", (int)mesuresSent);
 		HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
 		HAL_UART_Transmit(&huart2, &chiffres[ncaptActifs], 1, 100);
 		HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
@@ -151,9 +152,9 @@ void readValue(uint16_t usedIndex, uint16_t trameIndex){
 	int i = trameIndex + 3;
 
 	uint8_t Nmesure = 0;
-	uint8_t value[30];
+	//uint8_t value[30];
 	uint8_t Ncapteur; uint8_t indiceROI; uint16_t distance;
-	while(i < (usedIndex - 3)){
+	while(i < (usedIndex - 3) && Nmesure < mesuresSent){
 		//Selon le code du systeme de detection : "Pour que le premier element de la chaine de caracteres ne soit pas '\0'"
 		// Donc il faut enlever l'offset sur buffer[i]
 		indiceROI = (buffer[i]-1)%NROI;

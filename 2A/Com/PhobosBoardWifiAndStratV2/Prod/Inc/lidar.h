@@ -21,6 +21,7 @@ extern uint16_t distanceList[300];
 extern uint8_t captorList[300];
 extern uint8_t roiList[300];
 extern uint8_t maxMesure;
+extern uint8_t mesuresSent;
 
 void lidar_initialize();
 
