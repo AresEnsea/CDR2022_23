@@ -97,7 +97,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 
 		DataAcquiered = 1;
 		bufferIndex += 3;
-		readTrame();
+		trameStatus();
 		HAL_UART_Receive_DMA(&huart4, &buffer[bufferIndex], 3);
 
 	}

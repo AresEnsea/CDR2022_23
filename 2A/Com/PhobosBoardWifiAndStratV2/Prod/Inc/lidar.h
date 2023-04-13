@@ -35,9 +35,9 @@ void lidar_incrementTime(int ms);
 
 
 void readTrame(void);
-void readHeader(void);
-void readValue(void);
+void readHeader(uint16_t trameIndex);
+void readValue(uint16_t usedIndex,uint16_t trameIndex);
 void trameStatus(void);
-uint8_t setFrameIndex(void);
+uint8_t setFrameIndex(uint16_t * trameIndex);
 
 #endif

@@ -1,93 +1,31 @@
-21:34:32 **** Incremental Build of configuration Debug for project SerialReader ****
+12:02:04 **** Incremental Build of configuration Debug for project LIDAR_Ares_v1_4 ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_UART_REGISTER_CALLBACKS -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Core/Inc/stm32f4xx_hal_conf.h:193: warning: "USE_HAL_UART_REGISTER_CALLBACKS" redefined
-  193 | #define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
-      | 
-<command-line>: note: this is the location of the previous definition
-../Core/Src/main.c: In function 'readHeader':
-../Core/Src/main.c:120:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  120 |  HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                             |
-      |                             char (*)[26]
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[26]'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:122:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  122 |  HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
-      |                             ^~~~~~~~~~~~~~~~~~
-      |                             |
-      |                             char (*)[16]
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[16]'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:124:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
-  124 |  HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                             |
-      |                             char (*)[23]
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[23]'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:125:36: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
-  125 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
-      |                                    ^~~~~~
-../Core/Src/main.c:125:36: warning: incompatible implicit declaration of built-in function 'strlen'
-../Core/Src/main.c:22:1: note: include '<string.h>' or provide a declaration of 'strlen'
-   21 | #include <stdio.h>
-  +++ |+#include <string.h>
-   22 | 
-../Core/Src/main.c:125:43: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-  125 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
-      |                                           ^~~~~
-      |                                           |
-      |                                           uint8_t * {aka unsigned char *}
-../Core/Src/main.c:125:43: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
-../Core/Src/main.c:119:6: warning: unused variable 'size' [-Wunused-variable]
-  119 |  int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
-      |      ^~~~
-../Core/Src/main.c: In function 'readValue':
-../Core/Src/main.c:145:37: warning: incompatible implicit declaration of built-in function 'strlen'
-  145 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
-      |                                     ^~~~~~
-../Core/Src/main.c:145:37: note: include '<string.h>' or provide a declaration of 'strlen'
-../Core/Src/main.c:145:44: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-  145 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
-      |                                            ^~~~~
-      |                                            |
-      |                                            uint8_t * {aka unsigned char *}
-../Core/Src/main.c:145:44: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
-arm-none-eabi-gcc -o "SerialReader.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\SerialReader\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialReader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: SerialReader.elf
+arm-none-eabi-gcc "../Core/Src/trameUart.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G070xx -c -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR_Ares_v1_4/Core/Startup" -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR_Ares_v1_4/Drivers/UltraLiteDriver/Inc" -I../Drivers/STM32G0xx_HAL_Driver/Inc -I../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/trameUart.d" -MT"Core/Src/trameUart.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/trameUart.o"
+arm-none-eabi-gcc -o "LIDAR_Ares_v1_4.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR_Ares_v1_4\STM32G070RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR_Ares_v1_4.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LIDAR_Ares_v1_4.elf
  
-arm-none-eabi-size   SerialReader.elf 
-arm-none-eabi-objdump -h -S  SerialReader.elf  > "SerialReader.list"
+arm-none-eabi-size   LIDAR_Ares_v1_4.elf 
+arm-none-eabi-objdump -h -S  LIDAR_Ares_v1_4.elf  > "LIDAR_Ares_v1_4.list"
+arm-none-eabi-objcopy  -O binary  LIDAR_Ares_v1_4.elf  "LIDAR_Ares_v1_4.bin"
    text	   data	    bss	    dec	    hex	filename
-  18148	    220	  29932	  48300	   bcac	SerialReader.elf
+  54264	    560	   4624	  59448	   e838	LIDAR_Ares_v1_4.elf
 Finished building: default.size.stdout
  
-Finished building: SerialReader.list
+Finished building: LIDAR_Ares_v1_4.bin
  
-21:34:38 **** Incremental Build of configuration Debug for project SerialReader ****
+Finished building: LIDAR_Ares_v1_4.list
+ 
+12:02:10 **** Incremental Build of configuration Debug for project LIDAR_Ares_v1_4 ****
 make -j12 all 
-arm-none-eabi-size   SerialReader.elf 
+arm-none-eabi-size   LIDAR_Ares_v1_4.elf 
    text	   data	    bss	    dec	    hex	filename
-  18148	    220	  29932	  48300	   bcac	SerialReader.elf
+  54264	    560	   4624	  59448	   e838	LIDAR_Ares_v1_4.elf
+Finished building: default.size.stdout
+ 
+12:03:53 **** Incremental Build of configuration Debug for project LIDAR_Ares_v1_3 ****
+make -j12 all 
+arm-none-eabi-size   LIDAR_Ares_v1_3.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53976	    560	   4624	  59160	   e718	LIDAR_Ares_v1_3.elf
 Finished building: default.size.stdout
  

@@ -4,6 +4,7 @@ int lidar_timeSinceData[16];
 uint8_t lidar_distances[16];
 
 #define TRAME_BOUND		0xFF
+#define DEFAULT_ROI 13
 
 uint8_t newDataset = 0;
 uint8_t trameStarted = 0;
@@ -27,9 +28,10 @@ void lidar_initialize() {
 }
 
 void lidar_updateDistance(int index, uint8_t dist) {
-	lidar_distances[index] = dist;
-	lidar_timeSinceData[index] = 0;
+	/*lidar_distances[index] = dist;
+	lidar_timeSinceData[index] = 0;*/
 	//printf("%d -> %dcm\r\n", index, dist);
+
 }
 
 int lidar_getDistance(Direction dir) {
@@ -51,6 +53,7 @@ int lidar_getDistance(Direction dir) {
 			}
 		}
 	}*/
+	readTrame();
 
 	for(int i = 0; i<maxMesure;i++){
 		if((int)distanceList[i] < minDist){
@@ -99,12 +102,17 @@ void lidar_incrementTime(int ms) {
 
 
 void readTrame(void){
+
+
 	if(newDataset){
-		if(setFrameIndex()){
+	uint16_t usedIndex = bufferIndex;
+	uint16_t usedStart = trameIndex;
+
+		if(setFrameIndex(&usedStart)){
 			//HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
-			readHeader();
+			readHeader(usedStart);
 			//HAL_UART_Transmit(&huart2, middleTrameText, 32, 100);
-			readValue();
+			readValue(usedIndex, usedStart);
 			//HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
 		}
 		newDataset = 0;
@@ -116,10 +124,19 @@ void readTrame(void){
 		}
 	}
 }
-void readHeader(void){
+void readHeader(uint16_t trameIndex){
 	//uint8_t value[20];
 		uint8_t ncaptActifs = buffer[trameIndex];
-		NROI = buffer[trameIndex+1];
+
+		//Pour eviter les erreurs de lecture de trame ne lisant pas le header
+		if((ncaptActifs <= 0 || ncaptActifs >16) || (buffer[trameIndex+1]>14)){
+			NROI = DEFAULT_ROI;
+		}
+		else{
+			//NROI = buffer[trameIndex+1];
+			NROI = DEFAULT_ROI; // Not the right value for debug purposes
+		}
+
 		uint8_t tpsMesure = buffer[trameIndex+2];
 		/*int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
 		HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
@@ -129,14 +146,14 @@ void readHeader(void){
 		HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
 		HAL_UART_Transmit(&huart2, value, strlen(value), 100);*/
 }
-void readValue(void){
+void readValue(uint16_t usedIndex, uint16_t trameIndex){
 
 	int i = trameIndex + 3;
 
 	uint8_t Nmesure = 0;
 	uint8_t value[30];
 	uint8_t Ncapteur; uint8_t indiceROI; uint16_t distance;
-	while(i < (bufferIndex - 3)){
+	while(i < (usedIndex - 3)){
 		//Selon le code du systeme de detection : "Pour que le premier element de la chaine de caracteres ne soit pas '\0'"
 		// Donc il faut enlever l'offset sur buffer[i]
 		indiceROI = (buffer[i]-1)%NROI;
@@ -190,15 +207,15 @@ void trameStatus(void){
   * @brief Adjust the value of the index stating the start of the frame
   * @return the success of the adjustment, 1:success 0:failure
   */
-uint8_t setFrameIndex(void){
-	uint16_t bound = trameIndex;
+uint8_t setFrameIndex(uint16_t * trameIndex){
+	uint16_t bound = *trameIndex;
 	while(bound<20000){
 		if((buffer[bound - 3] == TRAME_BOUND)	//0xFF
 		&& (buffer[bound - 2] == TRAME_BOUND)	//0xFF
 		&& (buffer[bound - 1] == TRAME_BOUND)	//0xFF
 		&& (buffer[bound - 0] != TRAME_BOUND)){	//NcaptActifs
 
-			trameIndex = bound;
+			*trameIndex = bound;
 			return 1;
 		}
 		else{

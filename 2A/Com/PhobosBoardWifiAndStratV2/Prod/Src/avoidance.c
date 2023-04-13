@@ -18,6 +18,7 @@ void avoidance_update(float t, Direction dir) {
 	if(distance == 0)
 		distance = 1000;
 	uint8_t buffy[30];
+	ITM_Port32(31) = distance;
 	sprintf(buffy,"distance %d\r\n",distance);
 	HAL_UART_Transmit(&huart1, buffy,sizeof(buffy),HAL_MAX_DELAY);
 	if ((avoidanceState == PATH_CLEAR || avoidanceState == PATH_CROWDED) && distance < LIDAR_THRESHOLD) {

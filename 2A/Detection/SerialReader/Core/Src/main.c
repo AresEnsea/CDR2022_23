@@ -38,6 +38,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 #define TRAME_BOUND		0xFF
+#define DEFAULT_ROI 13
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -66,6 +67,8 @@ uint16_t distanceList[2000] = {0};
 uint8_t captorList[2000] = {0};
 uint8_t roiList[2000] = {0};
 
+uint8_t maxMesure = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -76,57 +79,67 @@ static void MX_DMA_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void readTrame(void);
-void readHeader(void);
-void readValue(void);
+void readHeader(uint16_t trameIndex);
+void readValue(uint16_t usedIndex, uint16_t trameIndex);
 void trameStatus(void);
-uint8_t setFrameIndex(void);
+uint8_t setFrameIndex(uint16_t * trameIndex);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void readTrame(void){
-	trameStatus();
-
 	if(newDataset){
-		if(setFrameIndex()){
-			HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
-			readHeader();
-			HAL_UART_Transmit(&huart2, middleTrameText, 32, 100);
-			readValue();
-			HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
-			loopC++;
-		}
-		newDataset = 0;
+		uint16_t usedIndex = bufferIndex;
+		uint16_t usedStart = trameIndex;
 
-		/*Pour eviter de remplir le buffer en entier.
-		 * Situe ici pour eviter de perdre la position de fin de trame lors de l'etape de lecture des mesures*/
-		if(bufferIndex >2000){
-			bufferIndex = 0;
+			if(setFrameIndex(&usedStart)){
+				HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
+				readHeader(usedStart);
+				HAL_UART_Transmit(&huart2, middleTrameText, 32, 100);
+				readValue(usedIndex, usedStart);
+				HAL_UART_Transmit(&huart2, sideTrameText, 32, 100);
+			}
+			newDataset = 0;
+
+			/*Pour eviter de remplir le buffer en entier.
+			 * Situe ici pour eviter de perdre la position de fin de trame lors de l'etape de lecture des mesures*/
+			if(bufferIndex >2000){
+				bufferIndex = 0;
+			}
 		}
-	}
 
 }
-void readHeader(void){
+void readHeader(uint16_t trameIndex){
 	uint8_t value[20];
-	uint8_t ncaptActifs = buffer[trameIndex];
-	NROI = buffer[trameIndex+1];
-	uint8_t tpsMesure = buffer[trameIndex+2];
-	int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
-	HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
-	HAL_UART_Transmit(&huart2, &chiffres[ncaptActifs], 1, 100);
-	HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
-	HAL_UART_Transmit(&huart2, &chiffres[NROI], 1, 100);
-	HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
-	HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+		uint8_t ncaptActifs = buffer[trameIndex];
+
+		//Pour eviter les erreurs de lecture de trame ne lisant pas le header
+		if((ncaptActifs <= 0 || ncaptActifs >16) || (buffer[trameIndex+1]>14)){
+			NROI = DEFAULT_ROI;
+		}
+		else{
+			//NROI = buffer[trameIndex+1];
+			NROI = DEFAULT_ROI; // Not the right value for debug purposes
+		}
+
+		uint8_t tpsMesure = buffer[trameIndex+2];
+		int size = sprintf((char*)value, "%d micro secondes\r\n", (int)tpsMesure*10);
+		HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
+		HAL_UART_Transmit(&huart2, &chiffres[ncaptActifs], 1, 100);
+		HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
+		HAL_UART_Transmit(&huart2, &chiffres[NROI], 1, 100);
+		HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
+		HAL_UART_Transmit(&huart2, value, strlen(value), 100);
 }
-void readValue(void){
+void readValue(uint16_t usedIndex, uint16_t trameIndex){
+
 	int i = trameIndex + 3;
 
 	uint8_t Nmesure = 0;
 	uint8_t value[30];
 	uint8_t Ncapteur; uint8_t indiceROI; uint16_t distance;
-	while(i < (bufferIndex - 3)){
-		//Selon le code du steme de detection : "Pour que le premier element de la chaine de caracteres ne soit pas '\0'"
+	while(i < (usedIndex - 3)){
+		//Selon le code du systeme de detection : "Pour que le premier element de la chaine de caracteres ne soit pas '\0'"
 		// Donc il faut enlever l'offset sur buffer[i]
 		indiceROI = (buffer[i]-1)%NROI;
 		Ncapteur  = (buffer[i]-1 -indiceROI)/NROI;
@@ -144,26 +157,32 @@ void readValue(void){
 		i += 3;
 		Nmesure++;
 	}
+	maxMesure = Nmesure;
 }
 /**
-  * @brief Modifies the state of the incoming frame
+  * @brief Modifies the state of the incoming trame
   */
 void trameStatus(void){
-
-
 	//End of Trame
 	if(trameStarted && (bufferIndex >= 3) && DataAcquiered){
 		if((buffer[bufferIndex - 3] == TRAME_BOUND) && (buffer[bufferIndex - 2] == TRAME_BOUND) && (buffer[bufferIndex - 1] == TRAME_BOUND)){
 			trameStarted = 0;
 
 			newDataset = 1;
+			/*bufferIndex = 0;
+			buffer[0]=255;*/
+			/*if(bufferIndex> 2000){
+				bufferIndex = 0;
+			}*/
 		}
 	}
-	//Start of trame
+	//Start of Trame
 	else if(!trameStarted && (bufferIndex >= 3) && DataAcquiered){
 		if((buffer[bufferIndex - 3] == TRAME_BOUND) && (buffer[bufferIndex - 2] == TRAME_BOUND) && (buffer[bufferIndex - 1] == TRAME_BOUND)){
 			trameStarted = 1;
 			trameIndex = bufferIndex;
+			//trameIndex = 0;
+
 		}
 	}
 	DataAcquiered = 0;
@@ -173,15 +192,15 @@ void trameStatus(void){
   * @brief Adjust the value of the index stating the start of the frame
   * @return the success of the adjustment, 1:success 0:failure
   */
-uint8_t setFrameIndex(void){
-	uint16_t bound = trameIndex;
+uint8_t setFrameIndex(uint16_t * trameIndex){
+	uint16_t bound = *trameIndex;
 	while(bound<20000){
-		if((buffer[bound - 3] == TRAME_BOUND)
-		&& (buffer[bound - 2] == TRAME_BOUND)
-		&& (buffer[bound - 1] == TRAME_BOUND)
-		&& (buffer[bound - 0] != TRAME_BOUND)){
+		if((buffer[bound - 3] == TRAME_BOUND)	//0xFF
+		&& (buffer[bound - 2] == TRAME_BOUND)	//0xFF
+		&& (buffer[bound - 1] == TRAME_BOUND)	//0xFF
+		&& (buffer[bound - 0] != TRAME_BOUND)){	//NcaptActifs
 
-			trameIndex = bound;
+			*trameIndex = bound;
 			return 1;
 		}
 		else{
@@ -191,6 +210,7 @@ uint8_t setFrameIndex(void){
 	return 0;
 
 }
+
 
 /* USER CODE END 0 */
 
@@ -244,7 +264,7 @@ int main(void)
 	  if(DataAcquiered)
 		  readTrame();
 		  //HAL_UART_Transmit(&huart2, &buffer[bufferIndex-3], 3, 100);
-	HAL_Delay(500);
+	HAL_Delay(5);
 
     /* USER CODE END WHILE */
 
@@ -431,6 +451,7 @@ void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     //HAL_UART_Receive_IT(&huart1, buffer, 3);
+	trameStatus();
     HAL_UART_Receive_DMA(&huart1, &buffer[bufferIndex], 3);
 
 

@@ -47,7 +47,7 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+#define ITM_Port32(n) (*((volatile unsigned long *)(0xE0000000+4*n)))
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
