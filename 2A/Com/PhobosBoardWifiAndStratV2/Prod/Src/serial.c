@@ -53,7 +53,7 @@ int serial_send(uint8_t *ptr, int len, int uartPort) {
 		uint8_t action = *ptr;
 		if(action == 0x69)
 		{
-			HAL_UART_Transmit(&huart6, "1005", 4, 1);
+			HAL_UART_Transmit(&huart6, "1021", 4, 1);
 		}
 		else if(action == 0x70)
 		{
