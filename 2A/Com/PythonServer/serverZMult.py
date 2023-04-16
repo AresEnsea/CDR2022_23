@@ -54,17 +54,6 @@ def broadcast(message,addr):
     else:
         logger.info(f"{message} sended to log")
         print(f"{message} sended to log")
-    #logger.info(f"{message>>8} sended to server")
-    #if((addr==ADDRdeim) and ((message>>8)==b'\x01')):
-        #index=addrs.index(ADDRphob)
-        #clients[index].send(message)
-        #logger.info(f"{message} sended to {ADDRphob}")
-    #elif((addr==ADDRphob) and ((message>>8)==b'\x01')):
-        #index=addrs.index(ADDRdeim)
-        #clients[index].send(message)
-        #logger.info(f"{message} sended to {ADDRdeim}")
-    #else:
-        #logger.info(f"{message>>8} sended to server")
 
 # Function to handle clients'connections
 
