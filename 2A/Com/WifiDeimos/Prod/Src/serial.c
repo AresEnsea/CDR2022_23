@@ -5,6 +5,8 @@ uint8_t armData;
 uint8_t wifiDataRX;
 uint8_t wifiDataTX;
 uint8_t pData[0];
+int printMode=0;
+uint8_t ultraBuffer[ULTRA_BUFFER_SIZE];
 
 void parser32(uint32_t *ptr){
 	uint8_t trigger=0xE0;
@@ -92,11 +94,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 	if(huart->Instance == USART1){
 		static int byteCount=0;
 		static uint32_t rec=0;
-		if(wifiDataRX==0xC0 && byteCount<1){
+		if(wifiDataRX==0xC0 && byteCount<1 && printMode<1){
 			wifiDataTX=0x40;
 			serial_send(&wifiDataTX,1,1);
 		}
-		else if(wifiDataRX==0xE0 && byteCount<1){
+		else if(wifiDataRX==0xE0 && byteCount<1 && printMode<1){
 			byteCount=1;
 			//wifiDataTX=224+byteCount;
 			//serial_send(&wifiDataTX,1,1);
@@ -109,11 +111,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 			if(byteCount>5){
 				byteCount=0;
 
-				char buf[20];
-				uint16_t size = snprintf(buf,20,"%3.3lu\r\n",rec);
-				HAL_UART_Transmit(&huart2, buf, size, HAL_MAX_DELAY);
+				//char buf[20];
+				//uint16_t size = snprintf(buf,20,"%3.3lu\r\n",rec);
+				//HAL_UART_Transmit(&huart2, buf, size, HAL_MAX_DELAY);
 				rec=0;
 			}
+		}
+		else if(wifiDataRX==0x61 && byteCount<1 && printMode<1){
+			printMode=1;
+			//wifiDataTX=224+byteCount;
+			//serial_send(&wifiDataTX,1,1);
+		}
+		else if(wifiDataRX==0x61 && printMode>0){
+			printMode=0;
 		}
 		HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
 	}
