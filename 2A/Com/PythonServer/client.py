@@ -17,9 +17,19 @@ client.connect(("10.20.1.1", 25565))
 
 def client_send():
     while True:
-        message = f'{input("")}'
-        if(message=='1'):
-            client.send(b'\0xC0')
+        try:
+            print('Enter command, 1 = start, 2 = turn off debug, 3 = turn on debug')
+            slector=f'{input("")}'
+            if(slector=='1'):
+                client.send(b'\x84')
+            elif(slector=='2'):
+                client.send(b'\x8E')
+            elif(slector=='3'):
+                client.send(b'\x8F')
+        except:
+            client.close()
+            print('deconnected')
+            break
 
 
 #receive_thread = threading.Thread(target=client_receive)
