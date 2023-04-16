@@ -1,85 +1,93 @@
-15:26:12 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+21:31:50 **** Incremental Build of configuration Debug for project SerialReader ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'ResetAndInitializeAllSensors':
-../Core/Src/main.c:211:2: warning: implicit declaration of function 'UART_Print' [-Wimplicit-function-declaration]
-  211 |  UART_Print("All Chips booted\n");
-      |  ^~~~~~~~~~
-../Core/Src/main.c: In function 'MX_I2C1_Init':
-../Core/Src/main.c:607:2: warning: implicit declaration of function 'I2C_Init' [-Wimplicit-function-declaration]
-  607 |  I2C_Init();
-      |  ^~~~~~~~
-../Core/Src/main.c: In function 'MX_USART2_UART_Init':
-../Core/Src/main.c:640:3: warning: implicit declaration of function 'UART_Init'; did you mean 'HAL_Init'? [-Wimplicit-function-declaration]
-  640 |   UART_Init();
-      |   ^~~~~~~~~
-      |   HAL_Init
-arm-none-eabi-gcc -o "LIDAR360v2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR360v2\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR360v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: LIDAR360v2.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_UART_REGISTER_CALLBACKS -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Core/Inc/stm32f4xx_hal_conf.h:193: warning: "USE_HAL_UART_REGISTER_CALLBACKS" redefined
+  193 | #define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
+      | 
+<command-line>: note: this is the location of the previous definition
+../Core/Src/main.c: In function 'readHeader':
+../Core/Src/main.c:105:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  105 |  HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[26]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[26]'
+  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:107:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  107 |  HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
+      |                             ^~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[16]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[16]'
+  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:109:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  109 |  HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[23]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[23]'
+  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:110:36: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+  110 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+      |                                    ^~~~~~
+../Core/Src/main.c:110:36: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/main.c:22:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   21 | #include <stdio.h>
+  +++ |+#include <string.h>
+   22 | 
+../Core/Src/main.c:110:43: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+  110 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+      |                                           ^~~~~
+      |                                           |
+      |                                           uint8_t * {aka unsigned char *}
+../Core/Src/main.c:110:43: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
+../Core/Src/main.c:104:6: warning: unused variable 'size' [-Wunused-variable]
+  104 |  int size = sprintf((char*)value, "%d secondes\r\n", (int)tpsMesure);
+      |      ^~~~
+../Core/Src/main.c: In function 'readValue':
+../Core/Src/main.c:129:37: warning: incompatible implicit declaration of built-in function 'strlen'
+  129 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
+      |                                     ^~~~~~
+../Core/Src/main.c:129:37: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/main.c:129:44: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+  129 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
+      |                                            ^~~~~
+      |                                            |
+      |                                            uint8_t * {aka unsigned char *}
+../Core/Src/main.c:129:44: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
+arm-none-eabi-gcc -o "SerialReader.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\SerialReader\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialReader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SerialReader.elf
  
-arm-none-eabi-size   LIDAR360v2.elf 
-arm-none-eabi-objdump -h -S  LIDAR360v2.elf  > "LIDAR360v2.list"
+arm-none-eabi-size   SerialReader.elf 
+arm-none-eabi-objdump -h -S  SerialReader.elf  > "SerialReader.list"
    text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+  17928	    220	  21932	  40080	   9c90	SerialReader.elf
 Finished building: default.size.stdout
  
-Finished building: LIDAR360v2.list
+Finished building: SerialReader.list
  
-15:26:20 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
+21:31:57 **** Incremental Build of configuration Debug for project SerialReader ****
 make -j12 all 
-arm-none-eabi-size   LIDAR360v2.elf 
+arm-none-eabi-size   SerialReader.elf 
    text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
+  17928	    220	  21932	  40080	   9c90	SerialReader.elf
 Finished building: default.size.stdout
- 
-15:26:46 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
-make -j12 all 
-arm-none-eabi-size   LIDAR360v2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
-Finished building: default.size.stdout
- 
-15:28:28 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
-make -j12 all 
-arm-none-eabi-size   LIDAR360v2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
-Finished building: default.size.stdout
- 
-15:53:59 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
-make -j12 all 
-arm-none-eabi-size   LIDAR360v2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
-Finished building: default.size.stdout
- 
-16:10:51 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
-make -j12 all 
-arm-none-eabi-size   LIDAR360v2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
-Finished building: default.size.stdout
- 
-16:34:23 **** Incremental Build of configuration Debug for project LIDAR360v2 ****
-make -j12 all 
-arm-none-eabi-gcc "../Drivers/UltraLiteDriver/Src/platform_specific.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Drivers/UltraLiteDriver/Inc" -I../Core/Inc -I"C:/Users/Victor Lesne/Documents/ENSEA/CFR/2023/CDR2022_23/2A/Detection/LIDAR360v2/Core/Startup" -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/UltraLiteDriver/Src/platform_specific.d" -MT"Drivers/UltraLiteDriver/Src/platform_specific.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/UltraLiteDriver/Src/platform_specific.o"
-../Drivers/UltraLiteDriver/Src/platform_specific.c:14:8: warning: type defaults to 'int' in declaration of 'hi2c1' [-Wimplicit-int]
-   14 | extern hi2c1;
-      |        ^~~~~
-../Drivers/UltraLiteDriver/Src/platform_specific.c:15:8: warning: type defaults to 'int' in declaration of 'ActiveCaptors' [-Wimplicit-int]
-   15 | extern ActiveCaptors;
-      |        ^~~~~~~~~~~~~
-../Drivers/UltraLiteDriver/Src/platform_specific.c:16:8: warning: type defaults to 'int' in declaration of 'FailedBoot' [-Wimplicit-int]
-   16 | extern FailedBoot;
-      |        ^~~~~~~~~~
-arm-none-eabi-gcc -o "LIDAR360v2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\LIDAR360v2\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LIDAR360v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: LIDAR360v2.elf
- 
-arm-none-eabi-size   LIDAR360v2.elf 
-arm-none-eabi-objdump -h -S  LIDAR360v2.elf  > "LIDAR360v2.list"
-   text	   data	    bss	    dec	    hex	filename
-  42708	    560	   8464	  51732	   ca14	LIDAR360v2.elf
-Finished building: default.size.stdout
- 
-Finished building: LIDAR360v2.list
  

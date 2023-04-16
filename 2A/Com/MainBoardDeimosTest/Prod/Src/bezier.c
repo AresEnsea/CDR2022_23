@@ -9,10 +9,18 @@ Bezier* bezier_new(float x1, float y1, float x2, float y2, float x3, float y3, f
 
 
 Bezier* bezier_newEmpty() {
-    Bezier* b = (Bezier*) malloc(sizeof(Bezier));
+    Bezier* b = (Bezier*) calloc(1, sizeof(Bezier));
     return b;
 }
 
+void bezier_delete(Bezier* b)
+{
+	if(b)
+	{
+		free(b->lut);
+		free(b);
+	}
+}
 
 void bezier_set(Bezier* b, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, int lutLength) {
     b->p1 = vector2_new(x1, y1);

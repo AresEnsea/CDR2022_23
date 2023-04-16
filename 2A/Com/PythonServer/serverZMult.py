@@ -3,11 +3,11 @@ import socket
 import logging
 
 
-host = "10.20.1.1"
+host = "192.168.137.1"
 port = 25565
 
-ADDRphob = "10.20.1.44"
-ADDRdeim = "10.20.1.13"
+ADDRphob = "192.168.137.242"    #"10.20.1.12"
+ADDRdeim = "192.168.137.24"      #"10.20.1.13"
 
 clients = []
 addrs = []
@@ -70,14 +70,19 @@ def broadcast(message,addr):
 
 
 def handle_client(client,addr):
+def handle_client(client,addr):
     while True:
         try:
+            message = client.recv(1)
+            broadcast(message,addr)
             message = client.recv(1)
             broadcast(message,addr)
         except:
             clients.remove(client)
             addrs.remove(addr)
+            addrs.remove(addr)
             client.close()
+            print(f'{str(addr)} : : deconnected')
             print(f'{str(addr)} : : deconnected')
             break
 # Main function to receive the clients connection
@@ -86,12 +91,17 @@ def receive():
     while True:
         client, addr = server.accept()
         print(f'{str(addr)} : : connected')
+        client, addr = server.accept()
+        print(f'{str(addr)} : : connected')
         clients.append(client)
+        addrs.append(addr)
+        thread = threading.Thread(target=handle_client, args=(client,addr))
         addrs.append(addr)
         thread = threading.Thread(target=handle_client, args=(client,addr))
         thread.start()  
 
 
 if __name__ == "__main__":
+    print('Server is running and listening ...')
     print('Server is running and listening ...')
     receive()

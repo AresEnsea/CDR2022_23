@@ -1,18 +1,18 @@
 #include "symetry.h"
 
 void switchTeam(Strategy* strategy) {
-	robot.team = (robot.team == YELLOW)?PURPLE:YELLOW;
+	//robot.team = (robot.team == GREEN)?BLUE:GREEN;
 
-	for (int i=0; i<strategy->length; i++) {
-		Bezier* b = strategy->path[i];
-		bezier_set(
-			b,
-		    3000 - b->p1.x, b->p1.y,
+	for (int i=0; i < strategy->length; i++) {
+		Bezier* b = strategy->points[i].path;
+		Bezier* c = bezier_new(
+			3000 - b->p1.x, b->p1.y,
 			3000 - b->p2.x, b->p2.y,
 			3000 - b->p3.x, b->p3.y,
 			3000 - b->p4.x, b->p4.y,
-			30
-		);
+			30);
+		bezier_delete(b);
+		strategy->points[i].path = c;
 
 		/*for (int j=0; j < strategy->onSiteActionsLengths[i]; j++) {
 			if (strategy->onSiteActions[i][j] == 0xA1) {

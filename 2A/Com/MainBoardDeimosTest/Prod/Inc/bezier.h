@@ -58,6 +58,11 @@ Bezier* bezier_newEmpty();
 
 
 /**
+ * Déalloue de la mémoire utilisée pour stocker une courbe de Bézier.
+ */
+void bezier_delete(Bezier* b);
+
+/**
  * Modifie une courbe de Bézier cubique à partir des points. Initialise
  * également une LUT dont la taille est précisée en argument. Cette fonction
  * est utile pour modifier une courbe de Bézier sans allouer davantage de

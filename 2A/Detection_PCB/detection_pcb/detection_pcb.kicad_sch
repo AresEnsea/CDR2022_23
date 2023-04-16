@@ -677,50 +677,53 @@
     (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/4bb3b12c-3303-4c65-945e-ee1232927f81"
       (reference "UART1") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/c0042068-a3c7-4d0e-a3c6-d5dbbdfb95e0"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/75492473-7e23-44b3-9940-7bf837784902"
       (reference "XSDN1") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/5066dfb8-0b27-400e-ba67-a7d6c13bc9d3"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/06c07194-5310-4fc6-9c0c-dffa2a789d6a"
       (reference "XSDN2") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/1b656fbc-d64c-4330-a794-84f8d386a977"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/b28dd94b-ef27-453d-9137-3d26132bd7aa"
       (reference "XSDN3") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/8d2281d0-489d-4cfc-8e98-54de476691cd"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/55536faf-4c32-4f5d-b699-c5645f262efd"
       (reference "XSDN4") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/1b1ca570-664a-44ed-b7df-bb662684cd8a"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/d09c29c9-76d9-4df9-849a-4f6a6051cac6"
       (reference "XSDN5") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/75492473-7e23-44b3-9940-7bf837784902"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/e0624491-0b47-4461-9cc8-106cf26926eb"
       (reference "XSDN6") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/e0624491-0b47-4461-9cc8-106cf26926eb"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/5066dfb8-0b27-400e-ba67-a7d6c13bc9d3"
       (reference "XSDN7") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/d09c29c9-76d9-4df9-849a-4f6a6051cac6"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/dfbabe0e-cd18-4a94-a6cc-54391269adcf"
       (reference "XSDN8") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/5696ac41-3de3-48ae-923e-2c7a443148a8"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/8d2281d0-489d-4cfc-8e98-54de476691cd"
       (reference "XSDN9") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/dfbabe0e-cd18-4a94-a6cc-54391269adcf"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/5696ac41-3de3-48ae-923e-2c7a443148a8"
       (reference "XSDN10") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/55536faf-4c32-4f5d-b699-c5645f262efd"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/bcf582e4-42e9-414c-95a7-718dbc0bc730"
       (reference "XSDN11") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/49c2f7ce-ffa1-43c3-bcf2-173ffada7fd7"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/1991a66c-a96a-45f4-b3a4-4211132f615b"
       (reference "XSDN12") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/b28dd94b-ef27-453d-9137-3d26132bd7aa"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/49c2f7ce-ffa1-43c3-bcf2-173ffada7fd7"
       (reference "XSDN13") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/1991a66c-a96a-45f4-b3a4-4211132f615b"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/1b1ca570-664a-44ed-b7df-bb662684cd8a"
       (reference "XSDN14") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
-    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/06c07194-5310-4fc6-9c0c-dffa2a789d6a"
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/1b656fbc-d64c-4330-a794-84f8d386a977"
       (reference "XSDN15") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+    )
+    (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/c0042068-a3c7-4d0e-a3c6-d5dbbdfb95e0"
+      (reference "XSDN16") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/79c054e5-8035-4db7-a1f1-c3aeef364a48/9b9b1cb4-35f6-413d-af9f-b19d0ff2579e"
       (reference "Y1") (unit 1) (value "16MHz") (footprint "Crystal:Crystal_SMD_EuroQuartz_MT-4Pin_3.2x2.5mm")

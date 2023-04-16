@@ -167,7 +167,7 @@ int main(void)
 
   bool teamButtonVal = false;
 
-  while (waitingForMatchStart) {
+  /*while (waitingForMatchStart) {
 	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
 
 	  if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
@@ -180,7 +180,7 @@ int main(void)
 	  HAL_Delay(50);
 	  //printf("%d\r\n", teamButtonVal);
 	  //HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, teamButtonVal);
-  }
+  }*/
 
   printf("Initializing odometry...");
   Vector2 start = strategy->path[0]->p1;
@@ -199,7 +199,7 @@ int main(void)
 
   HAL_UART_Receive_IT(&huart4, &lidarData, 1);
   HAL_UART_Receive_IT(&huart6, &armData, 1);
-  HAL_UART_Receive_IT(&huart1, wifiData, 3);
+  HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -235,7 +235,7 @@ int main(void)
   }
 
   printf("About to move...\r\n");
-  while(wifiData[1]!='g'){
+  while(wifiDataRX!=0xC0){
   }
   while (1) {
 	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]

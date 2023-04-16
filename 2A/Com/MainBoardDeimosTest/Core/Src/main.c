@@ -36,8 +36,8 @@
 #include "avoidance.h"
 #include "symetry.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-#include <string.h>
 
 extern Robot robot;
 /* USER CODE END Includes */
@@ -59,7 +59,7 @@ extern Robot robot;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t pData[1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -95,7 +95,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-   HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -139,22 +139,19 @@ int main(void)
   printf(" Done.\r\n");
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
-  printf("Initializing strategy...");
-  Strategy* strategy = strategy_initialize();
-  int curveIndex = 0;
-  int onSiteActionIndex = 0;
-  int onMoveActionIndex = 0;
 
   robot.waitingForOnSiteAction = false;
   robot.waitingForOnMoveAction = false;
-  robot.team = YELLOW;
+  robot.team = GREEN;
   float t = 0;
 
   HAL_Delay(200);
   printf(" Done.\r\n");
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
-
+  int curveIndex = 0;
+  int onSiteActionIndex = 0;
+  int onMoveActionIndex = 0;
 
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing lidar...");
@@ -163,33 +160,41 @@ int main(void)
   printf(" Done.\r\n");
 
   bool waitingForMatchStart = true;
-
   printf("Waiting for start...\r\n");
+  pData[0] = 'o';
+  int a = 0;
+  HAL_UART_Receive_IT(&huart6, pData, 1);
+  strategy_in_use = strategy_initialize(0);
+  HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
 
-  bool teamButtonVal = false;
-
-  while (waitingForMatchStart) {
+  while ((waitingForMatchStart == true)) {
 	  waitingForMatchStart = HAL_GPIO_ReadPin(START_GPIO_Port, START_Pin);
+	  if((pData[0] >= '0' && pData[0] <= '9')  && a == 0)
+	  {
+		  a = 1;
+	  }
 
-	  if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
+	  /*if (HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin) && !teamButtonVal) {
 		  switchTeam(strategy);
 	  }
 
-	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == PURPLE);
-	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);
+	  HAL_GPIO_WritePin(TEAM_LED_GPIO_Port, TEAM_LED_Pin, robot.team == BLUE);
+	  teamButtonVal = HAL_GPIO_ReadPin(TEAM_BUTTON_GPIO_Port, TEAM_BUTTON_Pin);*/
 
-	  HAL_Delay(50);
+	  //HAL_Delay(50);
 	  //printf("%d\r\n", teamButtonVal);
 	  //HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, teamButtonVal);
   }
 
   printf("Initializing odometry...");
-  Vector2 start = strategy->path[0]->p1;
-  Vector2 startTangent = strategy->path[0]->p2;
-  float startAngle = vector2_angle(vector2_diff(startTangent, start));
-  odometry_setPosition(start.x, start.y);
-  odometry_setAngle(startAngle);
   robot.measuredSpeed = 0;
+  {
+	Vector2 start = strategy_in_use->points[0].path->p1;
+	Vector2 startTangent = strategy_in_use->points[0].path->p2;
+	float startAngle = vector2_angle(vector2_diff(startTangent, start));
+	odometry_setPosition(start.x, start.y);
+	odometry_setAngle(startAngle);
+  }
   HAL_Delay(200);
   printf(" Done.\r\n");
 
@@ -200,7 +205,6 @@ int main(void)
 
   HAL_UART_Receive_IT(&huart4, &lidarData, 1);
   HAL_UART_Receive_IT(&huart6, &armData, 1);
-  HAL_UART_Receive_IT(&huart1, wifiData, 3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -223,9 +227,11 @@ int main(void)
 	  HAL_Delay(100);
   }*/
 
+#if 0
   while (onSiteActionIndex < strategy->onSiteActionsLengths[0]) {
-	  uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
-	  serial_send(&action, 1, 6);
+	  /*uint8_t action = strategy->onSiteActions[0][onSiteActionIndex];
+	  serial_send(&action, 1, 6);*/
+	  //HAL_UART_Transmit(&huart6, strategy->onSiteActions[0], 4, 1);
 	  robot.waitingForOnSiteAction = true;
 
 	  printf("Waiting for 0xFF...\r\n");
@@ -234,62 +240,86 @@ int main(void)
 	  printf("%d\r\n", robot.waitingForOnSiteAction);
 	  onSiteActionIndex++;
   }
+#endif
 
   printf("About to move...\r\n");
-  //while(wifiData[1]!='g'){
+  //while(wifiDataRX!='g'){
   //}
-  char buf[4];
-  int size = snprintf(buf,strlen(buf),"dg\r\n");
-  serial_send((uint8_t*)buf,size,1);
-  size = snprintf(buf,strlen(buf),"ag\r\n");
-  serial_send((uint8_t*)buf,size,1);
+
+  Bezier* b;
+  Direction d;
+  float initSpeed, finalSpeed;
+
   while (1) {
-	  if (onMoveActionIndex < strategy->onMoveActionsLengths[curveIndex]
-              && !robot.waitingForOnMoveAction
-			  && !robot.waitingForOnSiteAction) {
-		  robot.waitingForOnMoveAction = true;
+	  if(use_new_strategy)
+	  {
+		moving_new_strategy = 1;
+		strategy_delete(strategy_in_use);
+		strategy_in_use = strategy_not_in_use;
+		strategy_not_in_use = NULL;
+		use_new_strategy = 0;
+		moving_new_strategy = 0;
+
+		t = 0.0;
+		curveIndex = 0;
+		Vector2 start = strategy_in_use->points[0].path->p1;
+		Vector2 startTangent = strategy_in_use->points[0].path->p2;
+		float startAngle = vector2_angle(vector2_diff(startTangent, start));
+		odometry_setPosition(start.x, start.y);
+		odometry_setAngle(startAngle);
 	  }
 
-	  avoidance_update(t, strategy->directions[curveIndex]);
+	  if(curveIndex < strategy_in_use->length)
+	  {
+		  strategy_get_point(strategy_in_use, curveIndex, &b, &d, &initSpeed);
+	  }
 
-	  if (avoidanceState == PATH_CLEAR && curveIndex < strategy->length) {
+	  avoidance_update(t, d);
+
+	  if ((avoidanceState == PATH_CLEAR || avoidanceState == BACKTRACKING) && curveIndex < strategy_in_use->length) {
+		  if(curveIndex + 1 == strategy_in_use->length)
+		  {
+			  finalSpeed = 0.0f;
+		  }
+		  else
+		  {
+			  strategy_get_point(strategy_in_use, curveIndex+1, NULL, NULL, &finalSpeed);
+		  }
+
 		  t = propulsion_followBezier(
-				  strategy->path[curveIndex],
-				  strategy->directions[curveIndex],
-				  strategy->speeds[curveIndex],
-				  strategy->speeds[curveIndex+1],
-				  false
+				  b,
+				  d,
+				  initSpeed,
+				  finalSpeed,
+				  avoidanceState == BACKTRACKING
 		  );
 	  } else if (avoidanceState == PATH_OBSTRUCTED) {
 		  propulsion_setSpeeds(0, 0);
-	  } else if (avoidanceState == BACKTRACKING) {
-		  t = propulsion_followBezier(
-				  strategy->path[curveIndex],
-				  strategy->directions[curveIndex],
-				  strategy->speeds[curveIndex],
-				  strategy->speeds[curveIndex+1],
-				  true
-		  );
 	  }
 
 	  if (t > 0.99 && !robot.waitingForOnMoveAction) {
 	      curveIndex = (curveIndex + 1);// % strategy->length;
 	      onSiteActionIndex = 0;
-	      while (onSiteActionIndex < strategy->onSiteActionsLengths[curveIndex]) {
-	    	  uint8_t action = strategy->onSiteActions[curveIndex][onSiteActionIndex];
-	    	  serial_send(&action, 1, 6);
-	    	  robot.waitingForOnSiteAction = true;
+	      if(curveIndex < strategy_in_use->length)
+	      {
+	    	  const StrategyPoint* point = &strategy_in_use->points[curveIndex];
+	    	  for(onSiteActionIndex = 0; onSiteActionIndex < point->actionsLength; ++onSiteActionIndex)
+	    	  {
+	    		  uint8_t action = point->actions[onSiteActionIndex];
+				  serial_send(&action, 1, 6);
+				  robot.waitingForOnSiteAction = true;
 
-	    	  while (robot.waitingForOnSiteAction) {
-	    		  propulsion_setSpeeds(0, 0);
+				  while (robot.waitingForOnSiteAction) {
+					  propulsion_setSpeeds(0, 0);
+					  HAL_Delay(2000);
+					  robot.waitingForOnSiteAction = false;
+				  }
 	    	  }
-	    	  onSiteActionIndex++;
 	      }
-	      onMoveActionIndex = 0;
 	  }
 
-	  if (curveIndex == strategy->length) {
-		  break;
+	  if (curveIndex == strategy_in_use->length) {
+		  propulsion_setSpeeds(0, 0);
 	  }
 
     /* USER CODE END WHILE */
