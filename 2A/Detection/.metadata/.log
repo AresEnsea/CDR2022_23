@@ -7136,3 +7136,129 @@ java.net.ConnectException: Connection refused: connect
 
 !ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2023-04-13 19:35:06.261
 !MESSAGE SWV configuration; base: 36000000; minDiv: 18; maxDiv: 65535; maxSWO: 2000000; limit: 2000000 => SWO: 2000000; CPU: 180000000; div: 90
+!SESSION 2023-04-17 08:14:41.550 -----------------------------------------------
+eclipse.buildId=Version 1.12.0
+java.version=11.0.17
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-04-17 08:25:34.030
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-04-17 08:25:34.034
+!MESSAGE Log4j2 initialized with config file C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-17 08:25:39.890
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-17 08:25:39.894
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-04-17 08:25:46.038
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2023-04-17 10:24:53.554 -----------------------------------------------
+eclipse.buildId=Version 1.12.0
+java.version=11.0.17
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-04-17 10:25:02.965
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-04-17 10:25:02.969
+!MESSAGE Log4j2 initialized with config file C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-17 10:25:09.427
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-17 10:25:09.431
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-04-17 10:25:15.294
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2023-04-20 09:37:42.178 -----------------------------------------------
+eclipse.buildId=Version 1.12.0
+java.version=11.0.17
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-04-20 09:37:52.668
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-04-20 09:37:52.668
+!MESSAGE Log4j2 initialized with config file C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-20 09:37:59.456
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-20 09:37:59.460
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-04-20 09:38:05.620
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2023-04-23 13:41:14.502 -----------------------------------------------
+eclipse.buildId=Version 1.12.0
+java.version=11.0.17
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-04-23 13:41:27.964
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-04-23 13:41:27.966
+!MESSAGE Log4j2 initialized with config file C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-23 13:41:31.073
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-23 13:41:31.074
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-04-23 13:41:39.255
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.ui 4 0 2023-04-23 14:52:24.777
+!MESSAGE Error in CDT UI during reconcile
+!STACK 1
+C Model Exception: C Model Status [Element lidarReading.c does not exist.]
+	at org.eclipse.cdt.internal.core.model.CElement.newNotPresentException(CElement.java:485)
+	at org.eclipse.cdt.internal.core.model.TranslationUnit.makeConsistent(TranslationUnit.java:583)
+	at org.eclipse.cdt.internal.core.model.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:65)
+	at org.eclipse.cdt.internal.core.model.CModelOperation.execute(CModelOperation.java:346)
+	at org.eclipse.cdt.internal.core.model.CModelOperation.run(CModelOperation.java:613)
+	at org.eclipse.cdt.internal.core.model.CModelOperation.runOperation(CModelOperation.java:641)
+	at org.eclipse.cdt.internal.core.model.WorkingCopy.reconcile(WorkingCopy.java:365)
+	at org.eclipse.cdt.internal.ui.text.CReconcilingStrategy.reconcile(CReconcilingStrategy.java:79)
+	at org.eclipse.cdt.internal.ui.text.CReconcilingStrategy.reconcile(CReconcilingStrategy.java:64)
+	at org.eclipse.cdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:89)
+	at org.eclipse.cdt.internal.ui.text.CCompositeReconcilingStrategy.reconcile(CCompositeReconcilingStrategy.java:90)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.cdt.internal.ui.text.CReconciler.process(CReconciler.java:346)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:207)
+!SUBENTRY 1 org.eclipse.cdt.core 4 969 2023-04-23 14:52:24.778
+!MESSAGE Element lidarReading.c does not exist.
+!SESSION 2023-04-23 14:56:40.355 -----------------------------------------------
+eclipse.buildId=Version 1.12.0
+java.version=11.0.17
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-04-23 14:59:01.484
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-04-23 14:59:01.486
+!MESSAGE Log4j2 initialized with config file C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-23 14:59:04.379
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-04-23 14:59:04.380
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-04-23 14:59:12.075
+!MESSAGE Started RMI Server, listening on port 41337

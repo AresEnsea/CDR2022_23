@@ -7,7 +7,7 @@ uint8_t wifiDataRX;
 uint8_t wifiDataTX;
 uint8_t pData[1];
 
-uint8_t buffer[1<<15] = {0};
+uint8_t lidarBuf[3000] = {0};
 uint16_t bufferIndex = 0;
 uint8_t DataAcquiered = 0;
 
@@ -97,8 +97,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 
 		DataAcquiered = 1;
 		bufferIndex += 3;
-		trameStatus();
-		HAL_UART_Receive_DMA(&huart4, &buffer[bufferIndex], 3);
+		frameStatus();
+		HAL_UART_Receive_DMA(&huart4, &lidarBuf[bufferIndex], 3);
 
 	}
 

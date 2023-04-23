@@ -5,6 +5,7 @@
 #include "gpio.h"
 #include "robot.h"
 #include "lidar.h"
+#include "lidarReading.h"
 #include <stdio.h>
 
 extern uint8_t lidarData;
@@ -14,7 +15,7 @@ extern uint8_t wifiDataTX;
 extern uint8_t armData;
 extern uint8_t pData[1];
 
-extern uint8_t buffer[1<<15];
+extern uint8_t lidarBuf[3000];
 extern uint16_t bufferIndex;
 extern uint8_t DataAcquiered;
 
