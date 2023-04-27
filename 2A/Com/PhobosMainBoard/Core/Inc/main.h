@@ -70,6 +70,8 @@ int ___io_putchar(int ch);
 #define L_ENCODER_A_GPIO_Port GPIOA
 #define L_ENCODER_B_Pin GPIO_PIN_7
 #define L_ENCODER_B_GPIO_Port GPIOA
+#define WIFI_Pin GPIO_PIN_0
+#define WIFI_GPIO_Port GPIOB
 #define START_Pin GPIO_PIN_8
 #define START_GPIO_Port GPIOC
 #define R_ENCODER_A_Pin GPIO_PIN_8
