@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -90,8 +91,10 @@ int main(void)
   MX_UART4_Init();
   MX_UART5_Init();
   MX_USART6_UART_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
+  HAL_TIM_Base_Start_IT(&htim1);
   //uint32_t test = 2147483646;
   //parser32(&test);
   /* USER CODE END 2 */

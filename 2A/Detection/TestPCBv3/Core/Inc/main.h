@@ -58,7 +58,22 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN Private defines */
+#define RadarCircleRadius 						(110.0 / 2.0)
+#define Pi 										3.1415
+#define VHV_TIMER 								200
+#define ROI_CONFIG__USER_ROI_CENTRE_SPAD		0x007F
+//#define NumOfTOFSensors							9
+#define NumOfTOFSensors							16
+#define TotalWidthOfSPADS						16
+#define WidthOfSPADsPerZone						4
+#define NumOfSPADsShiftPerZone					1
+#define HorizontalFOVofSensor					19.09
+#define SingleSPADFOV							(HorizontalFOVofSensor/TotalWidthOfSPADS)
+#define NumOfZonesPerSensor						(((TotalWidthOfSPADS - WidthOfSPADsPerZone) / NumOfSPADsShiftPerZone) + 1)
+#define StartingZoneAngle						(WidthOfSPADsPerZone / 2 * SingleSPADFOV)
+#define ZoneFOVChangePerStep					(SingleSPADFOV * NumOfSPADsShiftPerZone)
 
+#define ITM_Port32(n) (*((volatile unsigned long *)(0xE0000000+4*n)))
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

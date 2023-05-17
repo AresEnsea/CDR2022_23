@@ -35,24 +35,38 @@ void loop() {
   WiFiClient client;
 
   if(!client.connect(host, port)) {
-    Serial.println("Connection failed.");
-    Serial.println("Waiting 3 seconds before retrying...");
-    delay(3000);
+    delay(10);
   }else{
+    int printSelect=0;
     digitalWrite(LED_BUILTIN, HIGH);
     Serial.println("Connection succeeded.");
     while(client.connected() > 0){
       if (client.available() > 0) {            // Returns the number of bytes available for reading
         uint8_t WifiDataRX = client.read();  // Read the next byte recieved from the server the client is connected to
+        if(WifiDataRX==0x7E){
+          printSelect=0;
+        }
         //Serial.print("From client: ");
         //Serial.println(WifiDataRX);
         Serial2.write(WifiDataRX);
       }
-      if (Serial2.available() > 0) {
+      if ((Serial2.available() > 0)&&(printSelect==0)) {
         uint8_t WifiDataTX = Serial2.read();
+        if(WifiDataTX==0x7F){
+          printSelect=1;
+          Serial.print("in debug\n");
+        }
         //Serial.print("From STM: ");
         //Serial.println(WifiDataTX);
         client.write(WifiDataTX);
+      }else if((Serial2.available() > 0)&&(printSelect==1)){
+        String WifiDataTXstring = Serial2.readStringUntil('\n');
+        //Serial.println(WifiDataTXstring);
+        if(WifiDataTXstring[0]==0x7E){
+          printSelect=0;
+          Serial.print("out of debug\n");
+        }
+        client.println(WifiDataTXstring);
       }
     }
     digitalWrite(LED_BUILTIN, LOW);
