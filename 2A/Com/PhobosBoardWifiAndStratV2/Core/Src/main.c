@@ -157,7 +157,7 @@ int main(void)
   //HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);
   printf("Initializing propulsion system...");
   propulsion_initialize();
-  propulsion_enableMotors();
+  propulsion_disableMotors();
   avoidance_initialize();
   HAL_Delay(200);
   printf(" Done.\r\n");
@@ -193,7 +193,7 @@ int main(void)
 	  if(wifiDataRX==0x84){
 		  waitingForMatchStart=0;
 		  strategy = strategy_initialize(7);
-		  WifiUartTXActivation();
+		  //WifiUartTXActivation();
 	  }
 	  else if((pData[0] >= '0' && pData[0] <= '9')  && a == 0)
 	  {
@@ -261,7 +261,8 @@ int main(void)
 	  //printf("%d\r\n", teamButtonVal);
 	  //HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, teamButtonVal);
   }
-
+  WifiUartTXActivation();
+  propulsion_enableMotors();
   printf("Initializing odometry...");
   Vector2 start = strategy->path[0]->p1;
   Vector2 startTangent = strategy->path[0]->p2;
