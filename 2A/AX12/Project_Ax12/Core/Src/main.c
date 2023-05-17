@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -18,13 +18,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "tim.h"
-#include "usart.h"
-#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "AX12.h"
+#include "AX12_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,6 +31,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,6 +40,9 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart1_rx;
 
 /* USER CODE BEGIN PV */
 
@@ -49,6 +50,10 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -85,31 +90,75 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
-  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim2);
 
-  AX12 ax12;
-  AX12_Init(&ax12, &huart1, 1, BR_250K);
-  AX12_LED_O_N(&ax12, 1);
-  AX12_setMovingSpeed(&ax12, 5);
-  AX12_setRangeAngle(&ax12, 0, 180);
+  AX12 ax12_1; //( de 60 à 150)
+  AX12 ax12_2; //( de 150 à 240)
 
+  /* position ax12 ID_1 */
+  int pfermer_1 = 60;
+  /* position ax12 ID_2 */
+  int pfermer_2 = 240;
+  int pouvert = 150;
+  int position;
+
+  AX12_Init(&ax12_1, &huart1, 1, BR_250K);
+  AX12_setLED(&ax12_1, 1);
+  AX12_setMovingSpeed(&ax12_1, 5);
+  AX12_setRangeAngle(&ax12_1, 0, 300);
+  AX12_setDelayTime(&ax12_1, 180);
+
+
+  AX12_Init(&ax12_2, &huart1, 2, BR_250K);
+  AX12_setLED(&ax12_2, 1);
+  AX12_setMovingSpeed(&ax12_2, 5);
+  AX12_setRangeAngle(&ax12_2, 0, 300);
+  AX12_setDelayTime(&ax12_2, 180);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  AX12_setPosition(&ax12_2,pfermer_2);
+	  do
+	  {
+		  position = AX12_getPosition(&ax12_2);
+	  }
+	  while(((position > (pfermer_2-pfermer_2*0.05)) && (position < (pfermer_2+pfermer_2*0.05))) == 0);
 
-	  AX12_setPosition(&ax12, 150);
-	  HAL_Delay(3000);
-	  AX12_setPosition(&ax12, 60);
-	  HAL_Delay(3000);
+	  AX12_setPosition(&ax12_1,150);
+	  do
+	  {
+		  position = AX12_getPosition(&ax12_1);
+	  }
+	  while(((position > (pouvert-pouvert*0.05)) && (position < (pouvert+pouvert*0.05))) == 0);
+	  //while((AX12_getPosition(&ax12_1) < (pouvert-pouvert*0.05) ) || (AX12_getPosition(&ax12_1) > (pouvert+pouvert*0.05) )){}
 
+	  AX12_setPosition(&ax12_2, 150);
+	  do
+	  {
+		  position = AX12_getPosition(&ax12_2);
+	  }
+	  while(((position > (pouvert-pouvert*0.05)) && (position < (pouvert+pouvert*0.05))) == 0);
+	  //while((AX12_getPosition(&ax12_2) < (pouvert-pouvert*0.05) ) || (AX12_getPosition(&ax12_2) > (pouvert+pouvert*0.05) )){}
 
+	  AX12_setPosition(&ax12_1,60);
+	  do
+	  {
+		  position = AX12_getPosition(&ax12_1);
+	  }
+	  while(((position > (pfermer_1-pfermer_1*0.05)) && (position < (pfermer_1+pfermer_1*0.05))) == 0);
+	  //while((AX12_getPosition(&ax12_1) < (pfermer_1-pfermer_1*0.05) ) || (AX12_getPosition(&ax12_1) > (pfermer_1+pfermer_1*0.05) )){}
+
+	  //local = AX12_getPosition(&ax12);
+	  //AX12_getPosition(&ax12);
+	  //AX12_getID(&ax12);
+	  //AX12_getPosition(&ax12);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -160,6 +209,110 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 250000;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_HalfDuplex_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 38400;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOF_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */

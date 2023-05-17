@@ -269,6 +269,7 @@ int8_t AX12_pingModule(AX12* ax12);
  * 		    bit 1 : Angle souhaité n'est pas compris dans l'intervalle
  * 			bit 0 : La tension n'est pas comprise dans l'intervalle
  */
+void AX12_quelquechose(AX12 * ax12);
 int8_t AX12_errorControl(uint8_t data);
 
 #endif /* SERVOAX12_H_ */

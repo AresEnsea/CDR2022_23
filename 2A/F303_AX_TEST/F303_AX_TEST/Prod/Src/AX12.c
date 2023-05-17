@@ -262,6 +262,21 @@ int8_t AX12_pingModule(AX12* ax12){
 	return AX12_errorControl(data[4]);
 }
 
+void AX12_quelquechose(AX12 * ax12)
+{
+	uint8_t data[SIZE_REQUEST_READ_8];
+	data[0] = 0xFF;
+    data[1] = 0xFF;
+    data[2] = ax12->m_ID;
+    data[3] = 0x04;
+    data[4] = 0x02;
+    data[5] = 0x24;
+    data[6] = 0x02;
+    data[7] = 0xD3;
+
+    HAL_UART_Transmit(ax12->AX_Uart, (uint8_t*)&data, SIZE_REQUEST_READ_8, 500);
+}
+
 int8_t AX12_errorControl(uint8_t err){
 	uint8_t error = 0;
 	for(uint8_t i = 0; i < 8;i++){
