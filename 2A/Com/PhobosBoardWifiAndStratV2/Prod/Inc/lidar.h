@@ -12,7 +12,6 @@
 extern uint8_t lidar_distances[16];
 extern int lidar_timeSinceData[16];
 
-
 void lidar_initialize();
 
 void lidar_updateDistance(int index, uint8_t dist);
@@ -23,6 +22,5 @@ bool lidar_frontIsClear();
 bool lidar_backIsClear();
 
 void lidar_incrementTime(int ms);
-
 
 #endif

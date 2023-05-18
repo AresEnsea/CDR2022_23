@@ -185,7 +185,7 @@ int main(void)
   //odometry_setPosition(0, 0);
   //odometry_setAngle(0);
 
-  HAL_UART_Receive_IT(&huart4, &lidarData, 1);
+  HAL_UART_Receive_DMA(&huart4, &lidarBuf[0], 3);//HAL_UART_Receive_IT(&huart4, &lidarData, 1);
   HAL_UART_Receive_IT(&huart6, &armData, 1);
   /* USER CODE END 2 */
 

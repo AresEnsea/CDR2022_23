@@ -7,6 +7,7 @@
 #include "config.h"
 #include "propulsion.h"
 #include "serial.h"
+#include "lidarReading.h"
 
 extern uint8_t lidar_distances[16];
 extern int lidar_timeSinceData[16];

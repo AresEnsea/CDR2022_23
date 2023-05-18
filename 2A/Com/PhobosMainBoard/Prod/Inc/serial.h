@@ -5,7 +5,7 @@
 #include "gpio.h"
 #include "robot.h"
 #include "lidar.h"
-//#include "lidarReading.h"
+#include "lidarReading.h"
 #include <stdio.h>
 
 extern uint8_t lidarData;

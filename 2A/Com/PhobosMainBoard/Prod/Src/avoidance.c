@@ -15,6 +15,8 @@ void avoidance_initialize() {
 
 void avoidance_update(float t, Direction dir) {
 	int distance = lidar_getDistance(dir);
+	if(distance == 0)
+		distance = 1000;
 
 	if ((avoidanceState == PATH_CLEAR || avoidanceState == PATH_CROWDED) && distance < LIDAR_THRESHOLD) {
 		avoidanceState = PATH_OBSTRUCTED;

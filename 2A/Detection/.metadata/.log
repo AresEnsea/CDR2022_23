@@ -7556,3 +7556,30 @@ java.net.SocketException: Network is unreachable: connect
 	at org.eclipse.ecf.provider.filetransfer.httpclient5.HttpClientRetrieveFileTransfer$1.performFileTransfer(HttpClientRetrieveFileTransfer.java:997)
 	at org.eclipse.ecf.filetransfer.FileTransferJob.run(FileTransferJob.java:76)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.resources 4 566 2023-05-18 13:55:17.593
+!MESSAGE Workspace was not properly initialized or has already shutdown.
+!SESSION 2023-05-18 22:58:23.844 -----------------------------------------------
+eclipse.buildId=Version 1.12.0
+java.version=11.0.17
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-05-18 23:00:27.317
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-05-18 23:00:27.319
+!MESSAGE Log4j2 initialized with config file C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-05-18 23:00:30.171
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain.arm-none 4 4 2023-05-18 23:00:30.172
+!MESSAGE Failed to get MCU from name "" in toolchain com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1728905242
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-05-18 23:00:37.653
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-05-18 23:01:30.059
+!MESSAGE Indexed 'PhobosMainBoard' (36 sources, 128 headers) in 3,21 sec: 12 213 declarations; 66 872 references; 2 unresolved inclusions; 42 syntax errors; 147 unresolved names (0,19 %)

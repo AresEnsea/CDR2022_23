@@ -94,12 +94,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 		uint8_t dist = (lidarData & 0xF) << 2;
 		lidar_updateDistance(id, dist);
 		HAL_UART_Receive_IT(&huart4, &lidarData, 1);*/
-/*
+
 		DataAcquiered = 1;
 		bufferIndex += 3;
 		frameStatus();
 		HAL_UART_Receive_DMA(&huart4, &lidarBuf[bufferIndex], 3);
-*/
+
 	}
 
 	/*if(huart->Instance == USART6){
