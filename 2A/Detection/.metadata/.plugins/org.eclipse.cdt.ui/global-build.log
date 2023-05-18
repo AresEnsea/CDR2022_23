@@ -1,86 +1,97 @@
-15:26:37 **** Incremental Build of configuration Debug for project PhobosBoardWifiAndStratV2 ****
+15:49:50 **** Incremental Build of configuration Debug for project SerialReader ****
 make -j12 all 
-arm-none-eabi-gcc "../Prod/Src/avoidance.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Prod/Src/avoidance.d" -MT"Prod/Src/avoidance.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Prod/Src/avoidance.o"
-arm-none-eabi-gcc "../Prod/Src/lidar.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Prod/Src/lidar.d" -MT"Prod/Src/lidar.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Prod/Src/lidar.o"
-arm-none-eabi-gcc "../Prod/Src/serial.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Prod/Src/serial.d" -MT"Prod/Src/serial.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Prod/Src/serial.o"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc "../Core/Src/stm32f4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Prod/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f4xx_it.d" -MT"Core/Src/stm32f4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_it.o"
-../Prod/Src/avoidance.c: In function 'avoidance_update':
-../Prod/Src/avoidance.c:20:10: warning: unused variable 'buffy' [-Wunused-variable]
-   20 |  uint8_t buffy[30];
-      |          ^~~~~
-../Prod/Src/avoidance.c:17:49: warning: unused variable 'd2' [-Wunused-variable]
-   17 |  int distance = lidar_getDistance(dir); uint8_t d2 = (uint8_t) distance;
-      |                                                 ^~
-../Prod/Src/lidar.c: In function 'lidar_pathIsClear':
-../Prod/Src/lidar.c:58:1: warning: control reaches end of non-void function [-Wreturn-type]
-   58 | }
-      | ^
-../Prod/Src/serial.c: In function 'serial_send':
-../Prod/Src/serial.c:56:31: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-   56 |    HAL_UART_Transmit(&huart6, "1021", 4, 1);
-      |                               ^~~~~~
-      |                               |
-      |                               char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
+arm-none-eabi-gcc "../Core/Src/lidarReading.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_UART_REGISTER_CALLBACKS -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/lidarReading.d" -MT"Core/Src/lidarReading.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/lidarReading.o"
+In file included from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Inc/lidarReading.h:11,
+                 from ../Core/Src/lidarReading.c:10:
+../Core/Inc/stm32f4xx_hal_conf.h:193: warning: "USE_HAL_UART_REGISTER_CALLBACKS" redefined
+  193 | #define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
+      | 
+<command-line>: note: this is the location of the previous definition
+../Core/Src/lidarReading.c: In function 'readHeader':
+../Core/Src/lidarReading.c:87:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+   87 |  HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[26]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
                  from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:31,
-                 from ../Core/Inc/usart.h:29,
-                 from ../Prod/Inc/serial.h:4,
-                 from ../Prod/Src/serial.c:1:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Inc/lidarReading.h:11,
+                 from ../Core/Src/lidarReading.c:10:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[26]'
   722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
       |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Prod/Src/serial.c:60:31: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-   60 |    HAL_UART_Transmit(&huart6, "1010", 4, 1);
-      |                               ^~~~~~
-      |                               |
-      |                               char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
+../Core/Src/lidarReading.c:89:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+   89 |  HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
+      |                             ^~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[16]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
                  from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:31,
-                 from ../Core/Inc/usart.h:29,
-                 from ../Prod/Inc/serial.h:4,
-                 from ../Prod/Src/serial.c:1:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Inc/lidarReading.h:11,
+                 from ../Core/Src/lidarReading.c:10:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[16]'
   722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
       |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Prod/Src/serial.c: In function 'HAL_UART_RxCpltCallback':
-../Prod/Src/serial.c:137:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-  137 |     HAL_UART_Transmit(&huart2, buf, size, HAL_MAX_DELAY);
-      |                                ^~~
-      |                                |
-      |                                char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
+../Core/Src/lidarReading.c:91:29: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+   91 |  HAL_UART_Transmit(&huart2, &" ROIs differents en \n\r", 22, 100);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                             |
+      |                             char (*)[23]
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
                  from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:31,
-                 from ../Core/Inc/usart.h:29,
-                 from ../Prod/Inc/serial.h:4,
-                 from ../Prod/Src/serial.c:1:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Inc/lidarReading.h:11,
+                 from ../Core/Src/lidarReading.c:10:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char (*)[23]'
   722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
       |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:276:30: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-  276 |   HAL_UART_Transmit(&huart6, "1015", 4, 1);
-      |                              ^~~~~~
-      |                              |
-      |                              char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:31,
-                 from ../Core/Src/main.c:21:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-arm-none-eabi-gcc -o "PhobosBoardWifiAndStratV2.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Com\PhobosBoardWifiAndStratV2\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PhobosBoardWifiAndStratV2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: PhobosBoardWifiAndStratV2.elf
+../Core/Src/lidarReading.c:92:36: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+   92 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+      |                                    ^~~~~~
+../Core/Src/lidarReading.c:92:36: warning: incompatible implicit declaration of built-in function 'strlen'
+../Core/Src/lidarReading.c:11:1: note: include '<string.h>' or provide a declaration of 'strlen'
+   10 | #include "lidarReading.h"
+  +++ |+#include <string.h>
+   11 | 
+../Core/Src/lidarReading.c:92:43: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+   92 |  HAL_UART_Transmit(&huart2, value, strlen(value), 100);
+      |                                           ^~~~~
+      |                                           |
+      |                                           uint8_t * {aka unsigned char *}
+../Core/Src/lidarReading.c:92:43: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
+../Core/Src/lidarReading.c:86:6: warning: unused variable 'size' [-Wunused-variable]
+   86 |  int size = sprintf((char*)value, "%d mesures differentes\r\n", (int)measuresSent);
+      |      ^~~~
+../Core/Src/lidarReading.c: In function 'readValue':
+../Core/Src/lidarReading.c:120:37: warning: incompatible implicit declaration of built-in function 'strlen'
+  120 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
+      |                                     ^~~~~~
+../Core/Src/lidarReading.c:120:37: note: include '<string.h>' or provide a declaration of 'strlen'
+../Core/Src/lidarReading.c:120:44: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+  120 |   HAL_UART_Transmit(&huart2, value, strlen(value), 100);  //" , Distance \t\t = %d\r\n"
+      |                                            ^~~~~
+      |                                            |
+      |                                            uint8_t * {aka unsigned char *}
+../Core/Src/lidarReading.c:120:44: note: expected 'const char *' but argument is of type 'uint8_t *' {aka 'unsigned char *'}
+arm-none-eabi-gcc -o "SerialReader.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\SerialReader\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialReader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SerialReader.elf
  
-arm-none-eabi-size   PhobosBoardWifiAndStratV2.elf 
-arm-none-eabi-objdump -h -S  PhobosBoardWifiAndStratV2.elf  > "PhobosBoardWifiAndStratV2.list"
+arm-none-eabi-size   SerialReader.elf 
+arm-none-eabi-objdump -h -S  SerialReader.elf  > "SerialReader.list"
    text	   data	    bss	    dec	    hex	filename
-  59816	    484	   7444	  67744	  108a0	PhobosBoardWifiAndStratV2.elf
+  18228	    220	   6532	  24980	   6194	SerialReader.elf
 Finished building: default.size.stdout
  
-Finished building: PhobosBoardWifiAndStratV2.list
+Finished building: SerialReader.list
+ 
+15:49:54 **** Incremental Build of configuration Debug for project SerialReader ****
+make -j12 all 
+arm-none-eabi-size   SerialReader.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18228	    220	   6532	  24980	   6194	SerialReader.elf
+Finished building: default.size.stdout
  

@@ -1,6 +1,6 @@
 float * positionRelative(int number, int pseudoDistance, float * angleDeg);
 /*
- * Calcule les positions extremes mesurees par le capteur
+ * @brief Calcule les positions extremes mesurees par le capteur
  * relatives a la position du robot
  * @param
  * number 			: numero du capteur du la carte de detection
@@ -14,7 +14,7 @@ float * positionRelative(int number, int pseudoDistance, float * angleDeg);
 
 float calculSegment(float * XY, float * OA, float * OB);
 /*
- * Le but de cette fonction est de mesurer le taux du segment AB qui est a l'interieur de la table
+ * @brief Le but de cette fonction est de mesurer le taux du segment AB qui est a l'interieur de la table
  * @param
  * 	XY: la position du robot
  * 	OA: le point de visibilite relative extreme pour un angle faible
@@ -28,7 +28,7 @@ float calculSegment(float * XY, float * OA, float * OB);
 
 int inTheTable(float * x, float * y);
 /*
- * Determine si le point de coordonnees (x,y) est dans la table
+ * @brief Determine si le point de coordonnees (x,y) est dans la table
  * @param
  * x : abscisse du point
  * y : ordonnee du point
@@ -38,7 +38,7 @@ int inTheTable(float * x, float * y);
 
 float module(float * A, float * B);
 /*
- * Calcule la distance entre 2 points
+ * @brief Calcule la distance entre 2 points
  * @param
  * A : liste de 2 flottants
  * B : liste de 2 flottants
@@ -48,7 +48,7 @@ float module(float * A, float * B);
 
 int between(float * X, float min, float max);
 /*
- * Calcule la presence d'un point dans un intervalle
+ * @brief Calcule la presence d'un point dans un intervalle
  * @param
  * X : flottant
  * @return
@@ -57,7 +57,7 @@ int between(float * X, float min, float max);
 
 void charListWriting(char * cas, char * replacement);
 /*
- * Permet de modifier le contenu de chaines de caracteres si replacement est plus courte que cas
+ * @brief Permet de modifier le contenu de chaines de caracteres si replacement est plus courte que cas
  * (idealement de meme taille)
  *
  */

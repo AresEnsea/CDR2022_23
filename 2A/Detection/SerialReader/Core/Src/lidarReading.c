@@ -63,7 +63,7 @@ void readFrame(void){
 }
 
 void readHeader(uint16_t frameIndex){
-	uint8_t value[20];
+	uint8_t value[30];
 
 	// 1
 	uint8_t ncaptActifs = lidarBuf[frameIndex];
@@ -83,7 +83,7 @@ void readHeader(uint16_t frameIndex){
 
 
 	//Affichage serie
-	int size = sprintf((char*)value, "%d mesures differentes\r\n", (int)Nmesures);
+	int size = sprintf((char*)value, "%d mesures differentes\r\n", (int)measuresSent);
 	HAL_UART_Transmit(&huart2, &"Nous avons NcaptActifs = ", 25, 100);
 	HAL_UART_Transmit(&huart2, &chiffres[ncaptActifs], 1, 100);
 	HAL_UART_Transmit(&huart2, &", qui utlisent ", 15, 100);
@@ -104,7 +104,7 @@ void readValue(uint16_t usedIndex, uint16_t frameIndex){
 	/* Double verification pour eviter la lecture des 0x0 de la memoire par defaut en cas d'index defaillant.
 	 * Peut etre enleve si on ajuste aussi usedIndex dans setFrameIndex()
 	 * */
-	while(i < (usedIndex - 3) && nbreMes < Nmesures){
+	while(i < (usedIndex - 3) && nbreMes < measuresSent){
 		//Selon le code du systeme de detection : "Pour que le premier element de la chaine de caracteres ne soit pas '\0'"
 		// Donc il faut enlever l'offset sur buffer[i]
 		indiceROI = (lidarBuf[i]-1)%NROI;
