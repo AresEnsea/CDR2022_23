@@ -274,7 +274,7 @@ int main(void)
   printf(" Done.\r\n");
 
   printf("Go!\r\n");
-  HAL_UART_Transmit(&huart6, "1015", 4, 1);
+  HAL_UART_Transmit(&huart6, "1020", 4, 1);
   HAL_UART_Receive_DMA(&huart4, &lidarBuf[0], 3);
   //odometry_setPosition(0, 0);
   //odometry_setAngle(0);
