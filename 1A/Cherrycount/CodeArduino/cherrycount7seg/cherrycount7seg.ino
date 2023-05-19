@@ -1,5 +1,5 @@
 /* cherrycount_7seg Author : Ousmane Thiongane */
-/* Ce code permet d'afficher sur un afficheur 7 segments le nombre de cerises déposées dans le panier */
+/* Description : Ce code permet d'afficher sur un afficheur 7 segments le nombre de cerises déposées dans le panier */
 /* Afficheur en Anode commune */
 
 //Définition des broches des segments
@@ -11,15 +11,16 @@ const byte SEGMENT_E = 2;
 const byte SEGMENT_F = 5;
 const byte SEGMENT_G = 10;
 
-//Définition de la broche du compteur
-const byte ButtonPin = 0;
+//Définition de la broche du compteur et de son état
+const byte ButtonPin = A5;
+int ButtonState = 0;
 
 //Nombre de cerises
 int number = 0;
 
 //Variables de contrôle du temps entre deux détections
-unsigned long timeprevious=0;
-unsigned long tempmin=1000;
+unsigned long timeprevious = 0;
+unsigned long time_min = 50;
 
 //Broche du moteur 
 int in1 = 6;
@@ -27,6 +28,9 @@ int in1 = 6;
 //Définition des broches des transistors
 const int transistor_tens = 8;
 const int transistor_units = 7;
+
+//Variable définissant le temps de commande du moteur
+double timer = 60000;
 
 //Tableau contenant les valeurs binaires des états des segments pour chaque chiffre
 const byte SEGMENTS_STATE[] = {
@@ -61,7 +65,7 @@ void setup(){
   pinMode(SEGMENT_G, OUTPUT);
   digitalWrite(SEGMENT_G, LOW);
  
-//Initialisation des deux transistor sur leur état bas
+//Initialisation des deux transistors sur leur état bas
   pinMode(transistor_tens,OUTPUT);
   digitalWrite(transistor_tens, LOW);
   pinMode(transistor_units,OUTPUT);
@@ -69,27 +73,29 @@ void setup(){
 
 //Initialisation du moteur
   pinMode(in1,OUTPUT);
-  digitalWrite(in1,LOW); 
+//Démarre la rotation du moteur
+  analogWrite(in1,255); 
 
 //Initialisation du switch de détection 
-  pinMode(ButtonPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(ButtonPin), interruption, FALLING);
+  pinMode(ButtonPin, INPUT);
 }
 
 void loop(){
-  //Démarre la rotation du moteur
-  analogWrite(in1,255);
-  
   //Définition du chiffre des dizaines/unités
-  static byte tens = number/10;
-  static byte units = number%10;     
+  double tens = number/10;
+  double units = number%10;
+
+  //Détection d'une cerise supplémentaire
+  detection();    
   
   //Affichage du nombre de cerises
-  number_display(tens, units);    
+  number_display(units, tens);    
 
-  //Vérification du comptage        
-    Serial.println("Point :"+String(number));    
+  detection();
 
+  //Vérification du comptage dans le Serial Monitor        
+  //Serial.println("Cerises :"+ String(number)); 
+  
 }
 
 
@@ -101,44 +107,65 @@ void number_display(byte tens, byte units) {
 
     //Affichage des unités
     byte segments = SEGMENTS_STATE[units];
-
+    detection();
     digitalWrite(SEGMENT_A, !bitRead(segments, 0));
     digitalWrite(SEGMENT_B, !bitRead(segments, 1));
+    detection();
     digitalWrite(SEGMENT_C, !bitRead(segments, 2));
     digitalWrite(SEGMENT_D, !bitRead(segments, 3));
+    detection();
     digitalWrite(SEGMENT_E, !bitRead(segments, 4));
     digitalWrite(SEGMENT_F, !bitRead(segments, 5));
+    detection();
     digitalWrite(SEGMENT_G, !bitRead(segments, 6));
+    detection();
 
     //Alternance des deux affichages
     digitalWrite(transistor_tens, HIGH);
     digitalWrite(transistor_units, LOW);
-   
-    delay(9);
+    detection();
+    
+    for(int i=0; i<50; i++){
+      detection();
+      }
        
     //Affichage des dizaines
     segments = SEGMENTS_STATE[tens];
-
+    detection();
     digitalWrite(SEGMENT_A, !bitRead(segments, 0));
     digitalWrite(SEGMENT_B, !bitRead(segments, 1));
+    detection();
     digitalWrite(SEGMENT_C, !bitRead(segments, 2));
     digitalWrite(SEGMENT_D, !bitRead(segments, 3));
+    detection();
     digitalWrite(SEGMENT_E, !bitRead(segments, 4));
     digitalWrite(SEGMENT_F, !bitRead(segments, 5));
+    detection();
     digitalWrite(SEGMENT_G, !bitRead(segments, 6));
 
     //Alternance des deux affichages
     digitalWrite(transistor_tens, LOW);
     digitalWrite(transistor_units, HIGH);
+    detection();
 
-    delay(9);
+    for(int i=0; i<50 ;i++){
+      detection();
+      }
+
+    //Temps de commande du moteur
+    //if(millis() >= timer){
+    //  analogWrite(in1,0);
+    //}
    
 }
 
 //Fonction permettant le comptage du nombre de cerises
-void interruption(){
-   if((millis()-timeprevious) >= tempmin){
-     number++;
-     timeprevious=millis();     
+void detection(){
+  ButtonState = analogRead(A5);
+  if(ButtonState >= 900){
+    if((millis() - timeprevious) >= time_min){
+      number++;  
+      timeprevious = millis(); 
+    }
   }
 }
