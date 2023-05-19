@@ -12,6 +12,7 @@ extern uint8_t lidarData;
 extern uint8_t globalUSARTchange;
 extern uint8_t wifiDataRX;
 extern uint8_t wifiDataTX;
+extern uint8_t F303_Data;
 extern uint8_t armData;
 extern uint8_t pData[1];
 

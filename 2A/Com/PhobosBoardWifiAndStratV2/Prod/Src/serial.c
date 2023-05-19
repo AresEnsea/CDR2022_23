@@ -5,6 +5,7 @@ uint8_t armData;
 uint8_t globalUSARTchange=0;
 uint8_t wifiDataRX;
 uint8_t wifiDataTX;
+uint8_t F303_Data;
 uint8_t pData[1];
 
 uint8_t lidarBuf[3000] = {0};
@@ -101,7 +102,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 		HAL_UART_Receive_DMA(&huart4, &lidarBuf[bufferIndex], 3);
 
 	}
-
+	if(huart->Instance == UART5){
+		HAL_UART_Receive_IT(&huart5, &F303_Data, 1);
+	}
 	/*if(huart->Instance == USART6){
 		if (armData == 0xFF) {
 			HAL_GPIO_TogglePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin);

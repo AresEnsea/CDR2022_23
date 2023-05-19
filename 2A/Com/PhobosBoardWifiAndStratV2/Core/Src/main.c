@@ -147,7 +147,9 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim4);
 
   HAL_UART_Receive_IT(&huart1, &wifiDataRX, 1);
+  HAL_UART_Receive_IT(&huart5, &F303_Data, 1);
   HAL_UART_Receive_IT(&huart6, pData, 1);
+
 /*
   while(HAL_GPIO_ReadPin(WIFI_GPIO_Port, WIFI_Pin)==0){
   }*/
@@ -274,7 +276,7 @@ int main(void)
   printf(" Done.\r\n");
 
   printf("Go!\r\n");
-  HAL_UART_Transmit(&huart6, "1020", 4, 1);
+  HAL_UART_Transmit(&huart6, "1034", 4, 1);
   HAL_UART_Receive_DMA(&huart4, &lidarBuf[0], 3);
   //odometry_setPosition(0, 0);
   //odometry_setAngle(0);
@@ -371,6 +373,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
   }
   propulsion_disableMotors();
+  HAL_GPIO_WritePin(Trig_GPIO_Port, Trig_Pin, 1);
   printf("Finished.\r\n");
 
   while (1) {

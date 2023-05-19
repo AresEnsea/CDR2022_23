@@ -45,7 +45,7 @@ UART_HandleTypeDef huart2;
 DMA_HandleTypeDef hdma_usart1_rx;
 
 /* USER CODE BEGIN PV */
-
+uint8_t PhobosArm;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -55,7 +55,23 @@ static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
+	if(huart->Instance == USART2){
+		if(PhobosArm==0x88){//ping the robot with the host and sendback a byte
+			AX12 ax12_ID1;
+			AX12_Init(&ax12_ID1, &huart1, 1, BR_250K);
+			AX12_setLED(&ax12_ID1, 1);
+			AX12_setMovingSpeed(&ax12_ID1, 5);
+			AX12_setRangeAngle(&ax12_ID1, 0, 300);
+			AX12_setDelayTime(&ax12_ID1, 180);
+			AX12_setPosition(&ax12_ID1,140);
+			HAL_Delay(5000);
+			AX12_setPosition(&ax12_ID1,180);
 
+		}
+
+	}
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -95,7 +111,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_UART_Receive_IT(&huart2, &PhobosArm, 1);
   AX12 ax12_1; //( de 60 à 150)
   AX12 ax12_2; //( de 150 à 240)
 
@@ -104,6 +120,8 @@ int main(void)
   /* position ax12 ID_2 */
   int pfermer_2 = 240;
   int pouvert = 150;
+  int pinclineEnAr = 60;
+  int pinclineEnAv = 150;
   int position;
 
   AX12_Init(&ax12_1, &huart1, 1, BR_250K);
@@ -118,13 +136,22 @@ int main(void)
   AX12_setMovingSpeed(&ax12_2, 5);
   AX12_setRangeAngle(&ax12_2, 0, 300);
   AX12_setDelayTime(&ax12_2, 180);
+
+  AX12_setPosition(&ax12_1,200);
+  int detec=0;
+  while(detec==0){
+	  detec = HAL_GPIO_ReadPin(TrigServo_GPIO_Port, TrigServo_Pin);
+  }
+  AX12_setPosition(&ax12_1,140);
+  //AX12_setPosition(&ax12_1,180);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  AX12_setPosition(&ax12_2,pfermer_2);
+	  ////////////////////////////////////////////////////////////////////////////////
+	  /*AX12_setPosition(&ax12_2,pfermer_2);
 	  do
 	  {
 		  position = AX12_getPosition(&ax12_2);
@@ -152,7 +179,8 @@ int main(void)
 	  {
 		  position = AX12_getPosition(&ax12_1);
 	  }
-	  while(((position > (pfermer_1-pfermer_1*0.05)) && (position < (pfermer_1+pfermer_1*0.05))) == 0);
+	  while(((position > (pfermer_1-pfermer_1*0.05)) && (position < (pfermer_1+pfermer_1*0.05))) == 0);/*
+	  /////////////////////////////////////////////////////////////////////////////////////
 	  //while((AX12_getPosition(&ax12_1) < (pfermer_1-pfermer_1*0.05) ) || (AX12_getPosition(&ax12_1) > (pfermer_1+pfermer_1*0.05) )){}
 
 	  //local = AX12_getPosition(&ax12);
@@ -262,7 +290,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -304,12 +332,19 @@ static void MX_DMA_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin : TrigServo_Pin */
+  GPIO_InitStruct.Pin = TrigServo_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(TrigServo_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
