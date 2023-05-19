@@ -373,7 +373,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
   }
   propulsion_disableMotors();
-  HAL_GPIO_WritePin(Trig_GPIO_Port, Trig_Pin, 1);
+  HAL_GPIO_WritePin(TrigServo_GPIO_Port, TrigServo_Pin, 1);
   printf("Finished.\r\n");
 
   while (1) {

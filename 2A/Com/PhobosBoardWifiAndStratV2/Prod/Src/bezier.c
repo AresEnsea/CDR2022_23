@@ -14,7 +14,7 @@ Bezier* bezier_newEmpty() {
 }
 
 
-void bezier_set(Bezier* b, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, int lutLength) {
+void bezier_set(Bezier* b, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, int lutLength){//
     b->p1 = vector2_new(x1, y1);
     b->p2 = vector2_new(x2, y2);
     b->p3 = vector2_new(x3, y3);

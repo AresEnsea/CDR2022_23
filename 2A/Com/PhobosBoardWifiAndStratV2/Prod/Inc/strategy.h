@@ -13,6 +13,7 @@ typedef struct {
 	uint8_t** onMoveActions;
 	int* onSiteActionsLengths;
 	int* onMoveActionsLengths;
+	bool* tabSens;
 } Strategy;
 
 Strategy* strategy_initialize(int num);
