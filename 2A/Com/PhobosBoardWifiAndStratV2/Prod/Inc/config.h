@@ -32,7 +32,7 @@ typedef int bool;
 	#define WHEEL_RADIUS    40.7//38.6
 	#define ENTRAXE_MOTOR   146//120.5
     #define MAX_CORRECTION  40//40
-	#define MAX_MOTOR_SPEED 400
+	#define MAX_MOTOR_SPEED 400//400
 #endif
 #ifdef ISDEIMOS
 	#define WHEEL_RADIUS    27.15
