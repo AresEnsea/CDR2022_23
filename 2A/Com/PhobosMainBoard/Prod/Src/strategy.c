@@ -13,11 +13,11 @@ Strategy* strategy_initialize() {
     strategy->onMoveActions = (uint8_t**) malloc(sizeof(uint8_t*) * (strategy->length+1));
     strategy->onMoveActionsLengths = (int*) calloc((strategy->length+1), sizeof(int));
 
-    strategy->path[0] = bezier_new(1908.688, 253.753, 1865.272, 544.973, 1779.838, 690.077, 1338.819, 702.890, 30);
-    strategy->path[1] = bezier_new(1338.819, 702.890, 897.799, 715.704, 709.494, 385.286, 554.422, 240.759, 30);
-    strategy->path[2] = bezier_new(554.422, 240.759, 399.350, 96.231, 244.430, 12.772, 166.511, 3.935, 30);
-    strategy->path[3] = bezier_new(166.511, 3.935, 88.592, -4.901, 567.439, 38.071, 720.588, 158.195, 30);
-    strategy->path[4] = bezier_new(720.588, 158.195, 873.738, 278.319, 1912.359, 861.121, 1908.640, 253.678, 30);
+    strategy->path[0] = bezier_new(1908.024, 255.474, 1908.024, 255.474, 1941.408, 605.693, 1444.101, 486.766, 30);
+    strategy->path[1] = bezier_new(1444.101, 486.766, 946.795, 367.838, 690.577, 968.001, 619.452, 480.539, 30);
+    strategy->path[2] = bezier_new(619.452, 480.539, 548.327, -6.922, 264.346, 4.676, 264.346, 4.676, 30);
+    strategy->path[3] = bezier_new(264.346, 4.676, 264.346, 4.676, 995.275, 319.472, 995.275, 319.472, 30);
+    strategy->path[4] = bezier_new(995.275, 319.472, 995.275, 319.472, 1907.731, 602.071, 1907.232, 254.630, 30);
 
     strategy->directions[0] = FORWARD;
     strategy->directions[1] = FORWARD;
