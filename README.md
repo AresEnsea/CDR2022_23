@@ -14,7 +14,7 @@ Pour configurer l'hotspot exactement de la même manière que moi, un fichier tx
 
 Une fois l'hotspot configuré vous pourrez faire fonctionner le serveur python au chemin 2A/Com/PythonServer/serverZMult.py
 
-Ce serveur permet la communication entre robots quand le bit de poids fort est à 0. Il y a aussi une option debug qui peut être activée par les robots une fois connectée en Wi-Fi, cette option permet d'enregistrer un envoi de printf sur 10000 au log. Cela permet entre autres de renvoyer des données en continu comme la position et la distance de détection d'un obstacle.
+Ce serveur permet la communication entre robots quand le bit de poids fort est à 0. Il y a aussi une option debug qui peut être activée par les robots une fois connectée en Wi-Fi, cette option permet d'enregistrer un envoi de printf sur 10000 au log. Cela permet entre autres de renvoyer des données en continu comme la position et la distance de détection d'un obstacle sans surcharger la communication série de l'ESP32.
 
 Pour envoyer des commandes au robot ou au serveur il faut passer par un autre fichier python client au chemin 2A/Com/PythonServer/client.py
 
