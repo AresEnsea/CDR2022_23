@@ -7,4 +7,5 @@
 
 ## Le git est répartie en plusieurs fichiers :
 * 2A/Com pour tout ce qui est lié à la communication sans fil
-* 2A/
+* 2A/Affichage pour l'ihm
+* 
