@@ -4,6 +4,8 @@
 
 #include "robot.h"
 #include "tim.h"
+#include "control.h"
+#include "propulsion.h"
 #include <stdio.h>
 
 
@@ -26,3 +28,6 @@ void odometry_setPosition(float x, float y);
  * @param angle L'angle du robot en radians.
  */
 void odometry_setAngle(float angle);
+
+
+void odometry_startKalman();

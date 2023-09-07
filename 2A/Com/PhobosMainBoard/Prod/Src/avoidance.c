@@ -21,7 +21,7 @@ void avoidance_update(float t, Direction dir) {
 	if ((avoidanceState == PATH_CLEAR || avoidanceState == PATH_CROWDED) && distance < LIDAR_THRESHOLD) {
 		avoidanceState = PATH_OBSTRUCTED;
 		printf("Obstacle detected. Waiting 2s...\r\n");
-		propulsion_setSpeeds(0, 0);
+		propulsion_setSpeeds(0, 0, 0);
 		HAL_Delay(2000);
 	}
 

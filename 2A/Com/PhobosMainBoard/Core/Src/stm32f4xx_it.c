@@ -275,7 +275,7 @@ void TIM5_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM5_IRQn 0 */
   //propulsion_updatePosition(0.01);
-  lidar_incrementTime(10);
+  //lidar_incrementTime(10);
   odometry_updatePosition();
   /* USER CODE END TIM5_IRQn 0 */
   HAL_TIM_IRQHandler(&htim5);

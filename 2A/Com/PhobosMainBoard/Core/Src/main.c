@@ -36,6 +36,7 @@
 #include "lidar.h"
 #include "avoidance.h"
 #include "symetry.h"
+#include "control.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -177,6 +178,7 @@ int main(void)
   odometry_setPosition(start.x, start.y);
   odometry_setAngle(startAngle);
   robot.measuredSpeed = 0;
+  odometry_startKalman();
   HAL_Delay(200);
   printf(" Done.\r\n");
 
@@ -243,7 +245,7 @@ int main(void)
 				  false
 		  );
 	  } else if (avoidanceState == PATH_OBSTRUCTED) {
-		  propulsion_setSpeeds(0, 0);
+		  propulsion_setSpeeds(0, 0, 0);
 	  } else if (avoidanceState == BACKTRACKING) {
 		  t = propulsion_followBezier(
 				  strategy->path[curveIndex],
@@ -263,7 +265,7 @@ int main(void)
 	    	  robot.waitingForOnSiteAction = true;
 
 	    	  while (robot.waitingForOnSiteAction) {
-	    		  propulsion_setSpeeds(0, 0);
+	    		  propulsion_setSpeeds(0, 0, 0);
 	    	  }
 	    	  onSiteActionIndex++;
 	      }

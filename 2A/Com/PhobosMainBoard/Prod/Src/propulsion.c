@@ -2,7 +2,15 @@
 
 
 Robot robot;
-
+float angleErrorIntegral = 0.0;
+float angleErrorIntegral2 = 0.0;
+float angleError0 = 0.0;
+float correction = 0.0;
+float error[3] = {0.0,0.0,0.0};
+float error2[3] = {0.0,0.0,0.0};
+float t0 = 0.0;
+float slowDownFactor = 0;
+float speed = 0;
 
 void propulsion_initialize() {
     robot.leftMotor = (Stepper*) malloc(sizeof(Stepper));
@@ -35,11 +43,19 @@ void propulsion_disableMotors() {
 }
 
 
-void propulsion_setSpeeds(float left, float right) {
+void propulsion_setSpeeds(float left, float right, float k) {
+
+	float max_speed = MAX_MOTOR_SPEED*(1-atan(1000*fabs(k))*2/M_PI);
+	if ((max_speed < 400) && (MAX_MOTOR_SPEED >= 400))
+		max_speed = 400;
+	else if ((max_speed < 400) && (MAX_MOTOR_SPEED < 400))
+		max_speed = MAX_MOTOR_SPEED;
+
     float greatestAbsoluteSpeed = fabs(fabs(left)>fabs(right)?left:right);
-    if (greatestAbsoluteSpeed > MAX_MOTOR_SPEED) {
-        left = left/greatestAbsoluteSpeed*MAX_MOTOR_SPEED;
-        right = right/greatestAbsoluteSpeed*MAX_MOTOR_SPEED;
+
+    if (greatestAbsoluteSpeed > max_speed) {
+        left = left/greatestAbsoluteSpeed*max_speed;
+        right = right/greatestAbsoluteSpeed*max_speed;
     }
 
     robot.leftSpeed = left;
@@ -50,6 +66,24 @@ void propulsion_setSpeeds(float left, float right) {
     drv8825_setDirection(robot.rightMotor, (right < 0)?NEGATIVE:POSITIVE);
     drv8825_setRotationSpeed(robot.rightMotor, 60 * fabsf(right) / (2*M_PI*WHEEL_RADIUS));
 }
+
+/*void propulsion_setSpeeds2(float left, float right, Bezier* b, float t) {
+	float k = bezier_curvature(b, t);
+	float turnFactor =(1-fabs(100*k) > 0.5?1-fabs(100*k):0.5);
+    float greatestAbsoluteSpeed = fabs(fabs(left)>fabs(right)?left:right);
+    if (greatestAbsoluteSpeed > MAX_MOTOR_SPEED*turnFactor) {
+        left = turnFactor*left/greatestAbsoluteSpeed*MAX_MOTOR_SPEED;
+        right = turnFactor*right/greatestAbsoluteSpeed*MAX_MOTOR_SPEED;
+    }
+
+    robot.leftSpeed = left;
+    drv8825_setDirection(robot.leftMotor, (left < 0)?NEGATIVE:POSITIVE);
+    drv8825_setRotationSpeed(robot.leftMotor, 60 * fabsf(left) / (2*M_PI*WHEEL_RADIUS));
+
+    robot.rightSpeed = right;
+    drv8825_setDirection(robot.rightMotor, (right < 0)?NEGATIVE:POSITIVE);
+    drv8825_setRotationSpeed(robot.rightMotor, 60 * fabsf(right) / (2*M_PI*WHEEL_RADIUS));
+}*/
 
 
 void propulsion_updatePosition(float dt) {
@@ -88,19 +122,25 @@ float getAngleError(Bezier* b, float t, Vector2 p, Direction dir) {
 }
 
 
-float getRobotSpeed(float t, float angleError, Direction dir, float initialSpeed, float finalSpeed) {
-    float slowDownFactor = 1 - fabs(angleError/M_PI) * 10;
+float getRobotSpeed(Bezier* b,float t, float angleError, Direction dir, float initialSpeed, float finalSpeed) {
+	slowDownFactor = 1 - fabs(Pcorr(10, error[0]))/M_PI;
+    slowDownFactor = 1 - fabs(Icorr(5,error[0], &angleErrorIntegral2,0.5)+Pcorr(4,error[0])+Dcorr(error,0.4*fabs(speed/1000),t-t0)-0.1*(1-slowDownFactor))/M_PI;
+    angleErrorIntegral2 = (angleErrorIntegral2 > 1?1: angleErrorIntegral2);
     slowDownFactor = slowDownFactor>0?slowDownFactor:0;
 
-    float speed = (dir==BACKWARD?-1:1) * slowDownFactor;
+    /*float k = bezier_curvature(b,t);
+    float turnFactor =(1-fabs(300*k) > 0.5?1-fabs(300*k):0.5);*/
+
+    //speed = (dir==BACKWARD?-1:1) * slowDownFactor*turnFactor;
+    speed = (dir==BACKWARD?-1:1) * slowDownFactor;
     if (initialSpeed < 1 && finalSpeed < 1)
         speed *= 600*(1-t) + 20;
     else
         speed *= initialSpeed*(1-t) + finalSpeed*t + 50;
 
     // Limite les accelerations brutales
-    if (fabs(speed) > robot.measuredSpeed + 15)
-        speed = (robot.measuredSpeed + 15) * fabs(speed) / speed;
+    if (fabs(speed) > robot.measuredSpeed + K_ACCEL)
+        speed = (robot.measuredSpeed + K_ACCEL) * fabs(speed) / speed;
 
     return speed;
 }
@@ -108,42 +148,55 @@ float getRobotSpeed(float t, float angleError, Direction dir, float initialSpeed
 
 void calculateMotorSpeeds(float* leftSpeed, float* rightSpeed, Bezier* b, float t, Direction dir, float speed) {
     float k = bezier_curvature(b, t);
-
-    *leftSpeed = speed * (1 + dir*ENTRAXE_MOTOR*k/2);
-    *rightSpeed = speed * (1 - dir*ENTRAXE_MOTOR*k/2);
+    //float speed2 = speed*(1-atan(1000*fabs(k))/M_PI);
+    //speed2 = speed>400?speed2:speed;
+    float speed2 = speed;
+    *leftSpeed = speed2 * (1 + dir*ENTRAXE_MOTOR*k/2);
+    *rightSpeed = speed2 * (1 - dir*ENTRAXE_MOTOR*k/2);
 }
 
 
-void addCorrection(float* leftSpeed, float* rightSpeed, float angleError) {
-    float correction = -angleError*200; // contre réaction
+void addCorrection(float* leftSpeed, float* rightSpeed, float angleError, float * angleErrorIntegral, float * angleError0, float * correction, float speed, float dt) {
+	/**angleErrorIntegral += angleError;
+	*angleErrorIntegral = (abs(*angleErrorIntegral) > MAX_INTEGRAL_CORR/KI_ANGLE?(MAX_INTEGRAL_CORR*(*angleErrorIntegral)/(KI_ANGLE*abs(*angleErrorIntegral))):(*angleErrorIntegral));
 
-    if (fabs(correction) > MAX_CORRECTION) {
-        correction *= MAX_CORRECTION / abs(correction);
+	*correction = -angleError*KP_ANGLE - (*angleErrorIntegral)*KI_ANGLE - KD_ANGLE*pow(fabs(speed/KD_SPEED),2)*(angleError-(*angleError0))/0.0001 + KC_ANGLE*(*correction); // contre réaction
+
+	*angleError0 = angleError;*/
+	error[2] = error[1];
+	error[1] = error[0];
+	error[0] = angleError;
+	*correction = corrector(error, *correction, KP_ANGLE, KI_ANGLE, KD_ANGLE*sin(pow(fabs(speed/1000)*M_PI/2,1)), KC_ANGLE, dt,MAX_INTEGRAL_CORR,angleErrorIntegral);
+    if (fabs(*correction) > MAX_CORRECTION) {
+        *correction *= MAX_CORRECTION / fabs(*correction);
     }
 
-    DEBUG_PROPULSION("corr: %.1fmm\r\n", correction);
+    DEBUG_PROPULSION("ProportionnalCorr: %.1fmm, IntegralCorr: %.1fmm, corr: %.1fmm\r\n",angleError*KP_ANGLE, (*angleErrorIntegral)*KI_ANGLE, *correction);
 
-    *leftSpeed -= correction;
-    *rightSpeed += correction;
+    *leftSpeed -= *correction;
+    *rightSpeed += *correction;
 }
 
 
 // C'est ici que la magie a lieu !
 float propulsion_followBezier(Bezier* b, Direction dir, float initialSpeed, float finalSpeed, bool reverse) {
     float t = bezier_project(b, robot.position, 0.0001); // (entre 0 et 1)
+    float dt = t-t0;
+	float k = bezier_curvature(b,t);
     Vector2 p = bezier_eval(b, t); // Point de la courbe le plus proche du robot
 
-    DEBUG_PROPULSION("t: %.5f, x: %.1fmm, y: %.1fmm, a: %.1fdeg, ", t, robot.position.x, robot.position.y, robot.angle / M_PI / 2 * 360);
+    //DEBUG_PROPULSION("t: %.5f, x: %.1fmm, y: %.1fmm, a: %.1fdeg, ", t, robot.position.x, robot.position.y, robot.angle / M_PI / 2 * 360);
 
     // Erreur d'orientation
     float angleError = getAngleError(b, t, p, dir);
+    DEBUG_PROPULSION("t: %.5f, x: %.1fmm, y: %.1fmm, speed: %.1fmm/s, a: %.1fdeg, a_err: %.1fdeg, k: %.10f ", t, robot.position.x, robot.position.y, robot.measuredSpeed, robot.angle / M_PI / 2 * 360, angleError / M_PI / 2 * 360, k);
 
     if (reverse) {
     	angleError = 0;
     }
 
     // Vitesse globale du robot
-    float speed = getRobotSpeed(t, angleError, dir, initialSpeed, finalSpeed);
+    float speed = getRobotSpeed(b, t, angleError, dir, initialSpeed, finalSpeed);
 
     if (reverse) {
     	speed *= -1;
@@ -155,11 +208,11 @@ float propulsion_followBezier(Bezier* b, Direction dir, float initialSpeed, floa
     calculateMotorSpeeds(&leftSpeed, &rightSpeed, b, t, dir, speed);
 
     // Boucle fermée
-    addCorrection(&leftSpeed, &rightSpeed, angleError);
+    addCorrection(&leftSpeed, &rightSpeed, angleError, &angleErrorIntegral, &angleError0, &correction, speed,dt);
 
     // Commande des moteurs
-    propulsion_setSpeeds(leftSpeed, rightSpeed);
-
+    propulsion_setSpeeds(leftSpeed, rightSpeed, k);
+    t0 = t;
     return t;
 }
 

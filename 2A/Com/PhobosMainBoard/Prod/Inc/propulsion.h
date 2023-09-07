@@ -4,6 +4,7 @@
 #ifndef _PROPULSION_
 #define _PROPULSION_
 
+#include "control.h"
 #include "gpio.h"
 #include "tim.h"
 #include "robot.h"
@@ -50,8 +51,9 @@ void propulsion_disableMotors();
  * vitesses signées données en argument.
  * @param left Vitesse du moteur gauche.
  * @param right Vitesse du moteur droit.
+ * @param k courbure, permet de ralentir dans les virages.
  */
-void propulsion_setSpeeds(float left, float right);
+void propulsion_setSpeeds(float left, float right, float k);
 
 
 /**
