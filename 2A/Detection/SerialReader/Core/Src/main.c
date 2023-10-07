@@ -18,12 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <stdio.h>
-#include "lidarReading.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f4xx_hal_uart.h"
+#include "lidarReading.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,8 +53,8 @@ DMA_HandleTypeDef hdma_usart2_rx;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
 static void MX_DMA_Init(void);
+static void MX_USART2_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -96,20 +95,15 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_USART2_UART_Init();
+  MX_GPIO_Init();
   MX_DMA_Init();
+  MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_DMA(&huart1, &lidarBuf[bufferIndex], 3);
+  //HAL_UART_Receive_DMA(&huart1, &lidarBuf[bufferIndex], 3);
 
-<<<<<<< HEAD:2A/F303_AX_TEST/F303_AX_TEST/Core/Src/main.c
-  AX12 ax12;
-  AX12_Init(&ax12, &huart1, 1, BR_250K);
-  AX12_LED_O_N(&ax12, 1);
-  AX12_setMovingSpeed(&ax12, 5);
-  AX12_setRangeAngle(&ax12, 0, 180);
-=======
->>>>>>> fcce13f882dfc021977d4e502c636f5bbf27f829:2A/Detection/SerialReader/Core/Src/main.c
+  HAL_UART_Receive_DMA(&huart1, lidarBuf, 1);
+  HAL_UART_Receive_DMA(&huart2, lidarBuf, 1);
 
   HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
   HAL_Delay(100);
@@ -121,17 +115,9 @@ int main(void)
   while (1)
   {
 
-<<<<<<< HEAD:2A/F303_AX_TEST/F303_AX_TEST/Core/Src/main.c
-	  AX12_setPosition(&ax12, 150);
-	  HAL_Delay(3000);
-	  AX12_setPosition(&ax12, 60);
-	  HAL_Delay(3000);
-
-=======
 	  if(DataAcquiered)
-		  readFrame();
+		  //readFrame();
 	HAL_Delay(5);
->>>>>>> fcce13f882dfc021977d4e502c636f5bbf27f829:2A/Detection/SerialReader/Core/Src/main.c
 
     /* USER CODE END WHILE */
 
@@ -312,13 +298,22 @@ static void MX_GPIO_Init(void)
 void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
 {
 	DataAcquiered = 1;
-    bufferIndex += 3;
+	//bufferIndex += 3;
 	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 }
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	frameStatus();
-    HAL_UART_Receive_DMA(&huart1, &lidarBuf[bufferIndex], 3);
+	//frameStatus();
+    //HAL_UART_Receive_DMA(&huart1, &lidarBuf[bufferIndex], 3);
+	if(huart->Instance == USART1){
+		HAL_UART_Receive_DMA(&huart1, lidarBuf, 1);
+		HAL_UART_Transmit(&huart2, lidarBuf, 1,1);
+	}
+	if(huart->Instance == USART2){
+		HAL_UART_Receive_DMA(&huart2, lidarBuf, 1);
+		HAL_UART_Transmit(&huart1, lidarBuf, 1,1);
+
+	}
 
 
 

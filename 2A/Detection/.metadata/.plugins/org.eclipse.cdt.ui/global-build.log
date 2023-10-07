@@ -1,43 +1,28 @@
-23:11:55 **** Incremental Build of configuration Debug for project PhobosMainBoard ****
+19:26:50 **** Incremental Build of configuration Debug for project SerialReader ****
 make -j12 all 
-arm-none-eabi-gcc "../Prod/Src/serial.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Prod/Inc -I../Prod/Src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Prod/Src/serial.d" -MT"Prod/Src/serial.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Prod/Src/serial.o"
-../Prod/Src/serial.c: In function 'serial_send':
-../Prod/Src/serial.c:56:31: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-   56 |    HAL_UART_Transmit(&huart6, "1021", 4, 1);
-      |                               ^~~~~~
-      |                               |
-      |                               char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:31,
-                 from ../Core/Inc/usart.h:29,
-                 from ../Prod/Inc/serial.h:4,
-                 from ../Prod/Src/serial.c:1:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-../Prod/Src/serial.c:60:31: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-   60 |    HAL_UART_Transmit(&huart6, "1010", 4, 1);
-      |                               ^~~~~~
-      |                               |
-      |                               char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:31,
-                 from ../Core/Inc/usart.h:29,
-                 from ../Prod/Inc/serial.h:4,
-                 from ../Prod/Src/serial.c:1:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
-arm-none-eabi-gcc -o "PhobosMainBoard.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Com\PhobosMainBoard\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PhobosMainBoard.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: PhobosMainBoard.elf
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_UART_REGISTER_CALLBACKS -DUSE_HAL_DRIVER -DSTM32F410Rx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Core/Inc/stm32f4xx_hal_conf.h:193: warning: "USE_HAL_UART_REGISTER_CALLBACKS" redefined
+  193 | #define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
+      | 
+<command-line>: note: this is the location of the previous definition
+arm-none-eabi-gcc -o "SerialReader.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Victor Lesne\Documents\ENSEA\CFR\2023\CDR2022_23\2A\Detection\SerialReader\STM32F410RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialReader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: SerialReader.elf
  
-arm-none-eabi-size   PhobosMainBoard.elf 
-arm-none-eabi-objdump -h -S  PhobosMainBoard.elf  > "PhobosMainBoard.list"
+arm-none-eabi-size   SerialReader.elf 
+arm-none-eabi-objdump -h -S  SerialReader.elf  > "SerialReader.list"
    text	   data	    bss	    dec	    hex	filename
-  56760	    484	   7436	  64680	   fca8	PhobosMainBoard.elf
+  14460	     20	   4900	  19380	   4bb4	SerialReader.elf
 Finished building: default.size.stdout
  
-Finished building: PhobosMainBoard.list
+Finished building: SerialReader.list
+ 
+19:26:57 **** Incremental Build of configuration Debug for project SerialReader ****
+make -j12 all 
+arm-none-eabi-size   SerialReader.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14460	     20	   4900	  19380	   4bb4	SerialReader.elf
+Finished building: default.size.stdout
  
